@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Analyst session 3 of 6. Velocity and cycle time: why a cycle time is a distribution and not an average, why open deals are censored rather than lost, and Kaplan-Meier as a shape that lets every lead count only for the days it was watched. Hands-on in the browser on 842 real won deals.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Velocity and cycle time - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Analyst session 3 of 6. Median 14 days, mean 48.4: report the distribution, treat open deals as censored, and read a survival curve.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/a3-velocity-and-cycle-time.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Velocity and cycle time - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Analyst session 3 of 6. Distributions, censoring, and a survival curve you can write as a plain loop.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Analyst session 3 · Velocity and cycle time - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Analyst session 3 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Analyst session 3 of 6</div>
+    <h1>Velocity and <span class="accent">cycle time</span></h1>
+    <p class="sub">"How long does a deal take?" sounds like it has one answer. On 842 real won deals it has a median of 14 days and a mean of 48.4, and the gap between those two numbers is the whole first lesson. The second is harder: the deals still open on the day you measure have not finished, and counting them as not won quietly understates every win rate you report. Tonight: cycle time as a distribution, open deals as censored, and Kaplan-Meier as a survival curve you can write as a plain loop. The rows are real Olist B2B funnel rows standing in for Kettle &amp; Co's history; Kettle itself is constructed.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Analyst</span>
+      <span class="chip audience">Data analysts who build pipeline reporting and forecasts</span>
+      <span class="chip audience">Hands-on in the browser</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Distributions, censoring, the survival curve</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: read the curve, write the loop</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Business session 1 built <a href="b1-what-a-pipeline-proves.html">the velocity identity</a>: deals times win rate times deal size, divided by cycle length, a convention rather than a law, with its trap in the denominator. Tonight is that denominator, measured properly. Every number on this page comes from the real Olist rows (842 won deals, 5,998 leads from the 2018 cohort) unless it says constructed, and the widget computes all of them in your browser.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone builds it</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A cycle-time report that shows the median and the percentiles instead of one average, a one-line rule for what to do with deals that are still open, and a Kaplan-Meier loop of about twenty lines you can run on your own CRM export. Analyst session 4's history-based forecast reads straight off the curve you build tonight.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers distributions, not averages</span>
+      <h2>A cycle time is a shape, not a number</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Measure every won deal from first contact to won date and the 842 real Olist deals do not cluster around a typical value. Half closed within 14 days. A quarter took longer than 54.75 days, a tenth longer than 161.9, and the slowest took 427. The mean, 48.4 days, is 3.5 times the median, because a long right tail drags it up. Put the mean into a velocity formula and you divide by a cycle that most deals never had.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 345" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand-drawn histogram of 842 real won deals by days from first contact to won. Bars: 0 to 7 days 249, 7 to 14 days 163, 14 to 30 days 135, 30 to 60 days 97, 60 to 90 days 47, 90 to 180 days 83, 180 days and over 68. A median marker at 14 days sits between the second and third bars; a copper mean marker at 48.4 days sits inside the 30 to 60 day bar. Bucket widths differ.">
+        <defs>
+          <filter id="a3aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="37" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a3aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a3aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a3aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a3aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a3aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a3aB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a3aA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a3aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a3aH" x="30" y="24">842 WON DEALS, FIRST CONTACT TO WON</text>
+        <text class="a3aS" x="400" y="24">p25 5 · median 14 · p75 54.75 · p90 161.9 · max 427 days</text>
+
+        <g filter="url(#a3aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M70 270 L820 270"/>
+          <rect x="90" y="70" width="84" height="200" rx="4" transform="rotate(-0.6 132 170)" fill="url(#a3aHc)"/>
+          <rect x="194" y="139" width="84" height="131" rx="4" transform="rotate(0.5 236 204)" fill="url(#a3aHc)"/>
+          <rect x="298" y="162" width="84" height="108" rx="4" transform="rotate(-0.4 340 216)" fill="url(#a3aHc)"/>
+          <rect x="402" y="192" width="84" height="78" rx="4" transform="rotate(0.6 444 231)" fill="url(#a3aHc)"/>
+          <rect x="506" y="232" width="84" height="38" rx="4" transform="rotate(-0.5 548 251)" fill="url(#a3aHc)"/>
+          <rect x="610" y="203" width="84" height="67" rx="4" transform="rotate(0.4 652 236)" fill="url(#a3aHc)"/>
+          <rect x="714" y="215" width="84" height="55" rx="4" transform="rotate(-0.6 756 242)" fill="url(#a3aHc)"/>
+          <path d="M288 58 L288 270" stroke="#34443E" stroke-width="3"/>
+          <path d="M454 58 L454 270" stroke="#8C4A1E" stroke-width="3"/>
+          <!-- doodle: a stopwatch -->
+          <circle cx="836" cy="52" r="11" stroke="#5A6D65"/>
+          <path d="M836 52 L836 45 M832 38 L840 38" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a3aA" x="282" y="50" text-anchor="end">median 14</text>
+        <text class="a3aB" x="460" y="50">mean 48.4, 3.5x the median</text>
+
+        <text class="a3aL" x="132" y="62" text-anchor="middle">249</text>
+        <text class="a3aL" x="236" y="131" text-anchor="middle">163</text>
+        <text class="a3aL" x="340" y="154" text-anchor="middle">135</text>
+        <text class="a3aL" x="424" y="184" text-anchor="middle">97</text>
+        <text class="a3aL" x="548" y="224" text-anchor="middle">47</text>
+        <text class="a3aL" x="652" y="195" text-anchor="middle">83</text>
+        <text class="a3aL" x="756" y="207" text-anchor="middle">68</text>
+
+        <text class="a3aS" x="132" y="288" text-anchor="middle">0-7</text>
+        <text class="a3aS" x="236" y="288" text-anchor="middle">7-14</text>
+        <text class="a3aS" x="340" y="288" text-anchor="middle">14-30</text>
+        <text class="a3aS" x="444" y="288" text-anchor="middle">30-60</text>
+        <text class="a3aS" x="548" y="288" text-anchor="middle">60-90</text>
+        <text class="a3aS" x="652" y="288" text-anchor="middle">90-180</text>
+        <text class="a3aS" x="756" y="288" text-anchor="middle">180+</text>
+        <text class="a3aA" x="70" y="310">days from first contact to won · bucket widths differ, so read the counts, not the areas</text>
+
+        <text class="a3aN" x="30" y="332">One won row in the first bar is dated 2 days before its first contact: clipped to 0, a logging defect.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper mean sits in a bar that holds only 97 of the 842 deals</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Report the median and the percentiles<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Median, 14 days.</strong> The deal in the middle. It is what a rep means by "a normal deal", and it does not move when one deal takes a year.</p>
+        <p><strong>p25 5 and p75 54.75.</strong> The middle half of won deals closed between 5 and about 55 days. That range is the honest answer to "how long does a deal take".</p>
+        <p><strong>p90 161.9.</strong> One deal in ten took more than five months. Pipeline reviews call these deals stale; Business session 2 asks whether they are slow or dead, and this percentile tells you where "slow" ends for your own history.</p>
+        <p><strong>Mean 48.4.</strong> Real arithmetic, real data, and a misleading summary. Show it beside the median, never alone. If someone asks for "the average cycle", give both and the ratio: 3.5 times is itself a finding about how long the tail is.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Check for a negative cycle before you trust any of it<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>One of the 842 won rows carries a won date 2 days before its first-contact date. A deal cannot close before anyone spoke to the buyer, so this is a logging defect: a back-filled contact date, a lead re-created after the deal, or two systems with different clocks. The widget clips it to 0 so it cannot drag the quantiles below zero, and it sits in the first bar.</p>
+        <p>Run the same check on your own export: <code>won_date &lt; first_contact_date</code> should return zero rows. If it returns many, the contact date is being overwritten (Analyst session 1's problem again) and your cycle times are measuring the overwrite, not the buyer.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>What the mean does to velocity.</strong> Velocity divides by cycle length. On the real Olist rows, dividing by the mean (48.4 days) instead of the median (14) makes the same pipeline look 3.5 times slower; dividing by the median makes the typical deal's pace look like the whole pipeline's. Neither is wrong arithmetic. Say which one you used, and show the percentiles so the reader can see the tail you averaged over.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers censoring</span>
+      <h2>An open deal has not lost yet</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">On any measurement day, some leads have had months to close and some have had days. A lead first contacted on 28 May and still open on 1 June has not failed; it has been watched for four days. Statisticians call it censored: we know it survived at least that long, and nothing after. Count every open lead as not won and your win rate is too low, worst of all for the newest leads.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 325" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seven illustrative leads drawn as horizontal lines from their first-contact date. Three end in a solid dot: won before 1 June. Four reach a copper vertical line at 1 June 2018 and end in an open circle: still open, censored. Two of the censored leads continue as faint dashed lines past the cut to a dot later in June and July: they were won later, which the 1 June view cannot see. The lead contacted on 28 May has only four days of line before the cut.">
+        <defs>
+          <filter id="a3bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="43" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a3bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a3bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a3bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a3bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a3bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a3bB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a3bA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a3bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a3bH" x="30" y="24">SEVEN LEADS, WATCHED UNTIL 1 JUNE 2018</text>
+        <text class="a3bS" x="400" y="24">dot = won · open circle = still open on 1 June (censored)</text>
+        <text class="a3bS" x="30" y="44">illustrative leads, not real rows</text>
+        <text class="a3bB" x="640" y="44" text-anchor="middle">1 June 2018</text>
+
+        <g filter="url(#a3bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M120 270 L640 270"/>
+          <path d="M120 264 L120 276 M323 264 L323 276 M533 264 L533 276"/>
+          <path d="M640 52 L640 270" stroke="#8C4A1E" stroke-width="3"/>
+          <path d="M151 70 L234 70" stroke="#5A6D65"/>
+          <circle cx="240" cy="70" r="6" fill="#34443E" stroke="#34443E"/>
+          <path d="M203 100 L634 100" stroke="#5A6D65"/>
+          <circle cx="640" cy="100" r="6" fill="#FFFFFF"/>
+          <path d="M275 130 L317 130" stroke="#5A6D65"/>
+          <circle cx="323" cy="130" r="6" fill="#34443E" stroke="#34443E"/>
+          <path d="M354 160 L634 160" stroke="#5A6D65"/>
+          <circle cx="640" cy="160" r="6" fill="#FFFFFF"/>
+          <path d="M646 160 L768 160" stroke="#C9D2CE" stroke-dasharray="5 6"/>
+          <circle cx="774" cy="160" r="5" fill="#C9D2CE" stroke="#C9D2CE"/>
+          <path d="M443 190 L461 190" stroke="#5A6D65"/>
+          <circle cx="467" cy="190" r="6" fill="#34443E" stroke="#34443E"/>
+          <path d="M598 220 L634 220" stroke="#5A6D65"/>
+          <circle cx="640" cy="220" r="6" fill="#FFFFFF"/>
+          <path d="M626 250 L634 250" stroke="#5A6D65"/>
+          <circle cx="640" cy="250" r="6" fill="#FFFFFF"/>
+          <path d="M646 250 L716 250" stroke="#C9D2CE" stroke-dasharray="5 6"/>
+          <circle cx="722" cy="250" r="5" fill="#C9D2CE" stroke="#C9D2CE"/>
+          <!-- doodle: an eye, the watcher -->
+          <path d="M818 40 Q836 28 854 40 Q836 52 818 40 Z" stroke="#5A6D65"/>
+          <circle cx="836" cy="40" r="3" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a3bL" x="30" y="74">lead A</text>
+        <text class="a3bL" x="30" y="104">lead B</text>
+        <text class="a3bL" x="30" y="134">lead C</text>
+        <text class="a3bL" x="30" y="164">lead D</text>
+        <text class="a3bL" x="30" y="194">lead E</text>
+        <text class="a3bL" x="30" y="224">lead F</text>
+        <text class="a3bL" x="30" y="254">lead G</text>
+
+        <text class="a3bS" x="252" y="74">won in 26 days</text>
+        <text class="a3bS" x="654" y="104">open since January</text>
+        <text class="a3bS" x="784" y="164">won July</text>
+        <text class="a3bS" x="654" y="224">open, 12 days</text>
+        <text class="a3bS" x="560" y="246" text-anchor="end">contacted 28 May</text>
+        <text class="a3bS" x="732" y="254">won late June</text>
+
+        <text class="a3bA" x="120" y="290" text-anchor="middle">1 Jan</text>
+        <text class="a3bA" x="323" y="290" text-anchor="middle">1 Mar</text>
+        <text class="a3bA" x="533" y="290" text-anchor="middle">1 May</text>
+
+        <text class="a3bN" x="30" y="314">Real 2018 cohort on 1 June: open circles counted as not won gives 10.5%. Known by November: 13.0%.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper line is where your knowledge stops, not where the leads stop</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>What censoring does to a win rate<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>The naive share.</strong> Wins so far divided by all leads. Every open lead counts as a loss, including one contacted yesterday.</p>
+        <p><strong>Why it is biased downwards.</strong> A lead's chance of having won by the measurement day depends on how long it has been watched. The newer the cohort, the bigger the understatement. Analyst session 2's May 2018 cohort looks weaker partly for this reason, and partly because it really did convert worse; censoring is the reason you cannot tell the two apart on 1 June.</p>
+        <p><strong>The rule.</strong> An open deal contributes the days it was watched, and nothing about the days it was not. It is neither a win nor a loss. Kaplan-Meier, in Part 3, is the bookkeeping that follows this rule.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Two wrong fixes people reach for<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Drop the open leads.</strong> Then the cohort holds only won deals and leads you have already written off, and the win rate jumps far too high. It is survivorship in a different coat, the same trap as Olist's won-only closed-deal table in Analyst session 2.</p>
+        <p><strong>Wait until everything has closed.</strong> Honest, and useless for a forecast: on 1 June 2018 the 13.0% was not knowable for another five months. You need an estimate on the day you have to decide, which is what a survival curve gives you.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The 2018 cohort on 1 June.</strong> 5,998 real Olist leads were first contacted from January to May 2018. Seen on 1 June 2018, 10.5% had been won. By November 2018, the same leads had reached 13.0%. Nothing about the buyers changed between those dates; the late-May leads simply had time. A report written on 1 June that called the cohort's win rate 10.5% was not wrong about the past. It was wrong about what the number meant.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers Kaplan-Meier as a shape</span>
+      <h2>The survival curve, without the heavy maths</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Kaplan and Meier published the estimator in 1958 (reported). The idea fits in one line: walk forward day by day; on each day a win happens, multiply the "still not won" share by one minus wins that day over leads still at risk. A censored lead leaves the risk set on its last watched day without counting as a loss. One minus the running product is the cumulative win share. On the real 2018 cohort it climbs to 12.5% by day 150, much closer to the 13.0% known later than the naive 10.5%.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 392" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand-drawn Kaplan-Meier step curve of cumulative win share for the real 2018 cohort seen on 1 June 2018, drawn through six printed checkpoints: day 7 4.7 percent, day 14 7.1, day 30 9.4, day 60 11.0, day 90 11.8, day 150 12.5. A dashed line marks 13.0 percent, the share known by November; a shorter dashed line marks 10.5 percent, won so far on 1 June. A small copper band between 12.5 and 13.0 at the right marks the gap the curve cannot close.">
+        <defs>
+          <filter id="a3cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a3cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a3cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a3cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a3cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a3cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a3cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a3cA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a3cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a3cH" x="30" y="24">KAPLAN-MEIER: CUMULATIVE WIN SHARE BY DAY, REAL 2018 COHORT</text>
+        <text class="a3cA" x="108" y="42">cumulative win share, seen on 1 June 2018</text>
+        <text class="a3cB" x="600" y="48">the gap KM cannot close</text>
+
+        <g filter="url(#a3cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M100 52 L100 320 L744 320"/>
+          <path d="M94 220 L100 220 M94 120 L100 120"/>
+          <path d="M220 320 L220 326 M340 320 L340 326 M460 320 L460 326 M700 320 L700 326"/>
+          <rect x="700" y="60" width="40" height="10" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M100 60 L744 60" stroke="#34443E" stroke-dasharray="6 6"/>
+          <path d="M480 110 L744 110" stroke="#535E59" stroke-dasharray="3 6"/>
+          <path d="M100 320 L128 320 L128 226 L156 226 L156 178 L220 178 L220 132 L340 132 L340 100 L460 100 L460 84 L700 84 L700 70 L740 70" stroke="#5A6D65" stroke-width="3"/>
+          <!-- doodle: an hourglass -->
+          <path d="M808 284 L832 284 L808 316 L832 316 Z" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a3cS" x="88" y="324" text-anchor="end">0%</text>
+        <text class="a3cS" x="88" y="224" text-anchor="end">5%</text>
+        <text class="a3cS" x="88" y="124" text-anchor="end">10%</text>
+
+        <text class="a3cL" x="132" y="244">4.7%</text>
+        <text class="a3cL" x="150" y="172" text-anchor="end">7.1%</text>
+        <text class="a3cL" x="214" y="126" text-anchor="end">9.4%</text>
+        <text class="a3cL" x="334" y="94" text-anchor="end">11.0%</text>
+        <text class="a3cL" x="454" y="78" text-anchor="end">11.8%</text>
+        <text class="a3cL" x="694" y="78" text-anchor="end">12.5%</text>
+
+        <text class="a3cA" x="750" y="64">13.0% known later</text>
+        <text class="a3cS" x="750" y="114">10.5% so far</text>
+
+        <text class="a3cS" x="100" y="340" text-anchor="middle">0</text>
+        <text class="a3cS" x="220" y="340" text-anchor="middle">30</text>
+        <text class="a3cS" x="340" y="340" text-anchor="middle">60</text>
+        <text class="a3cS" x="460" y="340" text-anchor="middle">90</text>
+        <text class="a3cS" x="700" y="340" text-anchor="middle">150</text>
+        <text class="a3cA" x="100" y="358">days since first contact · steps drawn through the six printed checkpoints only</text>
+
+        <text class="a3cN" x="30" y="382">12.5% by day 150 against 13.0% known by November: the curve cannot see past the longest watch.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - most of the distance from 10.5% to 13.0% is recovered; the copper sliver is what no estimator can see on 1 June</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Kaplan-Meier on ten leads, by hand<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Constructed Kettle &amp; Co example.</strong> Ten office-tea leads, watched until day 12. Three are won (on days 2, 5 and 10). Three stop being watched early because they arrived late (censored on days 3, 6 and 8). Four are still open at day 12.</p>
+        <div class="prompt-box good"><span class="label">★ The arithmetic, constructed numbers</span>day 2:  10 at risk, 1 win    still-open share = 1 x (1 - 1/10)   = 0.9000
+day 3:  1 censored, leaves      at risk now 10 - 1 - 1 = 8
+day 5:  8 at risk, 1 win        0.9000 x (1 - 1/8)                  = 0.7875
+day 6, day 8: 2 censored        at risk now 8 - 1 - 2 = 5
+day 10: 5 at risk, 1 win        0.7875 x (1 - 1/5)                  = 0.6300
+cumulative win share by day 10  = 1 - 0.6300 = 37.0%
+naive share (wins / all leads)  = 3 / 10     = 30.0%</div>
+        <p>Same three wins, two answers. The naive share treats the three late arrivals as losses; Kaplan-Meier lets each of them count only while it was watched. Check the risk set on each line: it shrinks by the wins and the censored leads of earlier days, and nothing else.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What it fixes, what it cannot, and where Analyst session 4 uses it<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>It fixes unequal follow-up.</strong> Leads watched for four days and leads watched for five months sit in one estimate without the short ones counting as losses.</p>
+        <p><strong>It cannot see past the longest watch.</strong> On 1 June 2018 the oldest 2018 lead had been watched about five months, and nobody had been watched for a year. Wins that arrive later than anyone has been observed are invisible, which is why the curve stops at 12.5% by day 150 while the truth was 13.0%. It also assumes censoring tells you nothing about the lead: a lead dropped from the export because the rep gave up on it is not censored, it is a hidden loss.</p>
+        <p><strong>The question a forecast needs.</strong> The same curve answers "an open deal is a days old; what is the chance it closes in the next 91 days?" as (S(a) minus S(a + 91)) divided by S(a), where S is the still-not-won share. In the ten-lead example, a lead aged 3 days has (0.9000 minus 0.6300) / 0.9000 = 30.0% chance of winning by day 10. On the real table, a lead aged 60 days moving to day 150 (90 days, close to a quarter): (0.890 minus 0.875) / 0.890, about 1.7%, our arithmetic on two rows of the widget's table. That is the engine of the history-based forecast in Analyst session 4: old open deals are worth very little, however confident the rep sounds.</p>
+        <p>Survival models with covariates and time-series forecasting go well beyond this; <a href="https://phoebefu6.github.io/learn-timeseries-forecasting-with-phoebe/">Timeseries Forecasting</a> owns the models. Here the curve is a shape you can read and a loop you can write.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Three numbers for one cohort.</strong> On the same 5,998 real Olist leads, all three answers were available or became available: 10.5% won so far on 1 June 2018, 12.5% by day 150 on the survival curve, 13.0% known by November. The survival curve recovers most of the gap on the day you need the answer. Report it with its blind spot stated: it is a floor for wins that take longer than anyone has yet been watched.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Read the curve, then write the loop</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">The widget holds the real Olist rows and computes two things in your browser: the cycle-time distribution of the 842 won deals, and the Kaplan-Meier curve for the 2018 cohort as seen on 1 June 2018. There is nothing to toggle. Read each block, copy what it prints, and finish by writing the loop yourself.</p>
+
+    <div class="spa-widget" data-mode="cycle"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn map of the cycle widget. Two hatched data boxes on the left: 842 won deals with first contact and won date, and the 5,998 leads of the 2018 cohort seen on 1 June, won or still open. The first feeds a distribution step (sort, quantiles, seven buckets) that prints four tiles and the histogram. The second feeds a copper Kaplan-Meier step (wins over at risk, by day) that prints the verdict line and the six-row table.">
+        <defs>
+          <filter id="a3dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a3dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a3dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a3dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a3dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a3dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a3dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a3dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a3dH" x="30" y="28">WHAT THE CYCLE WIDGET COMPUTES IN YOUR BROWSER</text>
+
+        <g filter="url(#a3dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="60" width="210" height="56" rx="10" transform="rotate(-0.8 135 88)" fill="url(#a3dHc)"/>
+          <rect x="30" y="160" width="210" height="56" rx="10" transform="rotate(0.6 135 188)" fill="url(#a3dHc)"/>
+          <path d="M246 88 L292 88" marker-end="url(#a3dAr)"/>
+          <path d="M246 188 L292 188" marker-end="url(#a3dAr)"/>
+          <rect x="300" y="60" width="230" height="56" rx="10" transform="rotate(0.6 415 88)" fill="#FFFFFF"/>
+          <rect x="300" y="160" width="230" height="56" rx="10" transform="rotate(-0.6 415 188)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M536 88 L592 88" marker-end="url(#a3dAr)"/>
+          <path d="M536 188 L592 188" marker-end="url(#a3dAr)"/>
+          <rect x="600" y="60" width="250" height="56" rx="10" transform="rotate(-0.6 725 88)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="600" y="160" width="250" height="56" rx="10" transform="rotate(0.6 725 188)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <!-- doodle: a browser window -->
+          <path d="M810 14 L852 14 L852 40 L810 40 Z M810 22 L852 22" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="42" y="70" width="186" height="36" rx="6" fill="#FFFFFF"/>
+        <rect x="42" y="170" width="186" height="36" rx="6" fill="#FFFFFF"/>
+
+        <text class="a3dL" x="52" y="86">842 won deals</text>
+        <text class="a3dS" x="52" y="101">first contact, won date</text>
+        <text class="a3dL" x="52" y="186">2018 leads, seen 1 June</text>
+        <text class="a3dS" x="52" y="201">5,998 leads, won or open</text>
+
+        <text class="a3dL" x="314" y="86">distribution</text>
+        <text class="a3dS" x="314" y="104">sort, quantiles, 7 buckets</text>
+        <text class="a3dW" x="314" y="186">Kaplan-Meier</text>
+        <text class="a3dW" x="314" y="204">wins / at risk, by day</text>
+
+        <text class="a3dL" x="614" y="86">4 tiles + histogram</text>
+        <text class="a3dS" x="614" y="104">median, p75, p90, mean</text>
+        <text class="a3dL" x="614" y="186">verdict + KM table</text>
+        <text class="a3dS" x="614" y="204">days 7, 14, 30, 60, 90, 150</text>
+
+        <text class="a3dN" x="30" y="248">Nothing to toggle: the rows are fixed. Read each output, check it, then rebuild the copper step yourself.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper step is the one you write in step 5</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Read the four tiles.</strong> Copy them in order. Then say out loud why the fourth is bigger than the first and what it would do to a velocity figure.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · what the widget prints</span>14 days    median
+54.75      75th percentile
+161.9      90th percentile
+48.4       mean, pulled up by the tail</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Read the histogram.</strong> Seven bars, left to right. Add the first two: that is how many of the 842 won deals closed inside two weeks. Note that the last two buckets are wide, so their bars are not comparable by height with the first.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · won deals by days to close</span>0-7 d     249
+7-14 d    163
+14-30 d   135
+30-60 d    97
+60-90 d    47
+90-180 d   83
+180+ d     68</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Read the verdict.</strong> Three numbers for one cohort. Write which one you would have put in a 1 June board pack, and the sentence you would put next to it.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · the verdict line</span>2018 leads seen on 1 June 2018: 10.5% won so far. The survival curve says 12.5% by day 150. Known later: 13.0%.</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Read the Kaplan-Meier table.</strong> Copy all six rows. Mark where the curve flattens: the jump from day 7 to day 14 is bigger than the jump from day 90 to day 150.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · cumulative win share (Kaplan-Meier)</span>day 7     4.7%
+day 14    7.1%
+day 30    9.4%
+day 60    11.0%
+day 90    11.8%
+day 150   12.5%</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · Write the loop.</strong> Plain Python, no survival library, the same bookkeeping as the ten-lead example. Run it first on those ten constructed leads and check you get 37.0% by day 10. Then point it at your own CRM export. Its output on the Olist rows is whatever the widget printed in step 4; do not quote anything else from it until you have run it yourself.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · Kaplan-Meier as a plain loop</span>def km_win_share(rows, as_of, days):
+    # rows: (contact_day, won_day or None); as_of: the measurement day
+    obs = []
+    for contact, won in rows:
+        if contact &gt;= as_of:
+            continue                                   # not yet contacted
+        if won is not None and won &lt; as_of:
+            obs.append((max(0, won - contact), 1))     # won while watched
+        else:
+            obs.append((as_of - contact, 0))           # censored: still open
+    obs.sort(key=lambda o: (o[0], -o[1]))             # wins before censoring on a tie
+    still_open, at_risk, k, curve = 1.0, len(obs), 0, {}
+    for t in range(max(days) + 1):
+        wins = censored = 0
+        while k &lt; len(obs) and obs[k][0] == t:
+            if obs[k][1]:
+                wins += 1
+            else:
+                censored += 1
+            k += 1
+        if wins:
+            still_open *= 1 - wins / at_risk
+        at_risk -= wins + censored                     # both leave the risk set
+        curve[t] = 1 - still_open
+    return {d: curve[d] for d in days}</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Log the clip.</strong> The <code>max(0, ...)</code> in step 5 is there for the one real row won 2 days before its first contact. Keep the clip, but also count how many rows needed it and print that number beside the curve. A clip that hides one row is a footnote; a clip that hides hundreds is a data problem.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Analyst session 4</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Profile your own cycle.</strong> For every won deal in the last two years, compute days from first contact to won and report p25, median, p75, p90 and mean. Write the mean-to-median ratio next to them.</li>
+      <li><strong>Run the defect check.</strong> Count rows where the won date is before the first-contact date. Find one and trace why.</li>
+      <li><strong>Measure the censoring gap.</strong> Pick a cohort at least six months old. Compute its naive win share as of the day it was three months old, its Kaplan-Meier share as of that same day, and its win share today.</li>
+      <li><strong>Price an old open deal.</strong> With your curve, compute the chance that an open deal aged 60 days closes in the next 91 days, and compare it with what the rep's stage implies. Bring both numbers to Analyst session 4.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Analyst session 3 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · On the real won deals the median cycle is 14 days and the mean is 48.4. Why report the median first?</p>
+      <button class="qopt" type="button">A · The mean is calculated wrongly on skewed data</button>
+      <button class="qopt" type="button">B · The median is always larger and so more cautious</button>
+      <button class="qopt" type="button">C · A long right tail pulls the mean far above the typical deal; the median and percentiles show the shape</button>
+      <button class="qopt" type="button">D · Velocity formulas only accept medians</button>
+      <p class="qwhy">The mean is correct arithmetic but describes no typical deal: it sits in a bucket holding 97 of 842 deals. Show the median, the percentiles, and the mean beside them.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · A lead was first contacted on 28 May and is still open on 1 June. How should a win-rate estimate treat it?</p>
+      <button class="qopt" type="button">A · As censored: it counts while watched, then leaves the risk set without counting as a loss</button>
+      <button class="qopt" type="button">B · As a loss, because it has not been won</button>
+      <button class="qopt" type="button">C · Drop it from the cohort entirely</button>
+      <button class="qopt" type="button">D · As a win, because most leads its age are still open</button>
+      <p class="qwhy">Four days of watching says it survived four days, nothing more. Counting it as lost understates (10.5% against 13.0%); dropping it overstates.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">3 · Kaplan-Meier gives 12.5% by day 150 for the 2018 cohort; the share known later is 13.0%. What explains the remaining gap?</p>
+      <button class="qopt" type="button">A · A coding error in the widget</button>
+      <button class="qopt" type="button">B · Kaplan-Meier always rounds down</button>
+      <button class="qopt" type="button">C · Censored leads were counted as losses</button>
+      <button class="qopt" type="button">D · It fixes unequal follow-up but cannot see wins that arrive later than anyone has been watched</button>
+      <p class="qwhy">The estimator recovers most of the gap from 10.5%, and stays a floor for the slowest wins. State that blind spot whenever you report it.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Cycle-time distribution, the defect row, and the 10.5% / 12.5% / 13.0% cohort numbers</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0, read at source; computed by the widget on this page</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kaplan-Meier: product of (1 - wins / at risk), censored rows leave the risk set</span><span class="note">Kaplan and Meier, "Nonparametric Estimation from Incomplete Observations", JASA, 1958. Reported; method paraphrased, not quoted</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Pipeline velocity as deals x win rate x deal size / cycle length</span><span class="note">A convention with no single origin, taught as arithmetic in Business session 1</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co's ten-lead worked example</span><span class="note">Constructed; arithmetic shown and checked on the page</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Analyst session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Report the shape</b><span>p25, median, p75, p90, and the mean beside them. Real: 5 / 14 / 54.75 / 161.9 / 48.4 days.</span></div>
+      <div class="cheat-item"><b>Mean over median</b><span>3.5x on the real rows. The ratio is itself a finding about the tail.</span></div>
+      <div class="cheat-item"><b>Negative cycles</b><span>won_date &lt; first_contact should be zero rows. Clip, count, and trace each one.</span></div>
+      <div class="cheat-item"><b>Open is censored</b><span>Counts while watched, then leaves the risk set. Never a loss, never dropped.</span></div>
+      <div class="cheat-item"><b>Kaplan-Meier</b><span>Multiply (1 - wins / at risk) day by day; win share = 1 minus the product.</span></div>
+      <div class="cheat-item"><b>Its blind spot</b><span>Nothing past the longest watch: 12.5% by day 150 against 13.0% known later.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You have a cycle-time curve and a rule for open deals. Analyst session 4 puts three forecasts side by side on one quarter of Kettle &amp; Co's pipeline: the reps' commit, a stage-weighted sum, and a history-based forecast that prices every open deal with the curve you built tonight.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Analyst session 3 of 6 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a2-conversion-done-honestly.html">← Prev: Conversion done honestly</a> &nbsp;·&nbsp; <a href="a4-three-forecast-methods.html">Next: Three forecast methods →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/spa-sample.js?v=1"></script>
+<script src="../assets/spa-live.js?v=1"></script>
+<script src="../assets/spa-bench.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Analyst session 4 of 6. Three sales forecast methods on one quarter: rep commit from forecast categories, stage-weighted from a stage probability table (your own history vs HubSpot's default placeholders), and history-based from real conversion and cycle time. Hands-on in the browser on Kettle &amp; Co's constructed pipeline over real Olist rows.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Three forecast methods - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Analyst session 4 of 6. Rep commit, stage-weighted and history-based: three methods, three fields, one quarter.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/a4-three-forecast-methods.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Three forecast methods - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Analyst session 4 of 6. What the reps commit, what the stages imply, what history says.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Analyst session 4 · Three forecast methods - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Analyst session 4 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Analyst session 4 of 6</div>
+    <h1>Three forecast <span class="accent">methods</span></h1>
+    <p class="sub">Every sales forecast you will meet is one of three things, or a blend of them. Ask the reps what they will close. Multiply each deal by a probability for its stage. Or ignore the stage and ask history how deals of this age and origin have behaved. Each method reads a different field, so each fails in a different way. Tonight all three meet the same 300 open deals of Kettle &amp; Co's office-tea team (stages, amounts and reps constructed) sitting on real Olist lead timings, and we see what each would have said for one quarter.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Analyst</span>
+      <span class="chip audience">Data analysts who build pipeline reporting and forecasts</span>
+      <span class="chip audience">Hands-on in the browser</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Rep commit, stage-weighted, history-based</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: one quarter, three answers</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">So far you can rebuild the pipeline on any date (Analyst session 1), measure conversion by cohort (session 2) and read cycle time with open deals left in (session 3). Tonight those pieces become forecasts. Scope matters here: these are sales forecast methods, built deal by deal from the pipeline. Statistical forecasting models such as ARIMA, Prophet or machine learning on a revenue series are a different discipline, and <a href="https://phoebefu6.github.io/learn-timeseries-forecasting-with-phoebe/">Learn Timeseries Forecasting with Phoebe</a> owns them. The rep's side of the forecast call lives in <a href="https://phoebefu6.github.io/learn-ai-sales-with-phoebe/courses/a3-forecast-you-can-trust.html">AI Sales, A forecast people actually believe</a>.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone builds it</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> The three methods written as formulas you can explain to a sales leader, the one field each of them reads, a range for each instead of a single number, and a stage-weighted query you can run against your own snapshot table on Monday. You also leave with a healthy suspicion of one quarter: a single result is an anecdote, and Analyst session 5 is where the methods get scored properly.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers rep commit</span>
+      <h2>Rep commit: what the people closest to the deals say</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">The oldest method asks each rep to place every deal in a forecast category. HubSpot's forecast tool (read at source, October 2026) uses Pipeline for low likelihood, Best case for moderate, Commit for high likelihood and committed to the forecast, plus Closed won and Not forecasted. Salesforce is reported to use a similar set: Pipeline, Best Case, Commit, Closed and Omitted. The forecast is the sum of Commit; the range runs from commit to commit plus best case. The categories are a convention, and the catch is that each rep decides where "high likelihood" begins.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn stage ladder with columns for stages 1 Contacted to 5 Contract out, plus Signed. Four rep rows. Aiko commits deals at stage 5 and above, best case at 4: commit 3.55, best case 4.61, actual 3.28 million yen. Ben commits at stage 4, best case at 3: 3.37, 4.84, 0.91. Chiara commits at 5, best case at 4: 0.94, 4.29, 0.51. Dev commits only once signed, best case at 5: 0, 2.76, 1.16. Ben's lower commit line is drawn in copper. Summed: commit 7.86, range up to 24.36, actual 5.86. Constructed.">
+        <defs>
+          <filter id="a4aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a4aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a4aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a4aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a4aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a4aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a4aB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a4aA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a4aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a4aH" x="30" y="28">FOUR REPS, FOUR COMMIT LINES, ONE STAGE LADDER</text>
+        <text class="a4aS" x="400" y="28">Kettle &amp; Co, constructed · m yen: commit / best case / actual</text>
+
+        <g filter="url(#a4aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M210 92 L850 92" stroke="#C9D2CE"/>
+          <!-- Aiko: best 4, commit 5 + signed -->
+          <rect x="544" y="102" width="102" height="36" rx="6" transform="rotate(-0.6 595 120)" fill="url(#a4aHc)"/>
+          <rect x="654" y="102" width="192" height="36" rx="6" transform="rotate(0.5 750 120)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <!-- Ben: best 3, commit 4 + -->
+          <rect x="434" y="152" width="102" height="36" rx="6" transform="rotate(0.6 485 170)" fill="url(#a4aHc)"/>
+          <rect x="544" y="152" width="302" height="36" rx="6" transform="rotate(-0.4 695 170)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M540 146 L540 194" stroke="#8C4A1E" stroke-width="4"/>
+          <!-- Chiara: best 4, commit 5 + -->
+          <rect x="544" y="202" width="102" height="36" rx="6" transform="rotate(-0.5 595 220)" fill="url(#a4aHc)"/>
+          <rect x="654" y="202" width="192" height="36" rx="6" transform="rotate(0.4 750 220)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <!-- Dev: best 5, commit signed -->
+          <rect x="654" y="252" width="102" height="36" rx="6" transform="rotate(0.6 705 270)" fill="url(#a4aHc)"/>
+          <rect x="764" y="252" width="82" height="36" rx="6" transform="rotate(-0.6 805 270)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <!-- legend swatches -->
+          <rect x="210" y="304" width="22" height="14" rx="3" fill="url(#a4aHc)"/>
+          <rect x="430" y="304" width="22" height="14" rx="3" fill="#EEF2F0" stroke="#5A6D65"/>
+          <!-- doodle: a signature squiggle over Signed -->
+          <path d="M780 52 Q790 40 798 52 Q806 64 814 50 Q822 40 836 50" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a4aA" x="216" y="84">1 Contacted</text>
+        <text class="a4aA" x="324" y="84">2 Need confirmed</text>
+        <text class="a4aA" x="436" y="84">3 Tasting trial</text>
+        <text class="a4aA" x="546" y="84">4 Proposal</text>
+        <text class="a4aA" x="656" y="84">5 Contract out</text>
+        <text class="a4aA" x="770" y="84">Signed</text>
+
+        <text class="a4aL" x="30" y="116">Aiko, commit at 5</text>
+        <text class="a4aS" x="30" y="132">3.55 / 4.61 / 3.28</text>
+        <text class="a4aA" x="668" y="125">commit</text>
+
+        <text class="a4aB" x="30" y="166">Ben, commit at 4</text>
+        <text class="a4aS" x="30" y="182">3.37 / 4.84 / 0.91</text>
+        <text class="a4aA" x="558" y="175">commit</text>
+
+        <text class="a4aL" x="30" y="216">Chiara, commit at 5</text>
+        <text class="a4aS" x="30" y="232">0.94 / 4.29 / 0.51</text>
+        <text class="a4aA" x="668" y="225">commit</text>
+
+        <text class="a4aL" x="30" y="266">Dev, only once signed</text>
+        <text class="a4aS" x="30" y="282">0 / 2.76 / 1.16</text>
+        <text class="a4aA" x="772" y="275">commit</text>
+
+        <text class="a4aS" x="240" y="315">best case: one stage below the commit line</text>
+        <text class="a4aS" x="460" y="315">commit: summed into the forecast</text>
+
+        <text class="a4aN" x="30" y="340">Summed: commit 7.86, range 7.86 to 24.36. Really closed: 5.86. Ben's lower line carries most of the gap.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the same ladder, four private definitions of "commit"; the copper line is the optimist's</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>How the commit number is built<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>The point.</strong> Sum the amounts of every deal a rep has put in Commit. For Kettle this quarter that is 3.55 + 3.37 + 0.94 + 0 = 7.86m yen.</p>
+        <p><strong>The range.</strong> Low end is commit; high end is commit plus best case. Best case summed is 4.61 + 4.84 + 4.29 + 2.76 = 16.50, so the range is 7.86 to 24.36. Really closed: 5.86, below the floor. The range missed.</p>
+        <p><strong>Why it can miss low too.</strong> Dev commits nothing until a contract is signed, yet 1.16m yen of his deals closed. A sandbagger's zero is a forecast too, and an equally wrong one. Per rep, commit against actual: Aiko 3.55 vs 3.28, Ben 3.37 vs 0.91, Chiara 0.94 vs 0.51, Dev 0 vs 1.16.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Categories are a convention, not a measurement<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>HubSpot lets categories be mapped automatically from deal stage, which turns rep commit into a crude stage rule. When reps set them by hand, the category records a judgement and a mood. Neither is wrong, but write down which one your team does. The same help page also lists "Most likely" among its default categories elsewhere, so do not hard-code a fixed list beyond Pipeline, Best case and Commit: check your own configuration.</p>
+        <p>Rep commit is the only method that can see what is not in the CRM: a call last night, a budget freeze rumour. Keep it. Just never ship it alone, and measure each rep's call ratio over many quarters in Analyst session 5.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Constructed Kettle &amp; Co example.</strong> In the Monday call, Ben says his Proposal deals are "basically done" and commits 3.37m yen. Aiko waits for a contract to go out before committing. Dev, burned once by a slipped renewal, commits nothing unsigned. All three are using the same CRM category with three private definitions. The quarter closes with 0.91m yen from Ben. The fix is not a better rep; it is a written commit rule and a record of how each person's calls land.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers stage-weighted</span>
+      <h2>Stage-weighted: amount times a probability per stage</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Stage-weighted replaces judgement with a table. Each open deal contributes its amount times the probability attached to its current stage, and the forecast is the sum. HubSpot calls the product the weighted amount. Everything rides on where the probabilities come from. Kettle's own come from last quarter: of the deals at each stage on 1 March, what share won inside the quarter. HubSpot's default pipeline ships with 20, 40, 60, 80 and 90%. Same deals, two ladders, two very different forecasts.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn table. Rows are stages 1 to 5 with this quarter's deal counts drawn as hatched bars: 153, 78, 39, 19, 11. Two probability columns: Kettle's own from last quarter, 0.0, 0.6, 6.3, 18.1, 64.6 percent; HubSpot default, 20, 40, 60, 80, 90 percent. Bottom row totals: own ladder 8.60 million yen, range 5.48 to 11.72, covers the 5.86 that closed; HubSpot default 63.64, range 55.56 to 71.72, misses. The HubSpot total is in copper.">
+        <defs>
+          <filter id="a4bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="43" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a4bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a4bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a4bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a4bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a4bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a4bV { font: 800 16px Inter, sans-serif; fill: #34443E; }
+          .a4bW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a4bA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a4bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a4bH" x="30" y="28">THE SAME 300 DEALS, TWO PROBABILITY LADDERS</text>
+        <text class="a4bS" x="360" y="28">stages and amounts constructed · own rates from last quarter</text>
+
+        <text class="a4bA" x="30" y="66">stage</text>
+        <text class="a4bA" x="190" y="66">deals this quarter</text>
+        <text class="a4bA" x="490" y="66">Kettle's own</text>
+        <text class="a4bA" x="670" y="66">HubSpot default</text>
+
+        <g filter="url(#a4bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="190" y="78" width="200" height="24" rx="4" transform="rotate(-0.6 290 90)" fill="url(#a4bHc)"/>
+          <rect x="190" y="114" width="102" height="24" rx="4" transform="rotate(0.5 241 126)" fill="url(#a4bHc)"/>
+          <rect x="190" y="150" width="51" height="24" rx="4" transform="rotate(-0.5 215 162)" fill="url(#a4bHc)"/>
+          <rect x="190" y="186" width="25" height="24" rx="4" transform="rotate(0.6 202 198)" fill="url(#a4bHc)"/>
+          <rect x="190" y="222" width="14" height="24" rx="4" transform="rotate(-0.4 197 234)" fill="url(#a4bHc)"/>
+
+          <rect x="480" y="74" width="150" height="176" rx="8" transform="rotate(0.4 555 162)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="660" y="74" width="190" height="176" rx="8" transform="rotate(-0.4 755 162)" fill="#FFFFFF"/>
+
+          <rect x="480" y="268" width="150" height="56" rx="8" transform="rotate(-0.6 555 296)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="660" y="268" width="190" height="56" rx="8" transform="rotate(0.6 755 296)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <!-- doodle: arrow from the pile into the ladders -->
+          <path d="M430 162 L470 162" marker-end="url(#a4bAr)"/>
+        </g>
+
+        <text class="a4bL" x="30" y="95">1 Contacted</text>
+        <text class="a4bL" x="30" y="131">2 Need confirmed</text>
+        <text class="a4bL" x="30" y="167">3 Tasting trial</text>
+        <text class="a4bL" x="30" y="203">4 Proposal</text>
+        <text class="a4bL" x="30" y="239">5 Contract out</text>
+
+        <text class="a4bS" x="398" y="95">153</text>
+        <text class="a4bS" x="300" y="131">78</text>
+        <text class="a4bS" x="250" y="167">39</text>
+        <text class="a4bS" x="224" y="203">19</text>
+        <text class="a4bS" x="212" y="239">11</text>
+
+        <text class="a4bL" x="500" y="95">0.0%</text>
+        <text class="a4bL" x="500" y="131">0.6%</text>
+        <text class="a4bL" x="500" y="167">6.3%</text>
+        <text class="a4bL" x="500" y="203">18.1%</text>
+        <text class="a4bL" x="500" y="239">64.6%</text>
+
+        <text class="a4bL" x="680" y="95">20%</text>
+        <text class="a4bL" x="680" y="131">40%</text>
+        <text class="a4bL" x="680" y="167">60%</text>
+        <text class="a4bL" x="680" y="203">80%</text>
+        <text class="a4bL" x="680" y="239">90%</text>
+
+        <text class="a4bS" x="30" y="292">sum of amount x probability</text>
+        <text class="a4bS" x="30" y="308">80% band, modelled</text>
+        <text class="a4bV" x="496" y="292">8.60m</text>
+        <text class="a4bS" x="496" y="312">5.48 to 11.72</text>
+        <text class="a4bW" x="676" y="292">63.64m</text>
+        <text class="a4bW" x="676" y="312">55.56 to 71.72</text>
+
+        <text class="a4bN" x="30" y="348">Really closed: 5.86m yen. The own ladder's band covers it; the default ladder misses by more than tenfold.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - one pile of deals, two ladders; the copper total is what a placeholder table forecasts</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Building your own stage table<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Take the snapshot on the first day of last quarter (Analyst session 1's as-of join). Group by stage. For each stage, count the deals and count how many were won before the quarter ended. Kettle's prior quarter, as of 1 March 2018:</p>
+        <div class="prompt-box good"><span class="label">★ Kettle's own stage table (constructed stages, real outcomes)</span>stage            deals   won in quarter   rate
+1 Contacted       1022        0           0.0%
+2 Need confirmed   507        3           0.6%
+3 Tasting trial    240       15           6.3%
+4 Proposal         149       27          18.1%
+5 Contract out      79       51          64.6%</div>
+        <p>The rate must rise with stage; the widget's self-test refuses to run if it does not. If yours does not rise, your stages are not buyer commitments yet (Business session 1).</p>
+        <p>A constructed check of the arithmetic: a 360,000 yen deal at Proposal adds 360,000 x 0.181 = 65,160 yen on Kettle's own ladder, and 360,000 x 0.80 = 288,000 yen on HubSpot's default.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Where the 80% band comes from<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Each deal either closes or does not: a yes-or-no outcome worth its amount with probability p. The sum of many of those has a mean (the forecast) and a variance, the sum of amount squared x p x (1 - p). The band is the mean plus or minus 1.2816 standard deviations, which is where 80% of a normal distribution sits. That is a modelled approximation, labelled as such in the widget. It is rough with few deals or one giant deal, and it assumes deals close independently, which a recession or a budget freeze breaks.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>HubSpot's own help pages, read at source.</strong> The default pipeline lists Appointment scheduled 20%, Qualified to buy 40%, Presentation scheduled 60%, Decision maker bought-in 80% and Contract sent 90%, and says each stage's probability drives the weighted amount. Mapped onto Kettle's five stages, those defaults forecast 63.64m yen for a quarter that closed 5.86m. That is not HubSpot being wrong; the defaults are placeholders for a team's own history, and a team that never replaces them is forecasting from someone else's guess.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers history-based</span>
+      <h2>History-based: ignore the stage, ask how deals like this behaved</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">The third method never reads the stage field. In words: for each open deal, ask two questions of history. How often do leads from this origin end up won at all? And of the deals that do get won, what share close in the next 91 days, given this deal is already a certain age and has not closed yet? Multiply the answers, sum over deals, and that is the forecast. It is Analyst session 3's survival idea put to work: a deal that has already waited a long time has used up most of the fast-closing chances.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn rising curve: the cycle-time distribution of observed wins, share of wins closed by day x, from day 0 to the longest observed cycle at 126 days, where it reaches 1. One deal aged 20 days (constructed) is marked on the curve. The 91-day quarter from day 20 to day 111 is shaded. A copper bracket on the right shows the rise of the curve inside the window, F of a plus 91 minus F of a. The curve shape is drawn, not plotted from data.">
+        <defs>
+          <filter id="a4cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="47" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a4cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a4cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a4cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a4cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a4cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a4cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a4cA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a4cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a4cH" x="30" y="28">ONE DEAL'S AGE ON THE CYCLE CURVE</text>
+        <text class="a4cS" x="300" y="28">curve shape drawn · deal age 20 days, constructed</text>
+
+        <g filter="url(#a4cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="154" y="80" width="338" height="190" rx="4" transform="rotate(0.3 323 175)" fill="#EEF2F0" stroke="#BFCBC5"/>
+          <path d="M80 270 L600 270 M80 270 L80 76"/>
+          <path d="M80 270 C92 240 104 214 132 175 C160 150 191 146 240 132 C303 118 360 108 414 99 C455 92 492 88 548 80 L600 80" stroke="#34443E" stroke-width="2.6"/>
+          <path d="M154 163 L615 163 M492 88 L615 88" stroke="#C9D2CE"/>
+          <path d="M615 88 L615 163 M608 88 L622 88 M608 163 L622 163" stroke="#8C4A1E" stroke-width="3.5"/>
+          <circle cx="154" cy="163" r="5" fill="#FFFFFF"/>
+          <path d="M191 266 L191 274 M303 266 L303 274 M414 266 L414 274 M548 266 L548 274"/>
+          <!-- doodle: a clock -->
+          <circle cx="820" cy="44" r="13" stroke="#5A6D65"/>
+          <path d="M820 44 L820 36 M820 44 L826 47" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a4cA" x="40" y="84">1.0</text>
+        <text class="a4cA" x="58" y="274">0</text>
+        <text class="a4cL" x="158" y="72">age a = 20</text>
+        <text class="a4cL" x="420" y="72">a + 91 = 111</text>
+        <text class="a4cS" x="250" y="250">the 91-day quarter</text>
+
+        <text class="a4cS" x="625" y="92">F(a + 91)</text>
+        <text class="a4cB" x="628" y="122">rise in the window</text>
+        <text class="a4cS" x="628" y="138">F(a + 91) - F(a)</text>
+        <text class="a4cS" x="625" y="168">F(a)</text>
+
+        <text class="a4cS" x="76" y="290">0</text>
+        <text class="a4cS" x="182" y="290">30</text>
+        <text class="a4cS" x="294" y="290">60</text>
+        <text class="a4cS" x="405" y="290">90</text>
+        <text class="a4cS" x="520" y="290">126, longest</text>
+        <text class="a4cA" x="80" y="310">days from first contact to won, observed wins of the training cohort</text>
+
+        <text class="a4cN" x="30" y="338">p = c x rise / (1 - c x F(a)): the chance of winning in the window, given not won yet.</text>
+        <text class="a4cN" x="30" y="358">A deal older than 126 days sits where F = 1, so p = 0: the method cannot see past its history.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper bracket is all of history's say about this deal; its stage never enters</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The formula, one piece at a time<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <div class="prompt-box good"><span class="label">★ Per open deal</span>p = c x (F(a + 91) - F(a)) / (1 - c x F(a))
+
+c  = share of leads from this origin that were won (training cohort)
+F  = cycle-time CDF: share of observed wins that closed by day x
+a  = the deal's age in days on the forecast date
+91 = days in the quarter (1 June to 30 August 2018)</div>
+        <p><strong>Numerator.</strong> c x F(a + 91) is the chance a lead is won by age a + 91; c x F(a) is the chance it was won by age a. The difference is the chance of a win inside the window.</p>
+        <p><strong>Denominator.</strong> This deal is still open, so the cases where it already won are ruled out: divide by 1 - c x F(a).</p>
+        <p><strong>A constructed check of the arithmetic.</strong> With c = 0.124 and made-up curve values F(a) = 0.5 and F(a + 91) = 0.9: numerator 0.124 x 0.4 = 0.0496; denominator 1 - 0.062 = 0.938; p = 0.0529, about 5.3%. Forecast = the sum of amount x p over all 300 deals; Kettle's this quarter is 5.01m yen, 80% band 2.03 to 8.00, which covers the 5.86 that closed.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What it protects you from, and what it cannot see<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Protection.</strong> Because it never reads stage, an optimistic rep who drags deals up a stage cannot move it. Analyst session 6 tests exactly that.</p>
+        <p><strong>Blind spot.</strong> For the same reason it cannot see a real late-stage signal either: a signed contract and a cold lead of the same age and origin look identical to it. It also assumes the next quarter behaves like the training period. And it cannot see past the longest observed cycle, 126 days in the training wins, the same limit Analyst session 3 found in the survival curve.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The training cohort is real.</strong> Leads Olist first contacted in January and February 2018, as seen on 1 June 2018: 2,169 leads, 268 won by then, a pooled 12.4%. Conversion c comes from those rows by origin, and any origin with fewer than 40 leads borrows the pooled 12.4% rather than trusting a handful of rows. F is the cycle-time distribution of those 268 observed wins. These are real Olist B2B funnel rows (Brazilian marketplace seller acquisition) standing in for Kettle's history; Olist has no stage history and no lost deals, which is exactly why this method never needed either.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>One quarter, three answers</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">The widget draws this quarter's 300 open deals (real Olist leads first contacted March to May 2018 and not yet won on 1 June; Kettle's stages, amounts and reps constructed) and runs all three methods in your browser. One control switches the stage probabilities between Kettle's own table and HubSpot's default pipeline. Work the five steps, and copy what the widget prints.</p>
+
+    <div class="spa-widget" data-mode="methods"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn map of the widget. The Stage probabilities control, in copper, feeds the engine, which reads this quarter's 300 deals and computes three forecasts. The engine writes three outputs: the verdict line with pipeline and what really closed, three range rows for rep commit, stage-weighted and history-based, and the stage table with deal counts and both probability columns. Only the stage-weighted row and the stage table's highlight depend on the control.">
+        <defs>
+          <filter id="a4dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a4dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a4dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a4dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a4dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a4dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a4dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a4dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a4dH" x="30" y="28">WHAT THE WIDGET COMPUTES ON EVERY CHANGE</text>
+
+        <g filter="url(#a4dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="60" width="180" height="56" rx="10" transform="rotate(-1 120 88)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="30" y="160" width="180" height="56" rx="10" transform="rotate(0.8 120 188)" fill="url(#a4dHc)"/>
+          <path d="M216 88 L262 120" marker-end="url(#a4dAr)"/>
+          <path d="M216 188 L262 156" marker-end="url(#a4dAr)"/>
+          <rect x="270" y="104" width="180" height="68" rx="10" transform="rotate(0.6 360 138)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M456 120 L512 80" marker-end="url(#a4dAr)"/>
+          <path d="M456 138 L512 138" marker-end="url(#a4dAr)"/>
+          <path d="M456 156 L512 200" marker-end="url(#a4dAr)"/>
+          <rect x="520" y="54" width="330" height="48" rx="8" transform="rotate(-0.5 685 78)" fill="#FFFFFF"/>
+          <rect x="520" y="114" width="330" height="48" rx="8" transform="rotate(0.5 685 138)" fill="#FFFFFF"/>
+          <rect x="520" y="174" width="330" height="48" rx="8" transform="rotate(-0.4 685 198)" fill="#FFFFFF"/>
+          <!-- doodle: a dropdown chevron -->
+          <path d="M184 136 L192 144 L200 136" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="42" y="170" width="156" height="36" rx="6" fill="#FFFFFF"/>
+
+        <text class="a4dW" x="44" y="84">Stage probabilities</text>
+        <text class="a4dW" x="44" y="102">own or HubSpot default</text>
+        <text class="a4dL" x="52" y="186">300 open deals</text>
+        <text class="a4dS" x="52" y="200">draw 0, this quarter</text>
+        <text class="a4dL" x="284" y="132">three methods</text>
+        <text class="a4dS" x="284" y="150">plus an 80% range each</text>
+        <text class="a4dL" x="534" y="76">verdict</text>
+        <text class="a4dS" x="534" y="92">pipeline, and what really closed</text>
+        <text class="a4dL" x="534" y="136">range rows</text>
+        <text class="a4dS" x="534" y="152">rep commit · stage-weighted · history-based</text>
+        <text class="a4dL" x="534" y="196">stage table</text>
+        <text class="a4dS" x="534" y="212">deals, own %, HubSpot % per stage</text>
+
+        <text class="a4dN" x="30" y="262">Switching the control moves only the stage-weighted row. Rep commit and history-based never read it.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper control is the one decision you make; the hatched pile is the same deals every time</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Read the verdict.</strong> Before any method speaks, note the two facts it is judged against: the size of the pile and what came out of it.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · what the widget prints</span>Pipeline 168.21m yen across 300 deals. What really closed: 5.86m yen, 7 deals.</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Read the three range rows.</strong> With Kettle's own probabilities selected, copy each method's point, range and verdict.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · three methods, one quarter</span>Rep commit       7.86m (7.86 to 24.36) · misses 5.86
+Stage-weighted   8.60m (5.48 to 11.72) · covers 5.86
+History-based    5.01m (2.03 to 8.00) · covers 5.86</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Read the stage table.</strong> Half the pile sits at stage 1, where Kettle's own rate is zero. Compare the two probability columns row by row.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · the stage table</span>1 · Contacted        153   0.0%   20.0%
+2 · Need confirmed    78   0.6%   40.0%
+3 · Tasting trial     39   6.3%   60.0%
+4 · Proposal          19  18.1%   80.0%
+5 · Contract out      11  64.6%   90.0%</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Switch to HubSpot default.</strong> Set "Stage probabilities" to the HubSpot default pipeline and read the stage-weighted row again. Notice which rows did not move.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · stage-weighted on placeholders</span>Stage-weighted   63.64m (55.56 to 71.72) · misses 5.86</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · Write stage-weighted against your own snapshot.</strong> A sketch, not a result: no output is claimed. Join the snapshot on the forecast date to your stage table and sum.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · SQL sketch</span>SELECT SUM(s.amount * p.win_rate)                          AS forecast,
+       SQRT(SUM(s.amount * s.amount * p.win_rate * (1 - p.win_rate))) AS sd
+FROM pipeline_snapshot s
+JOIN stage_win_rate p ON p.stage = s.stage    -- your own last quarter
+WHERE s.snapshot_date = DATE '2018-06-01'
+  AND s.status = 'open';
+-- 80% band: forecast +/- 1.2816 * sd (normal approximation)</div>
+        <div class="prompt-box good"><span class="label">★ Step 5 · the same in Python (pandas)</span>df = snap.merge(rates, on="stage")          # rates: stage, win_rate
+df["w"] = df["amount"] * df["win_rate"]
+point = df["w"].sum()
+sd = (df["amount"]**2 * df["win_rate"] * (1 - df["win_rate"])).sum() ** 0.5
+low, high = point - 1.2816 * sd, point + 1.2816 * sd</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>One quarter is an anecdote.</strong> Tonight history-based came closest and rep commit missed its own range, but a single quarter has an error and no bias. Analyst session 5 replays the quarter 20 times with different 300-deal draws from the same real open pool and scores each method on bias, error and how often its range covers what closed.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Analyst session 5</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Build your own stage table.</strong> From the snapshot on the first day of last quarter, count deals per stage and how many won inside the quarter. Check that the rate rises with stage.</li>
+      <li><strong>Find your CRM's probabilities.</strong> Open your pipeline settings and note whether the stage probabilities are still the vendor's defaults. If they are, write down who would own replacing them.</li>
+      <li><strong>Run the Step 5 query</strong> against last quarter's snapshot with both ladders, and compare each to what really closed.</li>
+      <li><strong>Write each rep's commit rule</strong> in one line ("commits at Contract out", "commits when the buyer confirms budget"), and note whose rule differs from the rest.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Analyst session 4 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Ben commits deals at Proposal; Aiko commits at Contract out. Both use the same Commit category. What does that do to rep commit?</p>
+      <button class="qopt" type="button">A · Nothing; the category definition makes them equivalent</button>
+      <button class="qopt" type="button">B · It only affects best case, not commit</button>
+      <button class="qopt" type="button">C · The summed commit mixes two different thresholds, so the total has no single meaning</button>
+      <button class="qopt" type="button">D · It makes rep commit identical to stage-weighted</button>
+      <p class="qwhy">Forecast categories are a convention each rep applies privately. Ben's 3.37m committed against 0.91m closed shows what a lower line does.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · The same 300 deals give 8.60m on Kettle's own stage table and 63.64m on HubSpot's default pipeline. Why?</p>
+      <button class="qopt" type="button">A · The defaults are placeholders: 20% at stage 1 applied to 153 deals that historically almost never close in the quarter</button>
+      <button class="qopt" type="button">B · HubSpot counts each deal twice</button>
+      <button class="qopt" type="button">C · Kettle's own table ignores amounts</button>
+      <button class="qopt" type="button">D · The defaults include closed deals in the pipeline</button>
+      <p class="qwhy">Stage-weighted is only as good as its probabilities. Kettle's own stage 1 rate is 0.0%; the default is 20%, on half the pile.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">3 · A rep moves every deal up one stage before the forecast. Which method does not move at all?</p>
+      <button class="qopt" type="button">A · Stage-weighted on Kettle's own table</button>
+      <button class="qopt" type="button">B · Stage-weighted on HubSpot's defaults</button>
+      <button class="qopt" type="button">C · All three move equally</button>
+      <button class="qopt" type="button">D · History-based, because it reads origin and age, never stage</button>
+      <p class="qwhy">That is its protection and its blind spot: it cannot be inflated by stage, and it cannot see a real late-stage signal either.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Training cohort, conversion by origin and cycle-time distribution behind history-based</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0. Read at source</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">HubSpot default stages and probabilities (20/40/60/80/90), weighted amount, forecast categories</span><span class="note">HubSpot Knowledge Base, "Set up and customize pipelines" and "Set up the forecast tool". Read at source, October 2026</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Salesforce forecast categories Pipeline, Best Case, Commit, Closed, Omitted</span><span class="note">Salesforce Help, opportunity stages and forecast categories. Reported; no Salesforce percentages given</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co's stages, reps, commit lines and amounts</span><span class="note">Constructed and labelled; every Kettle number on this page is printed by the widget or shown as checked arithmetic</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Analyst session 4 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Rep commit</b><span>Sum of Commit; range commit to commit + best case. Reads the rep's judgement.</span></div>
+      <div class="cheat-item"><b>Write the commit rule</b><span>One category, many private thresholds. Publish the stage each rep commits at.</span></div>
+      <div class="cheat-item"><b>Stage-weighted</b><span>Sum of amount x stage probability. Reads the stage field.</span></div>
+      <div class="cheat-item"><b>Defaults are placeholders</b><span>Build the table from your own last quarter; check it rises with stage.</span></div>
+      <div class="cheat-item"><b>History-based</b><span>p = c x (F(a+91) - F(a)) / (1 - c x F(a)). Reads origin and age, never stage.</span></div>
+      <div class="cheat-item"><b>Ranges, then replays</b><span>80% band is a normal approximation. One quarter is an anecdote; score over many.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>Three methods, one quarter, three answers. Analyst session 5 asks which you should trust: it replays the quarter 20 times, separates bias from error, scores each rep's call ratio, and counts how often each range really covers what closed.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Analyst session 4 of 6 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a3-velocity-and-cycle-time.html">← Prev: Velocity and cycle time</a> &nbsp;·&nbsp; <a href="a5-measuring-forecast-error.html">Next: Bias, error and the track record →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/spa-sample.js?v=1"></script>
+<script src="../assets/spa-live.js?v=1"></script>
+<script src="../assets/spa-bench.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

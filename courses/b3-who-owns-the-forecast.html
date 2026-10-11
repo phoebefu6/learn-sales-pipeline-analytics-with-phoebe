@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Business session 3 of 4. Who owns the forecast: the BD lead signs the number and the commit, the data team signs the method, the range and the method's measured error rate. The forecast contract that holds both halves on one page. Kettle &amp; Co, a constructed office-tea supplier, drafts its own.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Who owns the forecast - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Business session 3 of 4. The BD lead signs the number; data signs the method, the range and the error rate. Data never edits the commit. One page, two signatures.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/b3-who-owns-the-forecast.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Who owns the forecast - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Business session 3 of 4. Two halves of a forecast, two owners, one contract.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Business session 3 · Who owns the forecast - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Business session 3 of 4</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Business session 3 of 4</div>
+    <h1>Who owns <span class="accent">the forecast</span></h1>
+    <p class="sub">Most forecast fights are not about the number. They are about who was allowed to change it. A forecast has two halves with two different owners. The BD lead owns the number and the commit: what the team will deliver, and the judgement calls such as whether the biggest deal lands this quarter. The data team owns the method, the range around it and the method's measured error rate. Tonight draws the seam between the two, shows each half's accountability with real bench numbers, and puts both on one page that two people sign every quarter. Kettle &amp; Co's office-tea team is constructed; the deal timings underneath come from real B2B funnel rows.</p>
+    <div class="chip-row">
+      <span class="chip level">🟡 Business</span>
+      <span class="chip audience">BD and sales leaders who read the pipeline, and the analysts who build it</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Two halves, accountability, the contract</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: Kettle's forecast contract</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Business session 1 rewrote the stages as buyer acts. Business session 2 read a pipeline review for what it hides and ended with one sentence on what the pipeline really covers. Tonight that sentence becomes the first line of a forecast contract. The question underneath is old and political: when the BD lead says 7.86 million yen and the analyst's model says 5.01, whose number goes to the board? The answer is both, printed side by side, each signed by the person accountable for it. Kettle &amp; Co, a BD lead and four reps (Aiko, Ben, Chiara, Dev) selling office tea subscriptions in Japan, is constructed; every Kettle number on this page is either printed by the bench in Analyst session 6 or labelled as constructed arithmetic.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone works it through</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A one-page forecast contract for Kettle that you can copy for your own team: stage definitions, what counts as pipeline, the freeze date, the methods printed with their track record, the range and its stated coverage, who calls the whale, and the gap that triggers a conversation. Two signature lines, one for each half. Business session 4 uses the contract's track record as the evidence gate for a hiring plan.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers the two halves of a forecast</span>
+      <h2>Two halves, two signatures</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">A forecast is a commitment and a measurement stapled together. The commitment is a promise about what the team will deliver, and only the person who runs the team can make it. The measurement is an estimate of what the pipeline usually produces, with a range and a record of how often that estimate has been wrong, and only the person who built the method can stand behind it. Mix them and nobody is accountable for either.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn split page. Left panel, what the BD lead signs: the number, 7.86 million yen of commit; the commit list, which deals each rep calls; the judgement calls, such as whether the whale closes this quarter or next. Right panel, what data signs: the method, history-based, printed beside the commit; the range, a 5.01 million yen point with an 80 percent band from 2.03 to 8.00; the error rate, 38.8 percent over 20 replays, with the actual inside the range in 17 of 20. A copper box in the middle marks the seam: both numbers printed side by side, nobody edits the other half.">
+        <defs>
+          <filter id="b3aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b3aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b3aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b3aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b3aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b3aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b3aW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b3aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b3aH" x="30" y="28">ONE FORECAST, TWO HALVES, TWO OWNERS</text>
+        <text class="b3aS" x="330" y="28">Kettle &amp; Co this quarter · constructed team, bench numbers from Analyst session 6</text>
+
+        <g filter="url(#b3aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="50" width="330" height="240" rx="12" transform="rotate(-0.4 195 170)" fill="#FFFFFF"/>
+          <rect x="520" y="50" width="330" height="240" rx="12" transform="rotate(0.4 685 170)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="376" y="112" width="128" height="104" rx="10" transform="rotate(0.6 440 164)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M440 56 L440 104 M440 224 L440 284" stroke="#5A6D65" stroke-dasharray="6 6"/>
+          <path d="M48 262 L250 262 M538 262 L740 262" stroke="#535E59"/>
+          <!-- doodle: a pen nib on the BD lead's signature line -->
+          <path d="M290 262 L312 240 L320 248 L298 270 Z" stroke="#5A6D65"/>
+          <path d="M312 240 L318 234 L326 242 L320 248" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b3aH" x="48" y="76">BD LEAD SIGNS</text>
+        <text class="b3aL" x="48" y="106">The number</text>
+        <text class="b3aS" x="48" y="124">what the team will deliver: 7.86m yen</text>
+        <text class="b3aL" x="48" y="152">The commit</text>
+        <text class="b3aS" x="48" y="170">which deals each rep calls, and coaching it</text>
+        <text class="b3aL" x="48" y="198">The judgement calls</text>
+        <text class="b3aS" x="48" y="216">the whale: this quarter or next</text>
+        <text class="b3aS" x="48" y="282">signed: BD lead</text>
+
+        <text class="b3aW" x="388" y="140">THE SEAM</text>
+        <text class="b3aW" x="388" y="162">both numbers</text>
+        <text class="b3aW" x="388" y="182">side by side</text>
+        <text class="b3aW" x="388" y="202">nobody edits</text>
+
+        <text class="b3aH" x="538" y="76">DATA SIGNS</text>
+        <text class="b3aL" x="538" y="106">The method</text>
+        <text class="b3aS" x="538" y="124">history-based, printed beside the commit</text>
+        <text class="b3aL" x="538" y="152">The range</text>
+        <text class="b3aS" x="538" y="170">5.01m point, 2.03 to 8.00m, 80% band</text>
+        <text class="b3aL" x="538" y="198">The error rate</text>
+        <text class="b3aS" x="538" y="216">38.8% over 20 replays, covered 17 of 20</text>
+        <text class="b3aS" x="538" y="282">signed: data lead</text>
+
+        <text class="b3aN" x="30" y="316">Data never edits the commit; it publishes its own number beside it. Each half has one name on it.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the left half is a promise, the right half is a measurement, and the seam is where they are printed together</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>What each half is, and why it cannot be the other<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>The BD lead's half is a promise.</strong> The commit is what the team says it will deliver, deal by deal. It carries information no model has: the buyer who said yes on the phone yesterday, the procurement freeze the rep heard about at lunch, whether the biggest office really signs before the quarter ends. That knowledge is real, and so is the incentive to shade it. Only the person who runs the team can coach both.</p>
+        <p><strong>The data team's half is a measurement.</strong> The method takes the pipeline as it stood on the freeze date and asks what deals like these have usually done. Its job is not to be right this quarter; it is to be wrong by a known amount, published every quarter, so that everyone can see how far to trust it.</p>
+        <p><strong>Neither can sign the other's half.</strong> An analyst who signs the number is promising delivery on a team they do not run. A BD lead who signs the method is vouching for an error rate they cannot measure. The ownership map that assigns these decisions between data and BD is taught in <a href="https://phoebefu6.github.io/learn-marketing-analytics-with-phoebe/courses/p2-the-ownership-map.html">Marketing Analytics, the ownership map ↗</a>; use it as the rulebook. Tonight is only the forecast row of that map, made concrete.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The leader's side: getting people to believe it<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Splitting ownership is the mechanism. Whether the sales floor and the board trust the result is a leadership problem: how the BD lead talks about the method's number in the Monday meeting, whether a miss is met with curiosity or blame, how AI forecasting tools fit in. That side is covered in <a href="https://phoebefu6.github.io/learn-ai-sales-with-phoebe/courses/a3-forecast-you-can-trust.html">AI Sales, "A forecast people actually believe" ↗</a>. Forecasting models themselves, from moving averages to machine learning, live in <a href="https://phoebefu6.github.io/learn-timeseries-forecasting-with-phoebe/">Timeseries Forecasting ↗</a>. The three methods Kettle prints are walked through, without maths, in Analyst session 4.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The analyst who fixed the commit.</strong> Kettle's first analyst noticed that Ben's commits ran high and, trying to help, quietly multiplied his number down before it went into the board pack. Ben did not know. The BD lead did not know. When one quarter Ben's deals all landed, the board saw a miss that never happened, and nobody could explain where the number had come from. The fix was not a better multiplier: it was printing Ben's commit untouched, the method's number beside it, and making the gap a conversation between Ben and the BD lead. Constructed Kettle &amp; Co example; the pattern is common.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers accountability, with the bench as evidence</span>
+      <h2>What each half answers for</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Ownership means somebody answers for the result. The BD lead answers for the commit landing and for how each rep calls deals. The data team answers for the method's range covering what happened, and for publishing the method's error rate honestly, including the quarters it looked bad. Here is what that looks like on Kettle's quarter, using only numbers the bench prints.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn number line in millions of yen from 0 to 25. Top row, rep commit, the BD lead's number: a point at 7.86 with a range from 7.86 to 24.36, which misses the actual. Second row, history-based, data's method: a point at 5.01 with a range from 2.03 to 8.00, which covers the actual. A copper vertical line marks what really closed, 5.86 million yen. Below: over 20 replays the rep commit erred by 48.2 percent and covered the actual in 4 of 20; history-based erred by 38.8 percent and covered 17 of 20. Rep call ratios: Ben 4.60, Dev 0.00, Aiko 0.98, Chiara 1.45.">
+        <defs>
+          <filter id="b3bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="37" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b3bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b3bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b3bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b3bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b3bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b3bB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .b3bA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b3bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b3bH" x="30" y="28">THE COMMIT AND THE METHOD, SIDE BY SIDE, THIS QUARTER</text>
+        <text class="b3bS" x="470" y="28">m yen · bench numbers, Kettle constructed on real rows</text>
+
+        <g filter="url(#b3bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="299" y="76" width="501" height="28" rx="6" transform="rotate(0.2 550 90)" fill="url(#b3bHc)"/>
+          <rect x="122" y="156" width="181" height="28" rx="6" transform="rotate(-0.3 212 170)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <circle cx="299" cy="90" r="6" fill="#1B2622"/>
+          <circle cx="212" cy="170" r="6" fill="#34443E" stroke="#34443E"/>
+          <path d="M238 78 L238 188" stroke="#8C4A1E" stroke-width="3"/>
+          <path d="M60 214 L820 214"/>
+          <path d="M60 214 L60 221 M212 214 L212 221 M364 214 L364 221 M516 214 L516 221 M668 214 L668 221 M820 214 L820 221"/>
+          <!-- doodle: a small stack of coins at the end of the axis -->
+          <ellipse cx="850" cy="204" rx="12" ry="4" stroke="#5A6D65"/>
+          <ellipse cx="850" cy="196" rx="12" ry="4" stroke="#5A6D65"/>
+          <ellipse cx="850" cy="188" rx="12" ry="4" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b3bL" x="60" y="66">Rep commit · the BD lead's number</text>
+        <text class="b3bS" x="310" y="124">point 7.86 · range 7.86 to 24.36 · misses 5.86</text>
+        <text class="b3bL" x="320" y="166">History-based · data's method</text>
+        <text class="b3bS" x="320" y="184">point 5.01 · range 2.03 to 8.00 · covers 5.86</text>
+        <text class="b3bB" x="244" y="204">actual 5.86</text>
+
+        <text class="b3bA" x="57" y="236">0</text>
+        <text class="b3bA" x="209" y="236">5</text>
+        <text class="b3bA" x="357" y="236">10</text>
+        <text class="b3bA" x="509" y="236">15</text>
+        <text class="b3bA" x="661" y="236">20</text>
+        <text class="b3bA" x="790" y="236">25m yen</text>
+
+        <text class="b3bL" x="30" y="264">Over 20 replays, rep commit: error 48.2%, actual inside its range 4 of 20.</text>
+        <text class="b3bL" x="30" y="284">Over 20 replays, history-based: error 38.8%, actual inside its range 17 of 20.</text>
+        <text class="b3bB" x="30" y="304">Call ratios: Ben 4.60, Dev 0.00, Aiko 0.98, Chiara 1.45. Coaching them is the BD lead's job.</text>
+        <text class="b3bN" x="30" y="330">Commit 7.86, method 5.01, actual 5.86. Data prints both and moves neither. Bench, Analyst session 6.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper line is what closed; only the method's range was drawn wide enough to catch it</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>What the BD lead answers for<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>The commit landing.</strong> Kettle's reps committed 7.86 million yen this quarter; 5.86 million really closed. The commit missed by 2.00 million, 34.1 percent high. Over 20 replays of the quarter (different 300-deal draws from the same real open pool) the rep commit erred by 48.2 percent on average and ran 33.9 percent high. Its range, commit up to commit plus best case, held the actual in only 4 of 20.</p>
+        <p><strong>How each rep calls deals.</strong> The call ratio is a rep's commit divided by what they really closed, over the 20 replays. Ben's is 4.60: he commits four or more times what lands, because he commits from stage 4. Dev's is 0.00: he commits nothing until a contract is signed, so his commit is always zero and always wrong. Aiko sits at 0.98 and Chiara at 1.45. These are behaviours, and behaviour is the BD lead's to coach, in a one-to-one, with the rep present.</p>
+        <p><strong>The judgement calls.</strong> Whether the biggest deal lands this quarter or slips is a call about one buyer, and the person closest to that buyer owns it. The data team's job is to show what happens to every number if the call is wrong.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>What the data team answers for<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>The method's number and its range.</strong> The history-based method said 5.01 million yen, 0.85 million under what closed (14.5 percent low), with an 80 percent band from 2.03 to 8.00 million that covered the actual. Over 20 replays its error was 38.8 percent, the smallest of the three methods, and its range covered the actual in 17 of 20. Note what that does not say: a 38.8 percent typical error is not accurate, it is the least inaccurate method on the bench.</p>
+        <p><strong>The method's blind spots, in writing.</strong> Over 20 replays history-based ran 18.6 percent high, because the May 2018 cohort in the real rows converted at 10.0 percent against 13 to 14 percent for January to April: the method assumes next quarter behaves like the last. It also reads origin and deal age, not stage, so a real late-stage signal is invisible to it. Data owns saying both out loud.</p>
+        <p><strong>Never editing the commit.</strong> When the commit looks high, data does not correct it. Data publishes the method's number beside it, with the range and the track record, and lets the gap start the conversation.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The whale that slipped.</strong> On the bench, the biggest deal that really closed in Kettle's quarter is worth 2.11 million yen. Move it to next quarter and what closed drops from 5.86 to 3.75 million. The rep commit's range starts at 7.86 and the stage-weighted range at 5.48, so neither covers 3.75; only the history-based range, 2.03 to 8.00, still does. Over 20 replays with the whale slipping, the actual stayed inside the rep commit's range in 2 of 20, stage-weighted 3 of 20, history-based 13 of 20. Whether the whale lands is the BD lead's call; how wide the range must be to survive the call being wrong is data's. Constructed Kettle &amp; Co team on real Olist timings; numbers from the bench in Analyst session 6.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the forecast contract</span>
+      <h2>The forecast contract: one page, every quarter</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">The two halves only work if the rules are agreed before the numbers arrive. Agree them after and every rule gets argued in the light of whose number looks better. The forecast contract is one page, agreed at the start of each quarter, with a line for each rule and a name against each line. It is short on purpose: a contract nobody reads protects nobody.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 446" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn one-page contract for Kettle and Co's quarter, constructed. Seven clauses, each with an owner in the margin: stage definitions, both; what counts as pipeline, stage 2 and later, both; the freeze date, a snapshot taken on 1 June and never edited, data; the methods printed with their 20-replay record, data; the range and its stated coverage, 17 of 20, data; who calls the whale, the BD lead; and the gap trigger, filled in copper: a gap over 25 percent of the method's number means a meeting, a constructed threshold, owned by both. Two signature lines at the bottom: the BD lead signs the number and the commit, the data lead signs the method and the range.">
+        <defs>
+          <filter id="b3cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b3cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b3cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b3cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b3cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b3cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b3cA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b3cW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b3cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b3cH" x="30" y="28">THE FORECAST CONTRACT, ONE PAGE</text>
+        <text class="b3cS" x="290" y="28">every clause names its owner in the margin · Kettle &amp; Co, constructed</text>
+
+        <g filter="url(#b3cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="150" y="44" width="580" height="356" rx="8" transform="rotate(-0.3 440 222)" fill="#FFFFFF"/>
+          <path d="M164 133 L716 133 M164 167 L716 167 M164 201 L716 201 M164 235 L716 235 M164 269 L716 269" stroke="#E3E8E5"/>
+          <path d="M640 98 L640 296" stroke="#C9D2CE"/>
+          <rect x="164" y="300" width="552" height="30" rx="6" transform="rotate(0.3 440 315)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M176 362 L400 362 M470 362 L700 362" stroke="#535E59"/>
+          <!-- doodle: a fountain pen beside the page -->
+          <path d="M770 120 L796 330 L786 334 L760 124 Z" stroke="#5A6D65"/>
+          <path d="M786 334 L793 352 L796 330" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b3cH" x="176" y="72">KETTLE &amp; CO · FORECAST CONTRACT</text>
+        <text class="b3cS" x="176" y="90">quarter 1 June to 30 August 2018 · agreed before the quarter starts</text>
+        <text class="b3cA" x="652" y="90">owner</text>
+
+        <text class="b3cL" x="176" y="120">1 · Stage definitions</text>
+        <text class="b3cS" x="360" y="120">buyer acts and their records</text>
+        <text class="b3cA" x="652" y="120">both</text>
+
+        <text class="b3cL" x="176" y="154">2 · What counts</text>
+        <text class="b3cS" x="360" y="154">pipeline = stage 2 and later only</text>
+        <text class="b3cA" x="652" y="154">both</text>
+
+        <text class="b3cL" x="176" y="188">3 · Freeze date</text>
+        <text class="b3cS" x="360" y="188">snapshot taken 1 June, never edited</text>
+        <text class="b3cA" x="652" y="188">data</text>
+
+        <text class="b3cL" x="176" y="222">4 · Methods printed</text>
+        <text class="b3cS" x="360" y="222">three methods and their 20-replay record</text>
+        <text class="b3cA" x="652" y="222">data</text>
+
+        <text class="b3cL" x="176" y="256">5 · Range</text>
+        <text class="b3cS" x="360" y="256">80% band, coverage stated: 17 of 20</text>
+        <text class="b3cA" x="652" y="256">data</text>
+
+        <text class="b3cL" x="176" y="290">6 · The whale</text>
+        <text class="b3cS" x="360" y="290">in or out this quarter: BD lead's call</text>
+        <text class="b3cA" x="652" y="290">BD</text>
+
+        <text class="b3cW" x="176" y="320">7 · Gap trigger</text>
+        <text class="b3cW" x="360" y="320">gap over 25%: meet (constructed)</text>
+        <text class="b3cW" x="652" y="320">both</text>
+
+        <text class="b3cS" x="176" y="380">BD lead · signs the number and the commit</text>
+        <text class="b3cS" x="470" y="380">data lead · signs the method and range</text>
+
+        <text class="b3cN" x="30" y="428">Seven lines, one owner each. The 25% trigger is a constructed threshold: set your own from your track record.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper clause is the one that turns a disagreement into a scheduled conversation instead of a silent edit</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The seven clauses, and why each is there<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>1 · Stage definitions.</strong> The buyer-act stages from Business session 1, each with its record. If a stage changes mid-quarter, every method's number changes with it, so the definitions are frozen with the quarter.</p>
+        <p><strong>2 · What counts as pipeline.</strong> Stage 2 and later. Contacted deals are leads, reported separately. Business session 2's coverage sentence goes here.</p>
+        <p><strong>3 · The freeze date and snapshot.</strong> The pipeline as it stood on one named day, saved and never edited. Without it, nobody can later check what the forecast was based on. Analyst session 1 shows how to rebuild a snapshot from the event log when the CRM has already overwritten history.</p>
+        <p><strong>4 · The methods printed, with their track record.</strong> Every method that is shown, with its bias, error and coverage over past quarters, from Analyst session 5. On Kettle's bench: rep commit bias +33.9 percent, error 48.2 percent, covered 4 of 20; stage-weighted +62.7 percent, 68.2 percent, 10 of 20; history-based +18.6 percent, 38.8 percent, 17 of 20. Stage probabilities come from Kettle's own history: on the same deals, the CRM's default probabilities produce 63.64 million yen against the 5.86 that closed.</p>
+        <p><strong>5 · The range and its stated coverage.</strong> A range without a stated coverage is decoration. "80 percent band; held the actual in 17 of 20 replays" is a claim someone can check next quarter.</p>
+        <p><strong>6 · Who calls the whale.</strong> The BD lead, by name, before the quarter starts, with the method's numbers shown both ways.</p>
+        <p><strong>7 · The gap trigger.</strong> When the commit and the method's number differ by more than an agreed share, the BD lead and the data lead meet before the number goes anywhere. Kettle uses 25 percent of the method's number; that threshold is constructed for teaching. This quarter the gap is 7.86 minus 5.01, or 2.85 million yen, which is 56.9 percent of 5.01 (constructed arithmetic on bench numbers), so the meeting happens. Note that a rule of "commit outside the method's range" would not have fired: 7.86 sits just inside the 8.00 ceiling.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Forecast categories, and the accuracy surveys<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Categories are the BD lead's vocabulary.</strong> HubSpot's forecast tool, read on its knowledge base in October 2026, lets each deal sit in a forecast category, including Pipeline (low likelihood of closing), Best case (moderate likelihood) and Commit (high likelihood, committed to the forecast), with Closed won alongside. Categories can be mapped from deal stage automatically. The same page is not consistent about the full default list, so teach those three and check your own CRM. Salesforce's standard categories are reported by third-party guides to be similar. Either way, the category is a rep's judgement recorded in a field: it belongs in the BD lead's half of the contract, not the method's.</p>
+        <p><strong>The accuracy surveys are contested.</strong> Forecasting and revenue-intelligence vendors and analyst firms regularly publish figures on how few sales forecasts land close to the actual. Some leaders use them as an outside anchor: proof that a miss is normal and a reason to invest. Others treat them as marketing: the method and sample are usually not published, and the publisher sells the fix. Both readings are held by serious people. The contract sidesteps the argument by putting your own track record in clause 4, measured on your own quarters, which is the only accuracy figure you can check.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The contract that ended the Monday argument.</strong> Before Kettle had a contract, every forecast meeting reopened the same questions: does stage 1 count, which day's pipeline are we looking at, why did the model change. After the BD lead and the data lead signed one page at the start of the quarter, the meeting had one agenda item left: the gap between 7.86 and 5.01, and what Ben knew about his stage 4 deals that the method could not see. Constructed Kettle &amp; Co example using bench numbers.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Draft Kettle's forecast contract</h2>
+      <span class="tag demo">★ 22 min · everyone works it through</span>
+    </div>
+    <p class="lede">No code, one page. Draft the contract for Kettle's quarter in five steps, then swap with a neighbour and check each clause has one owner. Do step 1 together, steps 2 to 4 in pairs (one plays the BD lead, one the data lead), and read step 5 aloud. The bench numbers are printed by Analyst session 6; every other Kettle value is constructed and labelled. Then copy the shape for your own team.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five hand-drawn cards in a row, joined by arrows: step 1, stages and pipeline, from the Business session 1 sheet and stage 2 and later, signed by both; step 2, freeze date, a 1 June snapshot, owned by data; step 3, methods printed with their track record, owned by data; step 4, range and whale, the 80 percent band from data and the whale call from the BD lead; step 5, filled in copper, the gap trigger and two signatures.">
+        <defs>
+          <filter id="b3dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="43" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b3dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b3dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b3dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b3dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b3dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b3dA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b3dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b3dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b3dH" x="30" y="28">FIVE STEPS TO ONE PAGE</text>
+        <text class="b3dS" x="210" y="28">each card fills clauses of the contract · Kettle constructed</text>
+
+        <g filter="url(#b3dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="50" width="146" height="128" rx="10" transform="rotate(-1.2 103 114)" fill="#FFFFFF"/>
+          <rect x="198" y="50" width="146" height="128" rx="10" transform="rotate(0.9 271 114)" fill="#FFFFFF"/>
+          <rect x="366" y="50" width="146" height="128" rx="10" transform="rotate(-0.7 439 114)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="534" y="50" width="146" height="128" rx="10" transform="rotate(1 607 114)" fill="#FFFFFF"/>
+          <rect x="702" y="50" width="146" height="128" rx="10" transform="rotate(-0.8 775 114)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M178 114 L194 114" marker-end="url(#b3dAr)"/>
+          <path d="M346 114 L362 114" marker-end="url(#b3dAr)"/>
+          <path d="M514 114 L530 114" marker-end="url(#b3dAr)"/>
+          <path d="M682 114 L698 114" marker-end="url(#b3dAr)"/>
+          <!-- doodle: a paperclip on the last card -->
+          <path d="M822 44 L822 70 Q822 78 830 78 Q838 78 838 70 L838 40 Q838 34 832 34 Q826 34 826 40 L826 66" stroke="#FFFFFF"/>
+        </g>
+
+        <text class="b3dH" x="44" y="80">STEP 1</text>
+        <text class="b3dL" x="44" y="106">Stages, pipeline</text>
+        <text class="b3dL" x="44" y="124">stage 2 and later</text>
+        <text class="b3dA" x="44" y="160">clauses 1-2 · both</text>
+
+        <text class="b3dH" x="212" y="80">STEP 2</text>
+        <text class="b3dL" x="212" y="106">Freeze date</text>
+        <text class="b3dL" x="212" y="124">1 June snapshot</text>
+        <text class="b3dA" x="212" y="160">clause 3 · data</text>
+
+        <text class="b3dH" x="380" y="80">STEP 3</text>
+        <text class="b3dL" x="380" y="106">Methods printed</text>
+        <text class="b3dL" x="380" y="124">with track record</text>
+        <text class="b3dA" x="380" y="160">clause 4 · data</text>
+
+        <text class="b3dH" x="548" y="80">STEP 4</text>
+        <text class="b3dL" x="548" y="106">Range and whale</text>
+        <text class="b3dL" x="548" y="124">80% band, BD call</text>
+        <text class="b3dA" x="548" y="160">clauses 5-6 · split</text>
+
+        <text class="b3dW" x="716" y="80">STEP 5</text>
+        <text class="b3dW" x="716" y="106">Gap trigger</text>
+        <text class="b3dW" x="716" y="124">two signatures</text>
+        <text class="b3dW" x="716" y="160">clause 7 · both</text>
+
+        <text class="b3dN" x="30" y="212">Steps 1 and 5 are signed together; steps 2 to 4 are each one owner's homework before the quarter.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the contract is filled left to right, and the last card is the only one that needs both people in the room</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Stages and what counts as pipeline.</strong> Copy the stage sheet from Business session 1 and the coverage sentence from Business session 2. Write the rule for what counts as pipeline in one line. Both leads sign this clause, because the BD lead defines the buyer acts and the data lead has to measure them.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · clauses 1 and 2</span>Clause 1 · stages (buyer act -&gt; record):
+  1 Contacted       rep only; reported as leads
+  2 Need confirmed  office manager named the problem -&gt; call note
+  3 Tasting trial   office agreed to a station -&gt; trial log
+  4 Proposal        buyer asked for a price -&gt; price request email
+  5 Contract out    procurement holds the contract -&gt; e-sign log
+Clause 2 · pipeline = stage 2 and later. Stage 1 reported separately.
+Coverage sentence from session 2: ________________________________
+Owner: both                       (Kettle stages constructed)</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · The freeze date.</strong> Name the day the pipeline is photographed, where the snapshot is stored, and who may touch it (nobody). Kettle's quarter runs 1 June to 30 August 2018, so the snapshot is 1 June.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · clause 3</span>Freeze date: 1 June 2018 (first day of the quarter)
+Snapshot stored at: ______________________ (read-only)
+Rebuilt from: the stage event log, not the CRM's current state
+Edits after the freeze: none; corrections go in a dated note
+Owner: data</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · The methods and their track record.</strong> List every method that will be shown, with its record over past quarters. Use Kettle's bench numbers. State where the stage probabilities come from.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · clause 4</span>Methods shown, with bias / error / coverage over 20 replays:
+  rep commit        +33.9%   48.2%    4 of 20
+  stage-weighted    +62.7%   68.2%   10 of 20
+  history-based     +18.6%   38.8%   17 of 20
+Stage probabilities: Kettle's own table, never the CRM defaults
+Known blind spot: history-based cannot see a real late-stage signal
+Owner: data</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · The range and the whale.</strong> Data writes the range and its stated coverage. The BD lead writes, by name, whether the whale is in or out, and data adds what every range does if that call is wrong.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · clauses 5 and 6</span>Clause 5 · range: history-based 5.01m (2.03 to 8.00m), 80% band
+  stated coverage: actual inside the range in 17 of 20 replays
+Clause 6 · the whale (2.11m yen): IN / OUT, called by ____________
+  if it slips, actual 5.86m -&gt; 3.75m; only the history-based range covers it
+  over 20 replays with the whale slipping: rep 2, stage 3, history 13 of 20
+Owners: data (5), BD lead (6)</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · The gap trigger and the signatures.</strong> Agree the threshold, check whether this quarter trips it, and sign. Show the arithmetic so anyone can check it.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · clause 7 and signatures</span>Clause 7 · if |commit - method| &gt; 25% of method, meet before publishing
+  (25% is a constructed threshold; set yours from your track record)
+This quarter: commit 7.86m, method 5.01m
+  gap = 7.86 - 5.01 = 2.85m ;  2.85 / 5.01 = 56.9%  -&gt; meeting
+Agenda: what Ben knows about his stage 4 deals that the method cannot see
+
+Signed: ____________ BD lead (number and commit)
+Signed: ____________ data lead (method, range, error rate)</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Keep the page.</strong> Next quarter, clause 4's track record gains one more row and clause 5's coverage becomes a fact rather than a promise. Business session 4 uses that record as the evidence gate before anyone hires against the pipeline.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Business session 4</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Find out who can edit your forecast</strong> between the rep's commit and the board pack. List every person and every spreadsheet it passes through, and mark any step where the number changes without the rep knowing.</li>
+      <li><strong>Ask for the method's error rate.</strong> Whatever produces your non-commit forecast (a model, a weighted pipeline, a tool), ask for its error over the last four or more quarters. If nobody has it, that is clause 4's first job.</li>
+      <li><strong>Compute one call ratio.</strong> Pick one rep and divide their commits by what they really closed over the last few quarters. Bring it to a one-to-one, not a team meeting.</li>
+      <li><strong>Draft clause 7 for your team.</strong> Choose a gap threshold from your own history and test it on last quarter: would it have triggered a meeting, and would that meeting have changed anything? Business session 4 starts from your contract.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Business session 3 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · Who owns the range around the forecast, and its stated coverage?</p>
+      <button class="qopt" type="button">A · The BD lead, because the range is part of the number</button>
+      <button class="qopt" type="button">B · The data team, because the range comes from the method and its coverage is measured on past quarters</button>
+      <button class="qopt" type="button">C · Each rep, for their own deals</button>
+      <button class="qopt" type="button">D · Nobody; a range is optional</button>
+      <p class="qwhy">The range is a property of the method. Data signs it with its coverage, for example 17 of 20 replays for Kettle's history-based method, so it can be checked next quarter.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">2 · The reps commit 7.86 million yen; the method says 5.01. What does the data team do?</p>
+      <button class="qopt" type="button">A · Scale the commit down to 5.01 before it reaches the board</button>
+      <button class="qopt" type="button">B · Nothing; the commit is the BD lead's business</button>
+      <button class="qopt" type="button">C · Replace the commit with the method's number</button>
+      <button class="qopt" type="button">D · Leave the commit untouched, publish the method's number, range and track record beside it, and trigger the agreed conversation</button>
+      <p class="qwhy">Data never edits the commit. It prints its own number next to it, and the contract's gap trigger turns the difference into a meeting with the BD lead.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · Which set belongs in the one-page forecast contract?</p>
+      <button class="qopt" type="button">A · Stage definitions, what counts as pipeline, the freeze date, methods with their track record, the range and its coverage, who calls the whale, the gap trigger</button>
+      <button class="qopt" type="button">B · Each rep's quota and commission rate</button>
+      <button class="qopt" type="button">C · A vendor survey's accuracy figure as the target</button>
+      <button class="qopt" type="button">D · Only the final number, signed by the CEO</button>
+      <p class="qwhy">Every clause has one owner and can be checked after the quarter. Compensation lives elsewhere, and an outside survey cannot replace your own measured record.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Rep commit 7.86 vs 5.86 closed; history-based 5.01 (2.03 to 8.00); error 48.2% vs 38.8%, coverage 4 vs 17 of 20; call ratios Ben 4.60, Dev 0.00; whale 2.11m</span><span class="note">Computed by the bench in Analyst session 6 on real Olist B2B funnel rows (Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0, read at source)</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">HubSpot forecast categories: Pipeline, Best case, Commit</span><span class="note">HubSpot Knowledge Base, "Set up the forecast tool", read at source October 2026; the page's full default list is inconsistent, re-verify before teaching</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Salesforce forecast categories</span><span class="note">Salesforce Help, opportunity stages and forecast categories; reported</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Vendor forecast-accuracy surveys</span><span class="note">Contested; the disagreement is taught and no figures are quoted</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The ownership map between data and BD</span><span class="note">Taught in Marketing Analytics, the ownership map; linked, not re-taught</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co team, contract clauses, the 25% gap trigger and its 56.9% check</span><span class="note">Constructed and labelled; the arithmetic uses bench numbers</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Business session 3 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Two halves</b><span>BD lead signs the number and the commit. Data signs the method, the range and the error rate.</span></div>
+      <div class="cheat-item"><b>Never edit the commit</b><span>Print the method's number beside it. A silent correction makes both numbers unaccountable.</span></div>
+      <div class="cheat-item"><b>Call ratios are coaching</b><span>Ben 4.60, Dev 0.00 on the bench: behaviour for the BD lead's one-to-one, not a data fix.</span></div>
+      <div class="cheat-item"><b>A range states its coverage</b><span>"80% band, held 17 of 20" can be checked. A range alone is decoration.</span></div>
+      <div class="cheat-item"><b>Agree before the quarter</b><span>Stages, pipeline, freeze date, methods, range, whale, gap trigger: one page, two signatures.</span></div>
+      <div class="cheat-item"><b>Your record beats a survey</b><span>Outside accuracy figures are contested; your own track record is the one you can check.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can say who signs which half of the forecast and put both on one page. Business session 4 goes from pipeline to plan: how many reps the pipeline can carry, how long a new rep takes to ramp, and the evidence gate of your own win rate, cycle time and forecast error before anyone hires against the number.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Business session 3 of 4 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b2-reading-a-pipeline-review.html">← Prev: Reading a pipeline review</a> &nbsp;·&nbsp; <a href="b4-from-pipeline-to-plan.html">Next: From pipeline to plan →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

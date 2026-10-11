@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Business session 1 of 4. What a sales pipeline is evidence of: stages as buyer commitments rather than rep activity, the four numbers every pipeline rests on, and the velocity identity built from them. Kettle &amp; Co, a constructed office-tea supplier, asks whether its pipeline can carry next quarter.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="What a pipeline is evidence of - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Business session 1 of 4. A stage is something the buyer did. Four numbers, one identity, and why the mean cycle time can triple your velocity on paper.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/b1-what-a-pipeline-proves.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What a pipeline is evidence of - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Business session 1 of 4. Stages as buyer commitments, four numbers, one identity.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Business session 1 · What a pipeline is evidence of - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Business session 1 of 4</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Business session 1 of 4</div>
+    <h1>What a pipeline is <span class="accent">evidence of</span></h1>
+    <p class="sub">Every Monday somebody reads out a pipeline number and the room nods. Tonight asks what that number is evidence of. A pipeline is a list of claims about buyers: this one confirmed a need, that one let us run a trial, this one asked for a contract. When the stages record what the buyer did, the pipeline is evidence. When they record what the rep did, it is a diary. Then the four numbers every pipeline rests on, and the velocity identity that ties them together, with the trap hidden in its denominator. Kettle &amp; Co's office-tea team is constructed; the cycle times come from real B2B funnel rows.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Business</span>
+      <span class="chip audience">BD and sales leaders who read the pipeline, and the analysts who build it</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Stages, four numbers, velocity</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: your stage definitions</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">The Business track is for the people who own the sales number and the people who have to explain it: the BD lead, the sales manager, the founder who signs off the plan, the head of data asked "is this forecast real?". Four sessions: tonight, what a pipeline is evidence of; then how to read a pipeline review without being steered; then who owns the forecast and who owns its error rate; then how to get from pipeline to a hiring plan. No code. The Analyst track builds the same numbers from the rows. Kettle &amp; Co's office-tea arm, a BD lead and four account reps selling tea subscriptions to offices in Japan, is constructed: its people, deals and amounts are invented and labelled. The timings and outcomes underneath come from real rows of Olist's public B2B funnel, a Brazilian marketplace recruiting sellers.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone works it through</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A stage list for your own pipeline where every stage names something the buyer did and where it is recorded, the four numbers your pipeline rests on with their honest definitions, and one velocity figure computed with the median cycle time, not the mean. The stage list is the first page of the forecast contract in Business session 3.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers stages as buyer commitments</span>
+      <h2>A stage is something the buyer did</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Most pipelines start life as a list of things the rep does: called, emailed, demo given, proposal sent. Every one of those can happen while the buyer does nothing. A stage that a rep can reach alone measures effort, and effort is not evidence that a deal will close. Rewrite each stage as an act by the buyer, and record where the proof lives.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two hand-drawn columns of stages. Left, rep activity: called, demo given, proposal sent, each reachable by the rep alone, drawn in a red panel. Right, buyer commitments for Kettle and Co: need confirmed, the office manager named the problem; tasting trial, the office let us set up a tea station; proposal, the buyer asked for a price for their headcount; contract out, the buyer's procurement has the contract. Each right-hand stage has a small tag saying where the evidence lives.">
+        <defs>
+          <filter id="b1aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b1aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b1aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b1aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b1aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b1aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b1aR { font: 700 11px Inter, sans-serif; fill: #991B1B; }
+          .b1aW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b1aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b1aH" x="30" y="28">THE SAME FOUR STEPS, WRITTEN TWO WAYS</text>
+        <text class="b1aS" x="330" y="28">left: who can move it alone · right: what the buyer did, and where it is recorded</text>
+
+        <g filter="url(#b1aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="48" width="270" height="244" rx="12" transform="rotate(-0.4 165 170)" fill="#FEF2F2" stroke="#FCA5A5"/>
+          <rect x="340" y="56" width="500" height="50" rx="10" transform="rotate(0.4 590 81)" fill="#FFFFFF"/>
+          <rect x="340" y="114" width="500" height="50" rx="10" transform="rotate(-0.4 590 139)" fill="#FFFFFF"/>
+          <rect x="340" y="172" width="500" height="50" rx="10" transform="rotate(0.3 590 197)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="340" y="230" width="500" height="50" rx="10" transform="rotate(-0.3 590 255)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M306 170 L332 170" marker-end="url(#b1aAr)"/>
+          <!-- doodle: a teacup on the trial row -->
+          <path d="M790 186 L814 186 L810 204 L794 204 Z" stroke="#5A6D65"/>
+          <path d="M814 190 Q824 194 812 200" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b1aR" x="48" y="72">REP ACTIVITY</text>
+        <text class="b1aL" x="48" y="104">Called the office</text>
+        <text class="b1aS" x="48" y="122">the buyer may not have picked up</text>
+        <text class="b1aL" x="48" y="160">Demo given</text>
+        <text class="b1aS" x="48" y="178">to whoever sat in the room</text>
+        <text class="b1aL" x="48" y="216">Proposal sent</text>
+        <text class="b1aS" x="48" y="234">nobody asked for it</text>
+        <text class="b1aR" x="48" y="272">all reachable by the rep alone</text>
+
+        <text class="b1aL" x="358" y="78">2 · Need confirmed</text>
+        <text class="b1aS" x="358" y="96">office manager named the problem · call note</text>
+        <text class="b1aL" x="358" y="136">3 · Tasting trial</text>
+        <text class="b1aS" x="358" y="154">the office let us set up a station · trial log</text>
+        <text class="b1aL" x="358" y="194">4 · Proposal</text>
+        <text class="b1aS" x="358" y="212">buyer asked for a price for their headcount</text>
+        <text class="b1aW" x="358" y="252">5 · Contract out</text>
+        <text class="b1aW" x="358" y="270">procurement holds the contract · e-sign log</text>
+
+        <text class="b1aN" x="30" y="318">Stage 1, Contacted, is the only one a rep reaches alone, and it is labelled as such. Constructed Kettle stages.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - on the right, every stage needs the buyer to move, and names the record that proves it</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Three tests for a stage definition<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Who moved?</strong> If the rep can reach the stage without the buyer doing anything, it is an activity, not a stage. "Proposal sent" fails; "buyer asked for a price" passes.</p>
+        <p><strong>Where is the proof?</strong> Each stage names one record a second person can check: a call note with the buyer's words, a trial log, an e-signature request. If the only proof is the rep's memory, the stage will drift with the rep's mood.</p>
+        <p><strong>Can it go backwards?</strong> A trial that ends with "not this year" moves the deal back. A definition that only ever moves forward hides every stall. Analyst session 1 shows why most CRMs lose the backward moves unless somebody keeps the event log.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What the CRM vendors do by default<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>HubSpot's default deal pipeline, read on its knowledge base in October 2026, ships seven stages: Appointment scheduled, Qualified to buy, Presentation scheduled, Decision maker bought-in, Contract sent, Closed won and Closed lost. Two of the five open stages are things a rep can do alone (schedule, present). Salesforce's defaults are reported by third-party guides to follow a similar sales-process naming. Defaults are a starting point for a team that has not thought about it yet, not a definition of evidence; rename them to buyer acts before the first forecast relies on them. Re-verify the vendor pages before you teach from them: they change.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The demo that was a stage.</strong> Kettle's pipeline used to have "Demo given" as stage 3. Ben, the most energetic rep, gave tasting demos to anyone who would sit down, including receptionists with no budget. His stage-3 count was the highest on the team and his win rate the lowest. Renaming stage 3 to "Tasting trial: the office agreed to a station for two weeks" cut his stage-3 deals by half overnight and made the stage worth reading. Constructed Kettle &amp; Co example; the pattern is common.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the four numbers</span>
+      <h2>Four numbers carry every pipeline</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">However many dashboards sit on top, a pipeline rests on four numbers: how many deals are in it, what share of them win, how big a won deal is, and how long a deal takes to close. Each has an honest definition and a flattering one, and the gap between them is where most pipeline arguments live.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four hand-drawn cards side by side. Deals: count only deals that reached stage 2, a buyer act. Win rate: won divided by deals that entered in the same period, decided. Deal size: the median won amount, not the asked price. Cycle time: real Olist rows give a median of 14 days and a mean of 48.4 days from first contact to won, so the mean is three and a half times the median. The cycle time card is filled in copper.">
+        <defs>
+          <filter id="b1bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="13" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b1bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b1bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b1bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b1bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b1bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b1bV { font: 800 18px Inter, sans-serif; fill: #34443E; }
+          .b1bW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b1bX { font: 800 18px Inter, sans-serif; fill: #FFFFFF; }
+          .b1bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b1bH" x="30" y="28">THE FOUR NUMBERS, WITH THE HONEST DEFINITION OF EACH</text>
+
+        <g filter="url(#b1bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="50" width="190" height="196" rx="12" transform="rotate(-1 125 148)" fill="#FFFFFF"/>
+          <rect x="240" y="50" width="190" height="196" rx="12" transform="rotate(0.8 335 148)" fill="#FFFFFF"/>
+          <rect x="450" y="50" width="190" height="196" rx="12" transform="rotate(-0.6 545 148)" fill="url(#b1bHc)"/>
+          <rect x="660" y="50" width="190" height="196" rx="12" transform="rotate(1 755 148)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <!-- doodle: a stopwatch on the cycle card -->
+          <circle cx="815" cy="214" r="14" stroke="#FFFFFF"/>
+          <path d="M815 214 L815 205 M815 198 L815 194" stroke="#FFFFFF"/>
+        </g>
+
+        <rect x="458" y="60" width="172" height="108" rx="8" fill="#FFFFFF"/>
+
+        <text class="b1bH" x="46" y="78">DEALS</text>
+        <text class="b1bV" x="46" y="106">count</text>
+        <text class="b1bL" x="46" y="134">only deals past a</text>
+        <text class="b1bL" x="46" y="152">buyer act (stage 2+)</text>
+        <text class="b1bS" x="46" y="180">"Contacted" is a lead,</text>
+        <text class="b1bS" x="46" y="196">not a deal</text>
+
+        <text class="b1bH" x="256" y="78">WIN RATE</text>
+        <text class="b1bV" x="256" y="106">won / entered</text>
+        <text class="b1bL" x="256" y="134">deals that entered</text>
+        <text class="b1bL" x="256" y="152">together, decided</text>
+        <text class="b1bS" x="256" y="180">by entry month,</text>
+        <text class="b1bS" x="256" y="196">Analyst session 2</text>
+
+        <text class="b1bH" x="466" y="78">DEAL SIZE</text>
+        <text class="b1bV" x="466" y="106">median won</text>
+        <text class="b1bL" x="466" y="134">what was signed,</text>
+        <text class="b1bL" x="466" y="152">not what was asked</text>
+        <text class="b1bS" x="466" y="196">one whale moves a mean</text>
+
+        <text class="b1bW" x="676" y="78">CYCLE TIME</text>
+        <text class="b1bX" x="676" y="106">14 days median</text>
+        <text class="b1bW" x="676" y="134">48.4 days mean</text>
+        <text class="b1bW" x="676" y="152">real Olist rows,</text>
+        <text class="b1bW" x="676" y="170">842 won deals</text>
+
+        <text class="b1bN" x="30" y="276">The cycle-time mean is 3.5 times its median: a few deals that took over 180 days pull it up. Report the median.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - three cards are definitions you choose; the copper one is a real distribution with a long tail</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The flattering version of each number<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Deals.</strong> Counting every contact as a deal makes the pipeline look full and the win rate look terrible. In Kettle's quarter 153 of 300 open deals sit at stage 1, Contacted; none of the 1,022 stage-1 deals in the previous quarter closed inside that quarter. Report stage 1 separately as leads.</p>
+        <p><strong>Win rate.</strong> "Won this month divided by deals created this month" mixes two groups of deals. Win rate is the share of deals that entered together and have now been decided. Analyst session 2 shows how the period version swings by tens of points on the real rows.</p>
+        <p><strong>Deal size.</strong> The average asked price includes deals that will be discounted or never signed. Use the median signed amount, and report the largest deal separately, because one whale can move a quarter (Analyst session 6 breaks the bench with exactly that).</p>
+        <p><strong>Cycle time.</strong> On the real Olist rows, the median won deal closed 14 days after first contact; a quarter of them took 54.75 days or more, a tenth took 161.9 days or more, and the mean is 48.4 days. Any formula that uses "average cycle time" is using the 48.4.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why the real rows are a Brazilian marketplace, not a tea company<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Public B2B pipeline data is rare: companies do not publish their CRM. Olist, a Brazilian marketplace, published 8,000 marketing-qualified leads from businesses that asked to sell through it (first contact June 2017 to May 2018) and the 842 that signed, with dates. That is a real B2B funnel with real timings. It has no lost deals and no stage history, so every stage, amount and rep on these pages is constructed and labelled. The same rows feed the funnel bench in <a href="https://phoebefu6.github.io/learn-marketing-with-phoebe/courses/04-the-funnel-bench.html">Marketing, session 4 ↗</a> for budget and acquisition cost; here they are used for cycle time and forecasting.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the velocity identity</span>
+      <h2>Velocity: the four numbers multiplied out</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Pipeline velocity is the four numbers in one line: deals times win rate times deal size, divided by cycle length. The answer is revenue per day the pipeline produces. It is an identity, not a forecast: it says what the four numbers imply if they hold. Its use is to show which lever moves revenue, and its trap is the denominator.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn pipe. Forty deals enter on the left. A valve marked win rate 25 percent lets ten through. Each carries 480,000 yen. The length of the pipe is the cycle time. Two readings at the end: with the median cycle of 14 days the pipe produces about 342,900 yen a day; with the mean of 48.4 days about 99,200 yen a day. The same deals, a 3.5 times difference from the denominator alone. The deal counts and amounts are constructed for Kettle; the 14 and 48.4 days are the real Olist median and mean.">
+        <defs>
+          <filter id="b1cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="19" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b1cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b1cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b1cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b1cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b1cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b1cV { font: 800 16px Inter, sans-serif; fill: #34443E; }
+          .b1cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .b1cW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b1cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b1cH" x="30" y="28">VELOCITY = DEALS x WIN RATE x DEAL SIZE / CYCLE LENGTH</text>
+        <text class="b1cS" x="470" y="28">yen per day · counts and amounts constructed</text>
+
+        <g filter="url(#b1cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="40" y="92" width="120" height="70" rx="10" transform="rotate(-1 100 127)" fill="url(#b1cHc)"/>
+          <path d="M160 112 L300 112 M160 142 L300 142"/>
+          <rect x="300" y="80" width="76" height="94" rx="10" transform="rotate(1 338 127)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M376 112 L640 112 M376 142 L640 142"/>
+          <path d="M392 196 L626 196" marker-end="url(#b1cAr)" marker-start="url(#b1cAr)"/>
+          <path d="M646 127 L680 127" marker-end="url(#b1cAr)"/>
+          <rect x="686" y="62" width="170" height="58" rx="10" transform="rotate(-0.8 771 91)" fill="#FFFFFF"/>
+          <rect x="686" y="134" width="170" height="58" rx="10" transform="rotate(0.8 771 163)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <!-- doodle: a valve wheel -->
+          <circle cx="338" cy="64" r="11" stroke="#5A6D65"/>
+          <path d="M327 64 L349 64 M338 53 L338 75" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b1cL" x="56" y="122">40 deals</text>
+        <text class="b1cS" x="56" y="140">stage 2 or later</text>
+        <text class="b1cL" x="312" y="122">25%</text>
+        <text class="b1cS" x="312" y="140">win rate</text>
+        <text class="b1cL" x="430" y="132">10 wins x 480,000 yen</text>
+        <text class="b1cS" x="440" y="218">cycle length: the pipe</text>
+
+        <text class="b1cS" x="700" y="84">median, 14 days</text>
+        <text class="b1cV" x="700" y="106">342,857 / day</text>
+        <text class="b1cW" x="700" y="156">mean, 48.4 days</text>
+        <text class="b1cW" x="700" y="176">99,174 / day</text>
+
+        <text class="b1cB" x="40" y="258">4.8m yen of wins either way. Only the cycle length changed, and velocity moved 3.5x.</text>
+        <text class="b1cN" x="40" y="298">Say which cycle number you used. The median describes a typical deal; the mean is pulled by the slow tail.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper box is the velocity most dashboards print, because "average cycle time" means the mean</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>What velocity is good for, and what it is not<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Good for: choosing a lever.</strong> Because it is a product, a 10 percent gain on any one of the three top terms is worth the same 10 percent of velocity. Cutting cycle length by 10 percent is worth a little more (one over 0.9 is 1.11). That makes a useful argument about where to spend effort, and it is arithmetic, not evidence.</p>
+        <p><strong>Not good for: a forecast.</strong> Velocity assumes the four numbers hold, that every deal behaves like the typical one, and that the deals in the pipe today are like the ones that closed before. Analyst session 4 builds forecasts that test those assumptions instead of assuming them.</p>
+        <p><strong>No single origin.</strong> The velocity formula circulates in sales-operations writing without one source to cite. Treat it as a convention whose arithmetic you can check, which is a better position than citing a name.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why the median is still not the whole answer<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The median describes the typical won deal. Revenue, though, often sits in the slow tail: big offices take longer to sign. If your largest deals close slowest, a velocity built on the median can overstate how soon the money arrives. The honest version is two numbers, median and 75th percentile, and a sentence on which deals sit in the tail. Analyst session 3 draws the full distribution and the curve for deals still open.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The board slide that tripled overnight.</strong> Kettle's BD lead presented velocity using the CRM's "average days to close". A new analyst rebuilt it with the median and velocity jumped about 3.5-fold, with nothing in the business changed. The right response was neither number alone: both, labelled, plus the 75th percentile. Constructed Kettle &amp; Co example using the real Olist median and mean.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Rewrite your stages as buyer acts</h2>
+      <span class="tag demo">★ 22 min · everyone works it through</span>
+    </div>
+    <p class="lede">No code, one page. Take your own pipeline's stage list, or Kettle's old one (Called, Demo given, Proposal sent, Negotiation). Five steps turn it into stages that are evidence. Do step 1 together, steps 2 to 4 in pairs, then read your step 5 velocity line aloud. Your stages will differ from Kettle's, which is the point.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn worksheet with four columns: stage name, the buyer act that moves a deal in, the record that proves it, and whether it can move back. One row is filled for Kettle's tasting trial: the office agreed to a two-week station, proof is the trial log, and yes it can move back. Other rows are blank. A pencil lies to the right.">
+        <defs>
+          <filter id="b1dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="29" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b1dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b1dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b1dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b1dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b1dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b1dB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .b1dA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b1dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b1dH" x="30" y="28">THE STAGE SHEET</text>
+        <text class="b1dS" x="160" y="28">one row per stage · Kettle's trial row filled in as the example · constructed</text>
+
+        <g filter="url(#b1dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="44" width="720" height="210" rx="10" transform="rotate(-0.3 390 149)" fill="#FFFFFF"/>
+          <path d="M170 52 L170 246 M400 52 L400 246 M600 52 L600 246" stroke="#C9D2CE"/>
+          <path d="M40 86 L740 86 M40 136 L740 136 M40 186 L740 186" stroke="#C9D2CE"/>
+          <rect x="44" y="94" width="692" height="36" rx="6" fill="#EEF2F0" stroke="#5A6D65"/>
+          <!-- doodle: a pencil -->
+          <path d="M790 70 L826 220 L816 226 L780 76 Z" stroke="#5A6D65"/>
+          <path d="M816 226 L824 240 L826 220" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b1dL" x="48" y="72">stage</text>
+        <text class="b1dL" x="184" y="72">buyer act that moves it in</text>
+        <text class="b1dL" x="414" y="72">record that proves it</text>
+        <text class="b1dL" x="614" y="72">can move back?</text>
+
+        <text class="b1dA" x="52" y="117">3 · Tasting trial</text>
+        <text class="b1dA" x="184" y="117">office agreed to a station</text>
+        <text class="b1dA" x="414" y="117">trial log, signed</text>
+        <text class="b1dA" x="614" y="117">yes, "not this year"</text>
+        <text class="b1dS" x="52" y="166">your stage</text>
+        <text class="b1dS" x="52" y="216">your stage</text>
+
+        <text class="b1dB" x="30" y="278">A row with no buyer act, or no record, is an activity. Move it to the activity log.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - four columns, and the last one is the column almost every pipeline leaves out</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · List what you have.</strong> Write your current stage names in order, exactly as the CRM shows them. Mark each one R if the rep can reach it alone, B if the buyer has to do something.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · today's stages</span>stage 1: ______________  R / B
+stage 2: ______________  R / B
+stage 3: ______________  R / B
+stage 4: ______________  R / B
+Kettle's old list: Called (R) · Demo given (R) · Proposal sent (R) · Negotiation (B)</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Rewrite every R as a buyer act.</strong> Ask: what would the buyer have to do for this to mean something? "Demo given" becomes "the office agreed to a two-week trial station". Keep stage 1 as the one rep-only stage and call it what it is.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · buyer acts</span>1 Contacted        (rep only; report as leads, not deals)
+2 ______________   buyer act: ________________________________
+3 ______________   buyer act: ________________________________
+4 ______________   buyer act: ________________________________
+5 ______________   buyer act: ________________________________</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Name the record.</strong> For each stage, the one record a second person could open to check it. If no such record exists today, write what would have to be logged.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · the proof</span>stage 2 proof: ____________________ (e.g. call note with the buyer's words)
+stage 3 proof: ____________________ (e.g. signed trial log)
+stage 4 proof: ____________________ (e.g. buyer's price request email)
+stage 5 proof: ____________________ (e.g. e-signature request sent to procurement)</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Allow the backward move.</strong> For each stage, write what sends a deal back, and confirm somebody records the date it happened. Without dates you cannot rebuild last month's pipeline, which is the first thing Analyst session 1 needs.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · backward moves</span>a deal leaves stage 3 backwards when: ______________________
+the date of that move is stored in:   ______________________
+Kettle example: trial ends "not this year" -&gt; back to stage 2, logged with date</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · One velocity line, two cycle numbers.</strong> Fill in your four numbers with the honest definitions, and compute velocity twice: with the median cycle and with the mean. Read the two aloud and say which one your dashboard shows today.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · velocity, twice</span>deals (stage 2+): ____   win rate (by entry period): ____   median deal size: ____
+velocity, median cycle (__ days): ____ per day
+velocity, mean cycle   (__ days): ____ per day
+Kettle example (constructed counts, real Olist cycle): 40 x 25% x 480,000 yen
+  / 14 days = 342,857 a day ;  / 48.4 days = 99,174 a day</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Keep the sheet.</strong> The stage list is page one of the forecast contract in Business session 3. If a stage has no record, the analyst cannot measure it, and a forecast built on it inherits the rep's mood.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Business session 2</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Count your stage-1 share.</strong> What share of your open pipeline sits in a stage the rep can reach alone? Write it down; Kettle's is 153 of 300.</li>
+      <li><strong>Find your cycle-time definition.</strong> Ask whoever owns the CRM report whether "average days to close" is a mean or a median, and from which date to which.</li>
+      <li><strong>Pick one stage to rename</strong> as a buyer act, and ask one rep whether the new name would change where their deals sit today.</li>
+      <li><strong>Bring last Monday's pipeline report.</strong> Business session 2 reads it for coverage, stale deals and deals that moved quarters.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Business session 1 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Which of these is a pipeline stage that counts as evidence?</p>
+      <button class="qopt" type="button">A · Proposal sent</button>
+      <button class="qopt" type="button">B · Demo given</button>
+      <button class="qopt" type="button">C · The buyer asked for a price for their headcount, recorded in their email</button>
+      <button class="qopt" type="button">D · Rep feels good about it</button>
+      <p class="qwhy">A stage the rep can reach alone measures effort. A buyer act with a record a second person can check is evidence.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">2 · On the real Olist rows the median won deal took 14 days and the mean 48.4. What does that do to a velocity formula that uses "average cycle time"?</p>
+      <button class="qopt" type="button">A · Nothing; mean and median are interchangeable</button>
+      <button class="qopt" type="button">B · It divides by the mean, so velocity reads about 3.5 times lower than with the median, from the slow tail alone</button>
+      <button class="qopt" type="button">C · It makes velocity higher</button>
+      <button class="qopt" type="button">D · It only matters for deals over a year</button>
+      <p class="qwhy">The few deals that took months pull the mean up. Report which cycle number you used, and show the 75th percentile with it.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · What is pipeline velocity?</p>
+      <button class="qopt" type="button">A · An identity: deals x win rate x deal size / cycle length, useful for comparing levers, not a forecast</button>
+      <button class="qopt" type="button">B · A forecast of next quarter's revenue</button>
+      <button class="qopt" type="button">C · The number of deals that moved stage this week</button>
+      <button class="qopt" type="button">D · A metric defined by one standards body</button>
+      <p class="qwhy">It says what the four numbers imply if they hold. It has no single origin, and it assumes away everything a forecast has to test.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">842 won deals; cycle median 14 days, 75th percentile 54.75, 90th 161.9, mean 48.4</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0; computed by the engine in Analyst session 3, read at source</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">HubSpot's default deal stages</span><span class="note">HubSpot Knowledge Base, "Set up and customize pipelines", read at source October 2026; re-verify before teaching</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Salesforce's default stage naming</span><span class="note">Salesforce Help, opportunity stages; reported from third-party guides</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">The velocity identity</span><span class="note">A sales-operations convention with no single origin; taught as arithmetic</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co stages, 153 of 300 deals at stage 1, the 40-deal velocity example</span><span class="note">Constructed and labelled; the stage counts are printed by the bench in Analyst session 4</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Business session 1 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>A stage is a buyer act</b><span>If the rep can reach it alone, it is activity. Log it, do not stage it.</span></div>
+      <div class="cheat-item"><b>Name the record</b><span>Every stage points at one record a second person can open.</span></div>
+      <div class="cheat-item"><b>Let deals go back</b><span>And store the date. Without it, last month's pipeline is gone.</span></div>
+      <div class="cheat-item"><b>Four numbers</b><span>Deals (stage 2+), win rate by entry period, median signed size, cycle time.</span></div>
+      <div class="cheat-item"><b>Velocity is arithmetic</b><span>Deals x win rate x size / cycle. Compare levers with it; never forecast with it.</span></div>
+      <div class="cheat-item"><b>Median and mean</b><span>14 and 48.4 days on the real rows: say which one, show both.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can say what each stage proves and which four numbers your pipeline rests on. Business session 2 reads a pipeline review the way a sceptical finance partner would: coverage ratios and where "3x" comes from, stale deals, and deals pulled forward or pushed out.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Business session 1 of 4 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← Course home</a> &nbsp;·&nbsp; <a href="b2-reading-a-pipeline-review.html">Next: Reading a pipeline review →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Analyst session 1 of 6. The pipeline data model: the opportunity table, the stage-history event table and the weekly snapshot; why a CRM's current state overwrites what happened; and how to rebuild any past week's pipeline from events. Hands-on in the browser on Kettle &amp; Co's constructed event log.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="The pipeline data model - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Analyst session 1 of 6. Store the events, derive the states. Rebuild last month's pipeline from a stage-history log.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/a1-the-pipeline-data-model.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The pipeline data model - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Analyst session 1 of 6. Events, not states: three tables and one as-of join.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Analyst session 1 · The pipeline data model - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Analyst session 1 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Analyst session 1 of 6</div>
+    <h1>The pipeline data model: <span class="accent">events, not states</span></h1>
+    <p class="sub">Ask a CRM what stage a deal is in and it answers instantly. Ask it what stage that deal was in six weeks ago and most CRMs cannot, because every update overwrote the field. Every honest number in the rest of the track, conversion by cohort, cycle time, forecast accuracy, needs the past as it was. Tonight: the three tables a pipeline needs, the one that most teams are missing, and the as-of join that rebuilds any week's pipeline from a stage-history log. The log belongs to Kettle &amp; Co's office-tea team and is constructed, so that two deals can go backwards on purpose.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Analyst</span>
+      <span class="chip audience">Data analysts who build pipeline reporting and forecasts</span>
+      <span class="chip audience">Hands-on in the browser</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Three tables, the overwrite, the as-of join</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: rebuild a past week</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">The Analyst track is for the people who build the numbers the Business track reads. Six sessions: tonight, the data model; then conversion done honestly, by cohort; velocity and cycle time, including deals still open; three forecast methods; how to measure a forecast's error; and the forecast honesty bench, where the three methods meet one real quarter. Every widget computes in your browser. The deal timings and outcomes come from real rows of Olist's public B2B funnel; Kettle &amp; Co's stages, amounts and reps are constructed and labelled wherever they appear.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone builds it</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A three-table pipeline model you can draw on a whiteboard, the as-of join that turns a stage-history log into a weekly snapshot, and a written list of what your own CRM keeps and throws away. Every later session assumes you can rebuild the pipeline as it stood on any past date.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers the three tables</span>
+      <h2>Three tables, and the one most teams lack</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">A pipeline needs three tables. The opportunity table has one row per deal and holds its current state. The stage-history table has one row per change: which deal, which stage, from when. The snapshot table has one row per deal per week and records where every deal stood. The first is what the CRM shows. The second is what actually happened. The third is derived from the second, and it is what every trend chart needs.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three hand-drawn tables. In the middle, the stage-history event table, hatched as the source: deal, stage, from week, one row per change, 32 rows for 8 Kettle deals. An arrow up-left to the opportunity table: one row per deal, the latest event only, 8 rows. An arrow right to the snapshot table: one row per deal per week, built by an as-of join, 8 deals times 13 weeks at most. The event table is the only one that can produce the other two.">
+        <defs>
+          <filter id="a1aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a1aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a1aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a1aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a1aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a1aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a1aB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a1aW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a1aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a1aH" x="30" y="28">ONE SOURCE, TWO DERIVED TABLES</text>
+        <text class="a1aS" x="270" y="28">Kettle &amp; Co's log, constructed: 8 deals, 32 events, weeks 0 to 12</text>
+
+        <g filter="url(#a1aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="56" width="230" height="110" rx="10" transform="rotate(-0.8 145 111)" fill="#FFFFFF"/>
+          <rect x="310" y="120" width="250" height="150" rx="10" transform="rotate(0.5 435 195)" fill="url(#a1aHc)"/>
+          <rect x="610" y="56" width="240" height="214" rx="10" transform="rotate(-0.5 730 163)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M318 150 L268 128" marker-end="url(#a1aAr)"/>
+          <path d="M566 196 L602 196" marker-end="url(#a1aAr)"/>
+          <!-- doodle: a log book under the source -->
+          <path d="M570 228 L602 228 L602 246 L570 246 Z M586 228 L586 246" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="324" y="134" width="222" height="122" rx="8" fill="#FFFFFF"/>
+
+        <text class="a1aH" x="46" y="80">OPPORTUNITY</text>
+        <text class="a1aL" x="46" y="102">one row per deal</text>
+        <text class="a1aS" x="46" y="122">deal · stage now · amount · rep</text>
+        <text class="a1aB" x="46" y="146">8 rows; the past is gone</text>
+
+        <text class="a1aH" x="336" y="154">STAGE HISTORY (events)</text>
+        <text class="a1aL" x="336" y="176">one row per change</text>
+        <text class="a1aS" x="336" y="196">deal · stage · from week</text>
+        <text class="a1aS" x="336" y="214">K-102 · Tasting trial · 6</text>
+        <text class="a1aS" x="336" y="232">K-102 · Need confirmed · 9</text>
+        <text class="a1aB" x="336" y="250">32 rows; the source</text>
+
+        <text class="a1aH" x="626" y="80">WEEKLY SNAPSHOT</text>
+        <text class="a1aL" x="626" y="102">one row per deal per week</text>
+        <text class="a1aS" x="626" y="122">week · deal · stage that week</text>
+        <text class="a1aS" x="626" y="150">built by an as-of join:</text>
+        <text class="a1aS" x="626" y="168">the latest event at or</text>
+        <text class="a1aS" x="626" y="186">before each week</text>
+        <text class="a1aS" x="626" y="214">up to 8 x 13 rows</text>
+
+        <text class="a1aS" x="30" y="190">latest event per deal</text>
+
+        <text class="a1aN" x="30" y="308">Keep the events. Both other tables can be rebuilt from them; neither can rebuild the events.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the hatched table in the middle is the only one that remembers, and it is the one most CRMs keep least</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>What each table is for<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Opportunity.</strong> Today's pipeline review. Amount, owner, close date, stage now. It is the table the CRM edits in place, so it can never answer a question about the past.</p>
+        <p><strong>Stage history.</strong> Append-only: a row is added when a deal changes stage, and nothing is ever updated. Columns: deal id, new stage, timestamp, and ideally who changed it. Many CRMs keep some version of this (a field-history or audit log), often with a retention limit or only for fields someone switched on. Find out which before you promise a trend.</p>
+        <p><strong>Snapshot.</strong> Derived. One row per deal per reporting period, with the stage it was in at the end of that period. Conversion by cohort, stage-to-stage timing and forecast accuracy all read from here.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>If your CRM keeps no history at all<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Start a snapshot tonight: a scheduled job that copies the opportunity table, with a date column, once a week. It cannot recover the past, but in a quarter you will have thirteen weeks of evidence. Some CRMs offer a built-in historical trending or snapshot report; it is worth turning on even if you also run your own copy, because it is the vendor's record of what the table said. Re-verify how far back your vendor's history goes before you rely on it.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The public data has no history either.</strong> Olist's public funnel, the real rows behind this track, ships two tables: every lead with its first-contact date and origin, and every won deal with its won date. There is no stage history and no lost deal. That is common in exports: what survives is the start and the happy ending. Every stage you see on Kettle's pages had to be constructed, which is exactly what a team without an event log ends up doing by hand.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the overwrite</span>
+      <h2>How the current state erases what happened</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">When a deal moves backwards, the stage field is simply set to the lower stage. When it is lost, it becomes "Lost". The opportunity table then shows a clean end state and nothing of the path. Two of Kettle's eight deals went backwards. Without the event log, nobody can tell that K-102 once reached a tasting trial, or that K-107 sat at Proposal for three weeks.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two hand-drawn timelines over weeks 0 to 12. Deal K-102 climbs from Contacted to Need confirmed to Tasting trial in week 6, falls back to Need confirmed in week 9, and is lost in week 12. Deal K-107 jumps to Proposal in week 7 and falls back to Tasting trial in week 10. On the right, a single CRM cell for each deal shows only Lost and Tasting trial. The backward moves are drawn in copper.">
+        <defs>
+          <filter id="a1bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="17" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a1bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a1bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a1bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a1bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a1bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a1bB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a1bA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a1bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a1bH" x="30" y="28">TWO PATHS, AND WHAT THE OPPORTUNITY TABLE KEEPS</text>
+        <text class="a1bS" x="430" y="28">x: week 0 to 12 · y: stage 1 (low) to 4 (high) · constructed</text>
+
+        <g filter="url(#a1bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M80 140 L560 140 M80 260 L560 260" stroke="#C9D2CE"/>
+          <path d="M80 130 L200 130 L200 110 L320 110 L320 90 L440 90" stroke="#5A6D65"/>
+          <path d="M440 90 L440 110 L560 110" stroke="#8C4A1E" stroke-width="3"/>
+          <path d="M240 250 L280 250 L280 230 L360 230 L360 190 L480 190" stroke="#5A6D65"/>
+          <path d="M480 190 L480 210 L560 210" stroke="#8C4A1E" stroke-width="3"/>
+          <path d="M600 110 L668 110" marker-end="url(#a1bAr)"/>
+          <path d="M600 210 L668 210" marker-end="url(#a1bAr)"/>
+          <rect x="676" y="88" width="170" height="44" rx="8" transform="rotate(-0.8 761 110)" fill="#FFFFFF"/>
+          <rect x="676" y="188" width="170" height="44" rx="8" transform="rotate(0.8 761 210)" fill="#FFFFFF"/>
+          <!-- doodle: an eraser over the CRM cells -->
+          <path d="M770 52 L812 52 L812 70 L770 70 Z" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a1bL" x="30" y="70">K-102</text>
+        <text class="a1bS" x="330" y="80">trial, week 6</text>
+        <text class="a1bB" x="452" y="128">back, week 9</text>
+        <text class="a1bS" x="80" y="160">lost in week 12</text>
+
+        <text class="a1bL" x="30" y="178">K-107</text>
+        <text class="a1bS" x="370" y="180">Proposal, week 7</text>
+        <text class="a1bB" x="490" y="232">back, wk 10</text>
+
+        <text class="a1bA" x="690" y="115">CRM today: Lost</text>
+        <text class="a1bA" x="690" y="215">CRM today: Tasting trial</text>
+        <text class="a1bS" x="756" y="84">overwritten</text>
+
+        <text class="a1bN" x="30" y="288">The copper segments exist only in the event log. Stall rate and stage reversals cannot be measured without it.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper steps are the information the opportunity table throws away</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Three questions you cannot answer from current state<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>What did the pipeline look like on the first day of the quarter?</strong> The forecast was made from that pipeline. To score the forecast later (Analyst session 5), you need it frozen as it was.</p>
+        <p><strong>How long do deals sit in each stage?</strong> Needs the entry and exit date of each stage, which only the event log holds. Analyst session 3 uses first contact to won because the public rows have nothing in between.</p>
+        <p><strong>How often do deals go backwards?</strong> A reversal is a real signal: a trial that disappointed, a budget that moved. Current state reports the end and hides the stall.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Close dates get overwritten too<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The expected close date is the field most often edited and least often logged. A deal whose close date moved from June to July to September looks, in the opportunity table, like a September deal with no history. Log close-date changes as events alongside stage changes. Business session 2 calls these deals "pushed out", and you can only count them if the old dates were kept.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers the as-of join</span>
+      <h2>Rebuild any week from the events</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">The snapshot for week w is, for every deal that exists by then, its most recent event at or before w. That operation is an as-of join, and it is the one piece of SQL every pipeline analyst should be able to write from memory. Get the inequality right (at or before, not before) and the snapshot matches what a person looking at the CRM that week would have seen.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn as-of join for deal K-107. A row of its four events on a week ruler: Contacted at week 4, Need confirmed at week 5, Proposal at week 7, Tasting trial at week 10. A vertical line at week 9 marks the snapshot date. An arrow picks the latest event at or before the line: Proposal from week 7. Events to the right of the line are greyed out as not yet happened.">
+        <defs>
+          <filter id="a1cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="23" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a1cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a1cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a1cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a1cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a1cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a1cW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a1cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a1cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a1cH" x="30" y="28">SNAPSHOT AT WEEK 9, DEAL K-107</text>
+        <text class="a1cS" x="270" y="28">pick the latest event at or before the snapshot date</text>
+
+        <g filter="url(#a1cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M60 200 L840 200"/>
+          <path d="M60 192 L60 208 M190 192 L190 208 M255 192 L255 208 M385 192 L385 208 M515 192 L515 208 M580 192 L580 208 M840 192 L840 208"/>
+          <rect x="140" y="70" width="100" height="44" rx="8" transform="rotate(-1 190 92)" fill="#FFFFFF"/>
+          <rect x="250" y="126" width="110" height="44" rx="8" transform="rotate(1 305 148)" fill="#FFFFFF"/>
+          <rect x="350" y="70" width="90" height="44" rx="8" transform="rotate(-0.8 395 92)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="560" y="126" width="110" height="44" rx="8" transform="rotate(0.8 615 148)" fill="url(#a1cHc)" stroke="#C9D2CE"/>
+          <path d="M515 50 L515 236" stroke="#5A6D65" stroke-width="3"/>
+          <path d="M508 60 Q470 58 446 84" marker-end="url(#a1cAr)"/>
+          <!-- doodle: a pin at the snapshot line -->
+          <circle cx="515" cy="44" r="7" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="568" y="134" width="94" height="28" rx="6" fill="#FFFFFF"/>
+
+        <text class="a1cL" x="150" y="96">Contacted</text>
+        <text class="a1cL" x="260" y="152">Need confirmed</text>
+        <text class="a1cW" x="360" y="96">Proposal</text>
+        <text class="a1cS" x="574" y="152">Tasting trial</text>
+
+        <text class="a1cS" x="182" y="224">wk 4</text>
+        <text class="a1cS" x="247" y="224">wk 5</text>
+        <text class="a1cS" x="377" y="224">wk 7</text>
+        <text class="a1cS" x="522" y="224">wk 9</text>
+        <text class="a1cS" x="572" y="224">wk 10</text>
+        <text class="a1cB" x="530" y="72">snapshot</text>
+        <text class="a1cS" x="600" y="190">not yet happened</text>
+
+        <text class="a1cN" x="30" y="282">At week 9 the answer is Proposal. The CRM today says Tasting trial, the week-10 event.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper event is the one the join picks; the hatched one is invisible from week 9</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The as-of join in SQL<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Most warehouses can do this with a window function. Rank each deal's events at or before the snapshot date, newest first, and keep rank 1. Some engines also have a dedicated <code>ASOF JOIN</code>; the window version runs almost everywhere.</p>
+        <div class="prompt-box good"><span class="label">★ Snapshot at one date</span>SELECT deal_id, stage, changed_at
+FROM (
+  SELECT e.*,
+         ROW_NUMBER() OVER (PARTITION BY deal_id
+                            ORDER BY changed_at DESC) AS rn
+  FROM stage_events e
+  WHERE e.changed_at &lt;= DATE '2018-06-01'   -- at or before
+) t
+WHERE rn = 1;</div>
+        <p>For a weekly snapshot table, cross join the deals with a calendar of week-end dates first, then apply the same rule per week.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Two bugs that hide in the inequality<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Strictly before.</strong> Using <code>&lt;</code> instead of <code>&lt;=</code> drops a change made on the snapshot date itself, so a deal that moved on Monday morning appears one stage lower in Monday's snapshot.</p>
+        <p><strong>Time zones.</strong> A change stamped 23:30 in one time zone is the next day in another. Decide which clock the snapshot uses (usually the sales team's) and convert before comparing. A forecast frozen on the wrong side of midnight is scored against a pipeline nobody saw.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Rebuild a past week from the log</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">The widget holds Kettle &amp; Co's eight-deal stage-history log and runs the as-of join in your browser every time you move the slider. The right-hand column is what the opportunity table shows today. Work the five steps and write down what the widget prints; the log is constructed, so the lesson is the mechanism, not the counts.</p>
+
+    <div class="spa-widget" data-mode="snapshot"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn map of the widget. A slider for the snapshot week feeds the as-of join, which reads the stage-history log and writes the middle column, stage in week w. The right column, the CRM today, is a fixed copy of the latest event. Cells where the two columns differ are marked in red in the widget.">
+        <defs>
+          <filter id="a1dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a1dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a1dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a1dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a1dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a1dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a1dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a1dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a1dH" x="30" y="28">WHAT THE WIDGET DOES WHEN YOU MOVE THE SLIDER</text>
+
+        <g filter="url(#a1dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="70" width="150" height="56" rx="10" transform="rotate(-1 105 98)" fill="#FFFFFF"/>
+          <path d="M186 98 L232 98" marker-end="url(#a1dAr)"/>
+          <rect x="240" y="70" width="170" height="56" rx="10" transform="rotate(0.8 325 98)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="240" y="150" width="170" height="56" rx="10" transform="rotate(-0.6 325 178)" fill="url(#a1dHc)"/>
+          <path d="M325 146 L325 132" marker-end="url(#a1dAr)"/>
+          <path d="M416 98 L462 98" marker-end="url(#a1dAr)"/>
+          <rect x="470" y="70" width="170" height="56" rx="10" transform="rotate(-0.8 555 98)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="670" y="70" width="180" height="56" rx="10" transform="rotate(0.8 760 98)" fill="#FFFFFF"/>
+          <!-- doodle: slider knob -->
+          <path d="M50 150 L160 150" stroke="#5A6D65"/>
+          <circle cx="110" cy="150" r="7" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="252" y="160" width="146" height="36" rx="6" fill="#FFFFFF"/>
+
+        <text class="a1dL" x="46" y="94">snapshot week</text>
+        <text class="a1dS" x="46" y="112">slider, 0 to 12</text>
+        <text class="a1dW" x="254" y="94">as-of join</text>
+        <text class="a1dW" x="254" y="112">latest event at or before</text>
+        <text class="a1dL" x="262" y="183">stage-history log</text>
+        <text class="a1dL" x="484" y="94">stage in week w</text>
+        <text class="a1dS" x="484" y="112">middle column</text>
+        <text class="a1dL" x="684" y="94">CRM today</text>
+        <text class="a1dS" x="684" y="112">fixed: latest event</text>
+
+        <text class="a1dN" x="30" y="236">Where the middle and right columns disagree, the opportunity table has overwritten that week.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper box is the whole technique; everything else is display</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Read week 6.</strong> The slider starts there. Copy the verdict line and count how many deals sit at Tasting trial.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · what the widget prints</span>Week 6: 8 open, 0 won, 0 lost. The CRM today shows 5 open, 1 won, 2 lost.
+at Tasting trial in week 6: K-101, K-102, K-105</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Move to week 9.</strong> Four deals now sit at Proposal. Look at K-102: it has dropped back to Need confirmed. The right-hand column says Lost, which was true only from week 12.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · the week a quarter's forecast would have used</span>Week 9: 8 open, 0 won, 0 lost.
+at Proposal: K-101, K-103, K-105, K-107
+K-102: Need confirmed (week 9)  |  CRM today: Lost</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Score week 9's Proposal deals against today.</strong> Of the four deals at Proposal in week 9, read their right-hand column. This is the smallest possible stage-to-outcome table, and you just built it from events.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · four Proposal deals, what became of them</span>K-101  Won
+K-103  Contract out
+K-105  Contract out
+K-107  Tasting trial   (went backwards in week 10)</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Read the hint line.</strong> It lists every backward move the log holds. Write both down; then ask how your own CRM would store each one.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · the backward moves</span>Went backwards in the log: K-102 (week 9, Tasting trial to Need confirmed);
+K-107 (week 10, Proposal to Tasting trial).</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · Write your own model in three lines.</strong> For your CRM, name the table or report that plays each role, and mark the role nobody plays yet. That gap is your first data request.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · your three tables</span>opportunity (current state):  ________________________________
+stage history (events):       ________________________________  kept since: ________
+weekly snapshot (derived):    ________________________________  or: start a weekly copy job</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Freeze the forecast's pipeline.</strong> On the day a quarter's forecast is made, save that day's snapshot with the forecast. Analyst session 5 scores the forecast against what closed, and the score means nothing if the pipeline it was made from has since been edited.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Analyst session 2</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Find your stage history.</strong> Locate the field-history or audit table for opportunity stage in your CRM, and note how far back it goes and whether close-date changes are logged too.</li>
+      <li><strong>Write the as-of join</strong> against it for the first day of last quarter, and count deals by stage.</li>
+      <li><strong>Compare</strong> that count with what the opportunity table says today about the same deals. Write down how many changed stage, and how many went backwards.</li>
+      <li><strong>If there is no history,</strong> schedule a weekly snapshot copy today, and note the date it starts. Every later session gets easier from that date on.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Analyst session 1 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · Which table can rebuild the other two?</p>
+      <button class="qopt" type="button">A · The opportunity table, because it is the most current</button>
+      <button class="qopt" type="button">B · The stage-history event table, because it records every change with its date</button>
+      <button class="qopt" type="button">C · The weekly snapshot, because it has the most rows</button>
+      <button class="qopt" type="button">D · None of them; you need a data vendor</button>
+      <p class="qwhy">Current state is the latest event per deal; a snapshot is the latest event at or before each week. Neither can rebuild the events.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">2 · In week 9, K-102 sat at Need confirmed; the CRM today says Lost. What does a snapshot at week 9 show for K-102?</p>
+      <button class="qopt" type="button">A · Lost, because that is its final state</button>
+      <button class="qopt" type="button">B · Tasting trial, its highest stage so far</button>
+      <button class="qopt" type="button">C · Nothing; lost deals are dropped from snapshots</button>
+      <button class="qopt" type="button">D · Need confirmed, its latest event at or before week 9</button>
+      <p class="qwhy">The as-of join takes the latest event at or before the snapshot date. The week-12 loss had not happened yet.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">3 · A stage change is stamped on the snapshot date itself. Your query filters <code>changed_at &lt; snapshot_date</code>. What goes wrong?</p>
+      <button class="qopt" type="button">A · The change is dropped, so the deal shows one stage behind what the team saw that day</button>
+      <button class="qopt" type="button">B · Nothing; the two filters are equivalent</button>
+      <button class="qopt" type="button">C · The deal is counted twice</button>
+      <button class="qopt" type="button">D · The query fails to run</button>
+      <p class="qwhy">"At or before" means &lt;=. A strict inequality silently lags every same-day change.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Olist's public funnel has leads and won deals, no stage history, no lost deals</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0, read at source (both files opened)</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">CRMs keep field history or snapshot reports, with limits</span><span class="note">General vendor behaviour; check your own CRM's documentation and retention before relying on it</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co's eight-deal event log and every snapshot count</span><span class="note">Constructed and labelled; printed by the widget on this page</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">The as-of join with a window function</span><span class="note">Standard SQL; the widget runs the same rule in the browser</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Analyst session 1 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Three tables</b><span>Opportunity (now), stage history (events), snapshot (derived per week).</span></div>
+      <div class="cheat-item"><b>Events are the source</b><span>Append-only, never updated. The other two are rebuilt from them.</span></div>
+      <div class="cheat-item"><b>As-of join</b><span>Latest event at or before the date: ROW_NUMBER by deal, newest first, keep 1.</span></div>
+      <div class="cheat-item"><b>&lt;= not &lt;</b><span>A strict filter drops same-day changes. Fix the clock and time zone too.</span></div>
+      <div class="cheat-item"><b>Backward moves</b><span>K-102 and K-107 went back; the opportunity table kept neither.</span></div>
+      <div class="cheat-item"><b>Freeze the forecast day</b><span>Save the snapshot the forecast was made from, or it cannot be scored.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can rebuild the pipeline as it stood on any date. Analyst session 2 uses that to measure conversion honestly: by the month a lead arrived, not the month a deal closed, on the real Olist rows, where the period version tells a very different story.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Analyst session 1 of 6 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="../index.html">← Course home</a> &nbsp;·&nbsp; <a href="a2-conversion-done-honestly.html">Next: Conversion done honestly →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/spa-sample.js?v=1"></script>
+<script src="../assets/spa-live.js?v=1"></script>
+<script src="../assets/spa-bench.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

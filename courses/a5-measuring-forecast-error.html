@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Analyst session 5 of 6. Bias, error and the track record: score a forecast over twenty replays of the quarter, not one; tell bias from error; read a rep's call ratio; and check whether an 80% range really covers about 16 quarters in 20. Hands-on in the browser on real Olist outcomes with Kettle &amp; Co's constructed stages, amounts and reps.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Bias, error and the track record - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Analyst session 5 of 6. One quarter is an anecdote. Score three forecast methods and four reps over twenty quarters: bias, error, coverage.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/a5-measuring-forecast-error.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bias, error and the track record - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Analyst session 5 of 6. Unbiased is not the same as useful: bias, error and honest ranges over twenty quarters.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Analyst session 5 · Bias, error and the track record - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Analyst session 5 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Analyst session 5 of 6</div>
+    <h1>Bias, error and <span class="accent">the track record</span></h1>
+    <p class="sub">Last session three methods each forecast one quarter, and one of them landed closest. That tells you almost nothing. A method that wins one quarter can lose the next five, and a rep who is right on average can be wrong by two thirds every single quarter. Tonight you score forecasts the way a finance team scores them: over many quarters, with three separate numbers. Bias says which way a forecast leans. Error says how far it misses. Coverage says whether its range can be trusted. The outcomes are real Olist rows; Kettle &amp; Co's stages, amounts and reps are constructed and labelled.</p>
+    <div class="chip-row">
+      <span class="chip level">🟠 Analyst</span>
+      <span class="chip audience">Data analysts who build pipeline reporting and forecasts</span>
+      <span class="chip audience">Hands-on in the browser</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Replays, bias vs error, honest ranges</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: score twenty quarters</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">You can rebuild the pipeline on any date (Analyst session 1), measure conversion by cohort (session 2), read cycle time with open deals left in (session 3), and produce three forecasts for a quarter (session 4). Tonight is about the track record: the scores that tell a BD lead which forecast to believe next quarter, and by how much. The scores here are for sales forecasts built deal by deal. The metric families used to compare statistical forecasting models, and the backtesting that goes with them, belong to <a href="https://phoebefu6.github.io/learn-timeseries-forecasting-with-phoebe/">Learn Timeseries Forecasting with Phoebe</a>; the ideas rhyme, the inputs differ.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone builds it</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> Three definitions you can write on a whiteboard without notes, a 2x2 that separates a leaning forecast from a noisy one, a coverage check for any range a forecast publishes, and a short pandas script that scores your own past quarters from frozen snapshots. Analyst session 6 runs the whole ladder on one bench; tonight builds the scoreboard it uses.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers forecast vs actual over many quarters</span>
+      <h2>One quarter is an anecdote</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">A single quarter gives each forecast one miss. One miss has a size and a sign, but it cannot tell you whether the forecast leans, because a lean only shows up when the misses keep falling on the same side. So the bench replays the quarter twenty times. Each replay draws a different 300 deals from the same 3,465 real open leads, keeps who really closed between 1 June and 30 August 2018, and lays Kettle &amp; Co's constructed stages, amounts and reps over the top with a fixed seed. Across those twenty quarters, the average quarter really closed 4.57m yen.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Twenty dots on a signed error axis from minus 100 to plus 150 percent, one per replayed quarter of the history-based forecast. Dot positions are illustrative. A vertical line marks zero. A copper arrow from zero to plus 18.6 percent marks the bias over twenty replays. The left panel gives the widget's summary: bias plus 18.6 percent, error 38.8 percent, coverage 17 of 20. One filled dot marks this quarter alone, minus 14.5 percent: on its own it would suggest the method leans low.">
+        <defs>
+          <filter id="a5aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="51" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a5aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a5aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a5aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a5aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a5aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a5aB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a5aA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a5aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a5aH" x="30" y="28">ONE METHOD, TWENTY QUARTERS</text>
+        <text class="a5aS" x="270" y="28">history-based · dot positions illustrative · summary numbers printed by the widget</text>
+
+        <g filter="url(#a5aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="60" width="230" height="170" rx="10" transform="rotate(-0.6 145 145)" fill="#FFFFFF"/>
+          <path d="M300 226 L850 226"/>
+          <path d="M300 220 L300 232 M410 220 L410 232 M630 220 L630 232 M740 220 L740 232 M850 220 L850 232"/>
+          <path d="M520 118 L520 232" stroke="#34443E" stroke-width="2.4"/>
+          <path d="M520 100 L561 100" stroke="#8C4A1E" stroke-width="3" marker-end="url(#a5aAr)"/>
+          <path d="M488 170 L488 154" stroke="#535E59" stroke-width="1.4"/>
+          <circle cx="388" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="436" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="472" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="498" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="520" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="546" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="575" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="608" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="696" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="762" cy="200" r="6" fill="#EEF2F0"/>
+          <circle cx="421" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="454" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="488" cy="178" r="6" fill="#5A6D65"/>
+          <circle cx="509" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="531" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="560" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="586" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="656" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="729" cy="178" r="6" fill="#EEF2F0"/>
+          <circle cx="784" cy="178" r="6" fill="#EEF2F0"/>
+          <!-- doodle: a replay loop -->
+          <path d="M222 102 A12 12 0 1 1 236 108" stroke="#5A6D65" marker-end="url(#a5aAr)"/>
+        </g>
+
+        <text class="a5aL" x="46" y="86">History-based</text>
+        <text class="a5aS" x="46" y="108">each dot is one replayed quarter:</text>
+        <text class="a5aS" x="46" y="126">(forecast - actual) / actual</text>
+        <text class="a5aB" x="46" y="156">bias +18.6%</text>
+        <text class="a5aA" x="46" y="178">error 38.8%</text>
+        <text class="a5aA" x="46" y="200">coverage 17 of 20</text>
+        <text class="a5aS" x="46" y="220">average actual 4.57m yen</text>
+
+        <text class="a5aA" x="300" y="104">under-forecast</text>
+        <text class="a5aA" x="760" y="104">over-forecast</text>
+        <text class="a5aB" x="572" y="104">bias +18.6%</text>
+        <text class="a5aS" x="372" y="146">this quarter: -14.5%</text>
+
+        <text class="a5aS" x="286" y="248">-100%</text>
+        <text class="a5aS" x="398" y="248">-50%</text>
+        <text class="a5aS" x="517" y="248">0</text>
+        <text class="a5aS" x="618" y="248">+50%</text>
+        <text class="a5aS" x="726" y="248">+100%</text>
+        <text class="a5aS" x="828" y="248">+150%</text>
+
+        <text class="a5aN" x="30" y="274">Bias is where the dots sit on average. Error is how far they sit from zero, with the sign ignored.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the filled dot alone says "leans low"; the twenty together say "leans high", and only the twenty can say it</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Three definitions, exactly<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Every number on the widget comes from one of these three. Write them down in this form, because small changes in wording produce different numbers.</p>
+        <div class="prompt-box good"><span class="label">★ The scoreboard</span>bias     = total (forecast - actual) / total actual          over all quarters
+error    = mean |forecast - actual| / mean actual             over all quarters
+coverage = quarters whose actual fell inside the range       e.g. 17 of 20</div>
+        <p><strong>Bias</strong> keeps the sign, so overs and unders cancel. It answers "which way does this forecast lean?" <strong>Error</strong> drops the sign, so nothing cancels. It answers "how far off is a typical quarter?" <strong>Coverage</strong> ignores the point forecast and checks only the range, so it answers "when this forecast says 'somewhere between', can I plan on that?"</p>
+        <p>Both bias and error are scaled by actuals in total, not quarter by quarter. A tiny quarter with a huge percentage miss would otherwise dominate the average, which is the main reason per-quarter percentage averages behave badly on lumpy sales numbers.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>How the twenty replays are built, and how yours would differ<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>On the bench.</strong> The open pool is 3,465 real Olist leads first contacted March to May 2018 and not won by 1 June 2018. Each replay draws 300 of them; draw 0 is "this quarter", the one Analyst session 4 forecast. Which leads really closed in the 91 days to 30 August 2018 is real. Stages, amounts and which rep owns a deal are constructed with seed 20181011, so every reload prints the same numbers.</p>
+        <p><strong>On your own data.</strong> You do not need replays: you have past quarters. For each one you need two frozen things, the forecast as it was submitted and the pipeline snapshot it was made from (the as-of join from Analyst session 1), plus what really closed by quarter end. Eight quarters is a thin track record; twelve is better. Replays stand in for that history here because the public rows cover only one usable quarter.</p>
+        <p><strong>What replays cannot do.</strong> Every replay shares the same market, the same season and the same buyers' behaviour. Real quarters differ in all three, so a real track record will usually look worse than a replayed one.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The sign flipped.</strong> On this quarter alone, the history-based forecast missed by -14.5%: it under-called what really closed in the Olist rows. Judged on that one quarter, you would conclude it is cautious and nudge it up. Over the twenty replays it leans the other way, +18.6%. The quarter Analyst session 4 used happened to close 5.86m yen against an average of 4.57m, a strong quarter, and a strong quarter makes every forecast look cautious. One quarter told you the opposite of the truth, and nothing on the page warned you.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers bias vs error</span>
+      <h2>Unbiased is not the same as useful</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Bias and error measure different failures, and a forecast can pass one and fail the other. A rep who over-calls by a million one quarter and under-calls by a million the next has zero bias and a large error. A forecast that is always 10% high has bias and error both at 10%, and it is easy to fix. The one shape that cannot exist is high bias with low error: the average miss, sign ignored, is never smaller than the size of the average lean.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 478" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn 2x2: size of bias on the x axis, error on the y axis, both 0 to about 100 percent, split at 50 percent. A diagonal marks the floor where error equals the size of the bias; the hatched region below it is empty by arithmetic. Points: 1 history-based, bias 18.6, error 38.8, low and low. 2 rep commit, 33.9 and 48.2. 3 stage-weighted, 62.7 and 68.2. 4 Aiko, call ratio 0.98, bias about minus 2, error 68.0, in copper: low bias, high error. 5 Chiara, ratio 1.45, error 69.7. 6 Dev, ratio 0.00, bias minus 100, error 100, on the diagonal. 7 Ben, ratio 4.60, error 360.1, off the chart up and right.">
+        <defs>
+          <filter id="a5bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a5bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a5bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a5bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a5bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a5bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a5bB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a5bA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .a5bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a5bH" x="30" y="28">BIAS AND ERROR ARE TWO DIFFERENT QUESTIONS</text>
+        <text class="a5bS" x="370" y="28">twenty replays · methods filled, reps hollow · Kettle's reps constructed</text>
+
+        <g filter="url(#a5bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M110 400 L530 400 L530 106 Z" fill="url(#a5bHc)" stroke="#C9D2CE"/>
+          <rect x="110" y="104" width="420" height="296" rx="4" transform="rotate(-0.2 320 252)"/>
+          <path d="M310 104 L310 400 M110 260 L530 260" stroke="#C9D2CE"/>
+          <path d="M110 400 L530 106" stroke="#34443E" stroke-dasharray="6 5"/>
+          <rect x="580" y="104" width="280" height="300" rx="10" transform="rotate(0.4 720 254)" fill="#FFFFFF"/>
+          <circle cx="184" cy="291" r="6" fill="#5A6D65"/>
+          <circle cx="246" cy="265" r="6" fill="#5A6D65"/>
+          <circle cx="361" cy="209" r="6" fill="#5A6D65"/>
+          <circle cx="118" cy="210" r="6" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <circle cx="290" cy="205" r="6" fill="#FFFFFF"/>
+          <circle cx="510" cy="120" r="6" fill="#FFFFFF"/>
+          <path d="M532 102 L556 84" marker-end="url(#a5bAr)"/>
+          <!-- doodle: a coaching speech bubble -->
+          <path d="M34 312 L92 312 L92 342 L58 342 L46 354 L48 342 L34 342 Z" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="356" y="352" width="160" height="40" rx="6" fill="#FFFFFF"/>
+
+        <text class="a5bA" x="30" y="92">error: average miss / average actual (up)</text>
+        <text class="a5bS" x="82" y="404">0%</text>
+        <text class="a5bS" x="76" y="264">50%</text>
+        <text class="a5bS" x="70" y="124">100%</text>
+        <text class="a5bS" x="104" y="418">0%</text>
+        <text class="a5bS" x="300" y="418">50%</text>
+        <text class="a5bS" x="496" y="418">100%</text>
+        <text class="a5bA" x="110" y="440">size of bias: |total forecast - total actual| / total actual</text>
+
+        <text class="a5bA" x="118" y="124">low bias, high error</text>
+        <text class="a5bA" x="318" y="124">high bias, high error</text>
+        <text class="a5bA" x="118" y="330">the goal</text>
+        <text class="a5bS" x="364" y="368">empty by arithmetic:</text>
+        <text class="a5bS" x="364" y="384">error is never below |bias|</text>
+
+        <text class="a5bL" x="170" y="284">1</text>
+        <text class="a5bL" x="232" y="258">2</text>
+        <text class="a5bL" x="347" y="202">3</text>
+        <text class="a5bB" x="128" y="202">4</text>
+        <text class="a5bL" x="276" y="198">5</text>
+        <text class="a5bL" x="488" y="118">6</text>
+        <text class="a5bL" x="562" y="88">7</text>
+
+        <text class="a5bH" x="596" y="130">BIAS / ERROR, 20 REPLAYS</text>
+        <text class="a5bS" x="596" y="158">1 History-based +18.6% / 38.8%</text>
+        <text class="a5bS" x="596" y="184">2 Rep commit +33.9% / 48.2%</text>
+        <text class="a5bS" x="596" y="210">3 Stage-weighted +62.7% / 68.2%</text>
+        <text class="a5bB" x="596" y="236">4 Aiko: ratio 0.98 (-2%) / 68.0%</text>
+        <text class="a5bS" x="596" y="262">5 Chiara: ratio 1.45 (+45%) / 69.7%</text>
+        <text class="a5bS" x="596" y="288">6 Dev: ratio 0.00 (-100%) / 100.0%</text>
+        <text class="a5bS" x="596" y="314">7 Ben: ratio 4.60 / 360.1%, off chart</text>
+        <text class="a5bS" x="596" y="346">rep bias = call ratio - 1 (arithmetic)</text>
+        <text class="a5bB" x="596" y="380">Aiko: unbiased and useless</text>
+
+        <text class="a5bN" x="30" y="462">Points below the diagonal cannot exist: the average miss is never smaller than the size of the average lean.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper dot sits at almost zero bias and still misses by two thirds; low bias alone earns nothing</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>The method table, read row by row<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Rep commit: +33.9% bias, 48.2% error.</strong> It leans high, and most of its error is that lean. A steady lean is the most fixable fault a forecast can have, as long as it stays steady.</p>
+        <p><strong>Stage-weighted: +62.7% bias, 68.2% error.</strong> It leans hardest of the three. Almost all of its error is lean, which says the stage table (Kettle's own, from the prior quarter) is set too generously for the deals now in the pipe.</p>
+        <p><strong>History-based: +18.6% bias, 38.8% error.</strong> The smallest of both, and still not small. Over half its error is noise rather than lean, which is what you expect from about seven wins a quarter: a couple of deals arriving a week early or late moves the actual a long way.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Per rep: the call ratio<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>The call ratio is a rep's total commit over twenty quarters divided by what that rep really closed. It is the rep's bias plus one. Above 1 over-calls, below 1 under-calls.</p>
+        <p><strong>Aiko, 0.98.</strong> Unbiased in total, 68.0% error per quarter. As a single-quarter call her number is close to useless, yet she is the rep most managers would hold up as "accurate". <strong>Ben, 4.60.</strong> He commits from stage 4, a stage below the others, and over-calls more than four-fold; error 360.1%. <strong>Chiara, 1.45.</strong> Mildly high, 69.7% error. <strong>Dev, 0.00.</strong> He commits only once a contract is signed, so his commit is always zero and his error always 100.0%. That is an under-caller, often called a sandbagger, and his zero tells the BD lead nothing about what he will close.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why the best method still leans high<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>History-based learns conversion from earlier cohorts. In the real Olist rows the May 2018 cohort converted 10.0%, against 13 to 14% for January to April. A history-based forecast assumes the next quarter's leads behave like the last ones, so when a weaker cohort arrives it over-calls. That is the honest limit of the method: it cannot see a change it has not yet lived through. The remedy is not a cleverer formula; it is watching the lean quarter by quarter and asking why when it moves.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What to do with an over-caller or an under-caller<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A systematic lean is a pattern in how a person reads deals, so it is a coaching conversation for the BD lead, not something data should quietly correct. If an analyst divides Ben's commit by 4.60 every quarter, three things go wrong: Ben never learns, nobody notices when he changes, and the forecast now depends on a private adjustment no one signed off. Show the call ratio to the BD lead and to Ben, agree what "commit" means, and keep scoring. Who owns that conversation, and who owns the method, is the subject of <a href="b3-who-owns-the-forecast.html">Business session 3, Who owns the forecast</a>.</p>
+        <p>Dev's case is different. A zero is not a lean you can scale, because zero times anything is zero. The fix is a definition: commit means a deal the rep expects to sign this quarter, not one already signed.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Constructed Kettle &amp; Co example.</strong> In a forecast call, the BD lead praises Aiko for being "spot on over the year": her twenty-quarter call ratio is 0.98. The analyst puts the error column beside it: 68.0% per quarter. Both are true. Over a year her overs and unders cancel, so her total is right, but in any single quarter her number misses by about two thirds, and the BD lead plans quarters, not years. The right sentence for the call is "Aiko is honest and noisy; Ben is consistent and high; Dev is silent". Each one needs a different conversation.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers honest error bands</span>
+      <h2>An 80% range should miss about four quarters in twenty</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">A forecast that publishes a range is making a second promise: "the actual will land in here about this often". That promise can be scored on its own. An 80% range should cover the actual in about 16 of 20 quarters. History-based covers 17, which is what an honest range looks like. Stage-weighted covers 10: its range is too narrow, aimed too high, or both. Rep commit covers 4, because its floor, the commit itself, usually sits above what really closed.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 416" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three rows of twenty hand-drawn bars, one row per method. Each bar is one replay's range and each dot is what really closed. Filled bars covered the actual; copper-outlined bars missed it. Rep commit: 4 of 20 covered, most bars sit entirely above the dot because the floor is the commit. Stage-weighted: 10 of 20, narrow bars mostly above the dot. History-based: 17 of 20, wide bars that usually span the dot. Layout is illustrative; the counts are the widget's.">
+        <defs>
+          <filter id="a5cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="57" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a5cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a5cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a5cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a5cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a5cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a5cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a5cV { font: 800 17px Inter, sans-serif; fill: #34443E; }
+          .a5cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a5cH" x="30" y="28">THREE RANGES, TWENTY ACTUALS</text>
+        <text class="a5cS" x="270" y="28">bar: one replay's range · dot: what really closed · layout illustrative, counts real</text>
+
+        <g filter="url(#a5cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M30 160 L850 160 M30 260 L850 260" stroke="#E3E8E5"/>
+          <rect x="255" y="70" width="10" height="32" rx="2" transform="rotate(-2 260 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="285" y="70" width="10" height="32" rx="2" transform="rotate(1.5 290 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="315" y="72" width="10" height="42" rx="2" transform="rotate(-1 320 93)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="345" y="70" width="10" height="32" rx="2" transform="rotate(2 350 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="375" y="70" width="10" height="32" rx="2" transform="rotate(-1.5 380 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="405" y="70" width="10" height="32" rx="2" transform="rotate(-2 410 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="435" y="70" width="10" height="32" rx="2" transform="rotate(1.5 440 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="465" y="72" width="10" height="42" rx="2" transform="rotate(-1 470 93)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="495" y="70" width="10" height="32" rx="2" transform="rotate(2 500 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="525" y="70" width="10" height="32" rx="2" transform="rotate(-1.5 530 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="555" y="70" width="10" height="32" rx="2" transform="rotate(-2 560 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="585" y="72" width="10" height="42" rx="2" transform="rotate(1.5 590 93)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="615" y="70" width="10" height="32" rx="2" transform="rotate(-1 620 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="645" y="70" width="10" height="32" rx="2" transform="rotate(2 650 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="675" y="70" width="10" height="32" rx="2" transform="rotate(-1.5 680 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="705" y="70" width="10" height="32" rx="2" transform="rotate(-2 710 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="735" y="72" width="10" height="42" rx="2" transform="rotate(1.5 740 93)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="765" y="70" width="10" height="32" rx="2" transform="rotate(-1 770 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="795" y="70" width="10" height="32" rx="2" transform="rotate(2 800 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="825" y="70" width="10" height="32" rx="2" transform="rotate(-1.5 830 86)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <circle cx="260" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="290" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="320" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="350" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="380" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="410" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="440" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="470" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="500" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="530" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="560" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="590" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="620" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="650" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="680" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="710" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="740" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="770" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="800" cy="110" r="4" fill="#1B2622"/>
+          <circle cx="830" cy="110" r="4" fill="#1B2622"/>
+          <rect x="255" y="198" width="10" height="22" rx="2" transform="rotate(-2 260 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="285" y="198" width="10" height="22" rx="2" transform="rotate(1.5 290 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="315" y="180" width="10" height="20" rx="2" transform="rotate(-1 320 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="345" y="198" width="10" height="22" rx="2" transform="rotate(2 350 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="375" y="180" width="10" height="20" rx="2" transform="rotate(-1.5 380 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="405" y="198" width="10" height="22" rx="2" transform="rotate(-2 410 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="435" y="198" width="10" height="22" rx="2" transform="rotate(1.5 440 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="465" y="180" width="10" height="20" rx="2" transform="rotate(-1 470 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="495" y="220" width="10" height="20" rx="2" transform="rotate(2 500 230)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="525" y="198" width="10" height="22" rx="2" transform="rotate(-1.5 530 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="555" y="180" width="10" height="20" rx="2" transform="rotate(-2 560 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="585" y="180" width="10" height="20" rx="2" transform="rotate(1.5 590 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="615" y="198" width="10" height="22" rx="2" transform="rotate(-1 620 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="645" y="198" width="10" height="22" rx="2" transform="rotate(2 650 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="675" y="180" width="10" height="20" rx="2" transform="rotate(-1.5 680 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="705" y="198" width="10" height="22" rx="2" transform="rotate(-2 710 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="735" y="180" width="10" height="20" rx="2" transform="rotate(1.5 740 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="765" y="220" width="10" height="20" rx="2" transform="rotate(-1 770 230)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="795" y="198" width="10" height="22" rx="2" transform="rotate(2 800 209)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="825" y="180" width="10" height="20" rx="2" transform="rotate(-1.5 830 190)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <circle cx="260" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="290" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="320" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="350" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="380" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="410" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="440" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="470" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="500" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="530" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="560" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="590" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="620" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="650" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="680" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="710" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="740" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="770" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="800" cy="210" r="4" fill="#1B2622"/>
+          <circle cx="830" cy="210" r="4" fill="#1B2622"/>
+          <rect x="255" y="284" width="10" height="48" rx="2" transform="rotate(-2 260 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="285" y="284" width="10" height="48" rx="2" transform="rotate(1.5 290 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="315" y="284" width="10" height="48" rx="2" transform="rotate(-1 320 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="345" y="284" width="10" height="48" rx="2" transform="rotate(2 350 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="375" y="270" width="10" height="32" rx="2" transform="rotate(-1.5 380 286)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="405" y="284" width="10" height="48" rx="2" transform="rotate(-2 410 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="435" y="284" width="10" height="48" rx="2" transform="rotate(1.5 440 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="465" y="284" width="10" height="48" rx="2" transform="rotate(-1 470 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="495" y="284" width="10" height="48" rx="2" transform="rotate(2 500 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="525" y="284" width="10" height="48" rx="2" transform="rotate(-1.5 530 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="555" y="318" width="10" height="30" rx="2" transform="rotate(-2 560 333)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="585" y="284" width="10" height="48" rx="2" transform="rotate(1.5 590 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="615" y="284" width="10" height="48" rx="2" transform="rotate(-1 620 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="645" y="284" width="10" height="48" rx="2" transform="rotate(2 650 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="675" y="270" width="10" height="32" rx="2" transform="rotate(-1.5 680 286)" fill="#FFFFFF" stroke="#8C4A1E"/>
+          <rect x="705" y="284" width="10" height="48" rx="2" transform="rotate(-2 710 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="735" y="284" width="10" height="48" rx="2" transform="rotate(1.5 740 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="765" y="284" width="10" height="48" rx="2" transform="rotate(-1 770 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="795" y="284" width="10" height="48" rx="2" transform="rotate(2 800 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="825" y="284" width="10" height="48" rx="2" transform="rotate(-1.5 830 308)" fill="#BFCBC5" stroke="#5A6D65"/>
+          <circle cx="260" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="290" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="320" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="350" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="380" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="410" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="440" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="470" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="500" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="530" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="560" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="590" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="620" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="650" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="680" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="710" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="740" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="770" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="800" cy="310" r="4" fill="#1B2622"/>
+          <circle cx="830" cy="310" r="4" fill="#1B2622"/>
+          <!-- doodle: a tick mark -->
+          <path d="M836 44 L844 54 L860 34" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a5cL" x="30" y="92">Rep commit</text>
+        <text class="a5cV" x="30" y="116">4 of 20</text>
+        <text class="a5cS" x="30" y="136">floor sits above the actual</text>
+
+        <text class="a5cL" x="30" y="192">Stage-weighted</text>
+        <text class="a5cV" x="30" y="216">10 of 20</text>
+        <text class="a5cS" x="30" y="236">too narrow, aimed high</text>
+
+        <text class="a5cL" x="30" y="292">History-based</text>
+        <text class="a5cV" x="30" y="316">17 of 20</text>
+        <text class="a5cS" x="30" y="336">close to the 16 expected</text>
+
+        <text class="a5cS" x="30" y="378">filled bar: the range covered the actual · copper outline: <tspan class="a5cB">the range missed it</tspan></text>
+        <text class="a5cN" x="30" y="400">An honest 80% range misses about 4 quarters in 20. Covering 17 is consistent with that; 10 and 4 are not.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - count the copper outlines, not the bar heights: coverage is a promise about how often, and it is scored by counting</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>How the ranges are built, and why they are lumpy<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Rep commit's range runs from the commit to commit plus best case, so it is two rep judgements stacked. Stage-weighted and history-based ranges are modelled: the point forecast plus and minus 1.2816 standard deviations, a normal approximation of a sum of yes-or-no deals, each with its own win probability. That is the standard 80% band under a normal curve, and it is labelled as modelled on the widget.</p>
+        <p>The approximation is rough here. This quarter, 7 deals won out of 300. A sum of seven or so wins is lumpy: one large deal closing or slipping moves the actual by more than the smooth bell curve expects. So even an honest modelled range should be read as "about 80%", and coverage is the check on whether "about" is close enough.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Reading a coverage count<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Twenty quarters is a small sample, so 16 of 20 is the centre of a spread, not a pass mark. Constructed arithmetic for an honest 80% range: the count of covered quarters has a standard deviation of the square root of 20 x 0.8 x 0.2 = 3.2, which is 1.79. So 14 to 18 covered is ordinary; 17 is comfortably inside.</p>
+        <p><strong>10 of 20</strong> is more than three standard deviations below 16. An 80% range that covers half the time is either too narrow, centred in the wrong place, or both. With stage-weighted's +62.7% bias, the centre is the larger problem. <strong>4 of 20</strong> for rep commit is not a calibration slip at all: the range starts at the commit, and the commit sits above the actual in most quarters.</p>
+        <p>Coverage that is too high is a fault too. A range covering 20 of 20 every time is usually so wide it does not help anyone plan.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Happy ears: what moves and what does not<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>"Happy ears" is the sales habit of hearing a yes the buyer never said. On the bench, the checkbox moves 30% of Kettle's deals below stage 5 up one stage (constructed). Then:</p>
+        <ul>
+          <li><strong>Rep commit</strong> bias rises from +33.9% to +121.5%; coverage falls from 4 to 0 of 20.</li>
+          <li><strong>Stage-weighted</strong> bias rises from +62.7% to +134.0%; coverage falls from 10 to 3 of 20.</li>
+          <li><strong>History-based</strong> is unchanged: it reads each deal's origin and age, never its stage.</li>
+          <li><strong>Reps:</strong> call ratios move to Aiko 1.69, Ben 8.15, Chiara 2.18, Dev 0.00. Dev does not move, because he still commits only signed deals.</li>
+        </ul>
+        <p>History-based's immunity is also its blind spot. It cannot be inflated by a rep's optimism, and for the same reason it cannot see a real late-stage signal either. Analyst session 6 puts that trade-off on one bench.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What about published forecast-accuracy surveys?<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Forecasting and revenue-intelligence vendors and analyst firms publish surveys on how few sales forecasts land within some band of the actual. Leaders disagree about what they are worth. Some use them as an outside anchor: if most teams miss widely, a 38.8% error is not a crisis. Others treat them as marketing, because the method and sample are usually not published and the publisher sells the fix. Both readings are reasonable, and no survey figure is quoted here for that reason. Your own twenty quarters, scored with the definitions above, are a better benchmark than any survey for the one decision that matters: which forecast your BD lead should believe next quarter.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Constructed Kettle &amp; Co example.</strong> Before a board meeting, the reps get optimistic about the trials running in the office-tea pipeline, and three in ten deals below Contract out move up a stage. The stage-weighted range shifts up with them; across twenty replays it now covers the actual in 3 quarters of 20, down from 10. The history-based range does not move at all, because nothing it reads has changed. If your team publishes only the stage-weighted number, nobody in the room can tell optimism from progress. Publishing both, with their coverage, makes the gap visible.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Score twenty quarters, then score your own</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">The widget replays Kettle &amp; Co's quarter twenty times in your browser and scores all three methods and all four reps with the definitions from Part 1. The outcomes come from real Olist B2B funnel rows (Brazilian marketplace seller acquisition) standing in for Kettle's history; stages, amounts, reps and the 300-deal draws are constructed and seeded. Work the five steps, copy what the widget prints, and finish by writing the same scoring for your own past quarters.</p>
+
+    <div class="spa-widget" data-mode="accuracy"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn map of the widget. The happy ears checkbox feeds the replay engine, which draws 300 deals twenty times from 3,465 real open leads. The engine writes three outputs: the verdict line with the average actual and the smallest error, the method table with bias, error and range covered actual, and the rep table with commit stage, call ratio and error per quarter.">
+        <defs>
+          <filter id="a5dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a5dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a5dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a5dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a5dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a5dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a5dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a5dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a5dH" x="30" y="28">WHAT THE WIDGET DOES WHEN YOU TICK THE BOX</text>
+
+        <g filter="url(#a5dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="80" width="150" height="56" rx="10" transform="rotate(-1 105 108)" fill="#FFFFFF"/>
+          <path d="M186 108 L222 108" marker-end="url(#a5dAr)"/>
+          <rect x="230" y="80" width="200" height="56" rx="10" transform="rotate(0.8 330 108)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="230" y="164" width="200" height="56" rx="10" transform="rotate(-0.6 330 192)" fill="url(#a5dHc)"/>
+          <path d="M330 160 L330 144" marker-end="url(#a5dAr)"/>
+          <rect x="500" y="40" width="350" height="44" rx="8" transform="rotate(-0.5 675 62)" fill="#FFFFFF"/>
+          <rect x="500" y="100" width="350" height="44" rx="8" transform="rotate(0.5 675 122)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="500" y="160" width="350" height="44" rx="8" transform="rotate(-0.4 675 182)" fill="#FFFFFF"/>
+          <path d="M436 96 L492 64" marker-end="url(#a5dAr)"/>
+          <path d="M436 110 L492 122" marker-end="url(#a5dAr)"/>
+          <path d="M436 124 L492 178" marker-end="url(#a5dAr)"/>
+          <!-- doodle: a ticked checkbox -->
+          <path d="M60 170 L78 170 L78 188 L60 188 Z M63 179 L68 184 L76 172" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="244" y="174" width="172" height="38" rx="6" fill="#FFFFFF"/>
+
+        <text class="a5dL" x="46" y="104">Happy ears</text>
+        <text class="a5dS" x="46" y="122">checkbox, off at first</text>
+        <text class="a5dW" x="244" y="104">20 replays of the quarter</text>
+        <text class="a5dW" x="244" y="124">300 deals each, seeded</text>
+        <text class="a5dL" x="252" y="190">3,465 real open leads</text>
+        <text class="a5dS" x="252" y="206">who closed is real Olist</text>
+        <text class="a5dL" x="514" y="67">verdict: average actual, smallest error</text>
+        <text class="a5dL" x="514" y="127">methods: bias, error, range covered actual</text>
+        <text class="a5dL" x="514" y="187">reps: commits at stage, call ratio, error</text>
+
+        <text class="a5dN" x="30" y="248">Ticking happy ears re-runs all twenty replays; only the methods that read stages can move.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper box is the whole technique: score many quarters, never one</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Read the verdict.</strong> Copy it. The 4.57m yen is the average over twenty replays; set it beside the 5.86m yen that closed in Analyst session 4's single quarter, and you have the reason one quarter misleads.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · what the widget prints</span>Average quarter: 4.57m yen really closed. Smallest error: history-based, 38.8%.</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Read the method table.</strong> For each row, write one word for the bias (leans high, leans low, level) and one for the range (honest, too tight, misplaced). Then check each against the 2x2 in Part 2.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · bias, error, coverage over 20 quarters</span>Method            Bias (20 quarters)   Error (20 quarters)   Range covered actual
+Rep commit        +33.9%               48.2%                 4 of 20
+Stage-weighted    +62.7%               68.2%                 10 of 20
+History-based     +18.6%               38.8%                 17 of 20</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Read the rep table.</strong> Find the rep who is unbiased and still useless as a single-quarter call, and the one whose number carries no information at all. Write the one-line coaching note you would hand the BD lead for each rep.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · four reps, twenty quarters</span>Rep       Commits at stage     Call ratio   Error per quarter
+Aiko      5 and above          0.98         68.0%
+Ben       4 and above          4.60         360.1%
+Chiara    5 and above          1.45         69.7%
+Dev       only once signed     0.00         100.0%</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Tick happy ears and read what changed.</strong> Compare both tables with Steps 2 and 3. Mark which rows moved and which did not, and say why in one sentence each.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · happy ears on</span>Method            Bias (20 quarters)   Error (20 quarters)   Range covered actual
+Rep commit        +121.5%              121.5%                0 of 20
+Stage-weighted    +134.0%              134.0%                3 of 20
+History-based     +18.6%               38.8%                 17 of 20     (unchanged)
+
+Rep       Call ratio   Error per quarter
+Aiko      1.69         97.8%
+Ben       8.15         715.1%
+Chiara    2.18         129.0%
+Dev       0.00         100.0%</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · Write the scorer for your own quarters.</strong> One row per past quarter and method, holding the forecast exactly as submitted on day one, with its range, and frozen from the snapshot of that day (Analyst session 1). Add what really closed. The script below scores it; run it on your data and read your own numbers, there are none to copy here.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · bias, error, coverage in pandas</span>import pandas as pd
+
+# one row per quarter x method, frozen on the quarter's first day
+# columns: quarter, method, point, lo, hi, actual
+q = pd.read_csv("forecast_track_record.csv")
+
+def score(g: pd.DataFrame) -&gt; pd.Series:
+    miss = g["point"] - g["actual"]
+    inside = (g["actual"] &gt;= g["lo"]) &amp; (g["actual"] &lt;= g["hi"])
+    return pd.Series({
+        "quarters": len(g),
+        "bias": miss.sum() / g["actual"].sum(),
+        "error": miss.abs().mean() / g["actual"].mean(),
+        "covered": int(inside.sum()),
+    })
+
+print(q.groupby("method").apply(score))
+
+# per rep: call ratio = total commit / total closed
+r = pd.read_csv("rep_commits.csv")   # quarter, rep, commit, closed
+t = r.groupby("rep")[["commit", "closed"]].sum()
+print((t["commit"] / t["closed"]).round(2))</div>
+        <p>If you prefer SQL, the same three numbers are <code>SUM(point - actual) / SUM(actual)</code>, <code>AVG(ABS(point - actual)) / AVG(actual)</code> and <code>SUM(CASE WHEN actual BETWEEN lo AND hi THEN 1 ELSE 0 END)</code>, grouped by method.</p>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Score only frozen forecasts.</strong> If anyone can edit last quarter's forecast after the quarter starts, the track record measures the editing, not the forecasting. Store each forecast with its submission date and the snapshot it was made from, and score that copy.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Analyst session 6</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Collect your track record.</strong> For as many past quarters as you can (eight at least), find the forecast as submitted on day one and what really closed. Note any quarter where the submitted number no longer exists.</li>
+      <li><strong>Run the scorer</strong> from Step 5 on it, for the team number and for every method your team has used. Write down bias, error and, if a range was published, coverage.</li>
+      <li><strong>Compute each rep's call ratio</strong> over the same quarters, with their error per quarter beside it. Mark anyone above 1.3 or below 0.7, and anyone near 1 with a large error.</li>
+      <li><strong>Draft one paragraph for your BD lead</strong>: which forecast leans, which is noisy, whose range can be planned on, and which rep conversations are worth having. No adjustments applied silently.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Analyst session 5 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · Aiko's call ratio over twenty quarters is 0.98 and her error per quarter is 68.0%. What is the fair summary?</p>
+      <button class="qopt" type="button">A · She is the most accurate rep; her number can be used as the quarter's forecast</button>
+      <button class="qopt" type="button">B · She is biased low by 2%, which explains the 68.0% error</button>
+      <button class="qopt" type="button">C · She is unbiased in total but noisy; any single quarter's call is likely to miss by a lot</button>
+      <button class="qopt" type="button">D · The two numbers contradict each other, so one of them is computed wrongly</button>
+      <p class="qwhy">Bias lets overs and unders cancel; error does not. Near-zero bias with a large error is "unbiased and useless" as a single-quarter call.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · A method publishes an 80% range. Over twenty quarters the actual fell inside it 10 times. What does that say?</p>
+      <button class="qopt" type="button">A · The range is too narrow, aimed in the wrong place, or both; an honest 80% range covers about 16 of 20</button>
+      <button class="qopt" type="button">B · The range is fine; 10 of 20 is within normal variation for twenty quarters</button>
+      <button class="qopt" type="button">C · The point forecast must be unbiased</button>
+      <button class="qopt" type="button">D · The range is too wide and should be tightened</button>
+      <p class="qwhy">About 14 to 18 of 20 is ordinary for an honest 80% range. 10 is far below it: the range is mis-sized or mis-centred, and stage-weighted's +62.7% bias points at the centre.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">3 · Ben's call ratio is 4.60, steady for a year. What should the analyst do?</p>
+      <button class="qopt" type="button">A · Divide his commit by 4.60 in the forecast every quarter and say nothing</button>
+      <button class="qopt" type="button">B · Drop his deals from the forecast</button>
+      <button class="qopt" type="button">C · Nothing; over-calling averages out across the team</button>
+      <button class="qopt" type="button">D · Show the call ratio and error to the BD lead, agree what commit means with Ben, and keep scoring</button>
+      <p class="qwhy">A systematic lean is a coaching conversation the BD lead owns. A silent correction hides the problem, stops Ben learning, and breaks the moment he changes.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Which open leads really closed between 1 June and 30 August 2018, and the May 2018 cohort's weaker conversion</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0. Read at source</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Twenty replays, Kettle &amp; Co's stages, amounts, reps and every bias, error and call ratio</span><span class="note">Constructed and seeded (20181011); printed by the widget on this page</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Stage-weighted and history-based 80% ranges</span><span class="note">Modelled: point plus or minus 1.2816 standard deviations, a normal approximation of a sum of yes-or-no deals</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Vendor forecast-accuracy surveys</span><span class="note">Contested: method and sample rarely published; no figures quoted</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Analyst session 5 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Many quarters, never one</b><span>One quarter has a miss but no bias. This quarter said -14.5%; twenty said +18.6%.</span></div>
+      <div class="cheat-item"><b>Bias</b><span>Total (forecast - actual) / total actual. Keeps the sign: which way it leans.</span></div>
+      <div class="cheat-item"><b>Error</b><span>Mean |forecast - actual| / mean actual. Drops the sign; never smaller than |bias|.</span></div>
+      <div class="cheat-item"><b>Coverage</b><span>Quarters inside the range. An honest 80% range: about 16 of 20, 14 to 18 is ordinary.</span></div>
+      <div class="cheat-item"><b>Call ratio</b><span>Rep's total commit / what they closed. Aiko 0.98 at 68.0% error: unbiased and useless.</span></div>
+      <div class="cheat-item"><b>Leans are conversations</b><span>Show the BD lead and the rep; never correct a rep's number silently.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can now score any forecast over many quarters. Analyst session 6, the forecast honesty bench, puts all three methods on one quarter with the scoreboard beside them, then breaks things on purpose: happy ears on every rung, and the biggest real deal slipping into next quarter. Watch which ranges still hold.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Analyst session 5 of 6 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a4-three-forecast-methods.html">← Prev: Three forecast methods</a> &nbsp;·&nbsp; <a href="a6-the-forecast-honesty-bench.html">Next: The forecast honesty bench →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/spa-sample.js?v=1"></script>
+<script src="../assets/spa-live.js?v=1"></script>
+<script src="../assets/spa-bench.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

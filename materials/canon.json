@@ -1,0 +1,458 @@
+{
+ "selfTest": {
+  "ok": true,
+  "fails": []
+ },
+ "meta": {
+  "mqls": 8000,
+  "closed": 842,
+  "negCycle": 1,
+  "seed": 20181011,
+  "pool": 3465
+ },
+ "quarter": {
+  "deals": 300,
+  "nWon": 7,
+  "pipeline": 168.21,
+  "stageCount": [
+   153,
+   78,
+   39,
+   19,
+   11
+  ],
+  "perRep": [
+   {
+    "commit": 3.55,
+    "best": 4.61,
+    "actual": 3.28,
+    "deals": 72
+   },
+   {
+    "commit": 3.37,
+    "best": 4.84,
+    "actual": 0.91,
+    "deals": 74
+   },
+   {
+    "commit": 0.94,
+    "best": 4.29,
+    "actual": 0.51,
+    "deals": 80
+   },
+   {
+    "commit": 0,
+    "best": 2.76,
+    "actual": 1.16,
+    "deals": 74
+   }
+  ]
+ },
+ "stageTable": {
+  "count": [
+   1022,
+   507,
+   240,
+   149,
+   79
+  ],
+  "won": [
+   0,
+   3,
+   15,
+   27,
+   51
+  ],
+  "p": [
+   0,
+   0.6,
+   6.3,
+   18.1,
+   64.6
+  ]
+ },
+ "history": {
+  "n": 2169,
+  "nWon": 268,
+  "pooled": 12.4,
+  "maxC": 126,
+  "conv": [
+   12.4,
+   14.4,
+   6,
+   3.9,
+   8,
+   12.4,
+   20.5,
+   17,
+   1.8,
+   12.4,
+   12.4
+  ]
+ },
+ "rung1_rep": {
+  "forecast": 7.86,
+  "lo": 7.86,
+  "hi": 24.36,
+  "actual": 5.86,
+  "error": 2,
+  "pct": 34.1,
+  "covered": false,
+  "bias": 33.9,
+  "mape": 48.2,
+  "coverage": 4
+ },
+ "rung2_stage": {
+  "forecast": 8.6,
+  "lo": 5.48,
+  "hi": 11.72,
+  "actual": 5.86,
+  "error": 2.74,
+  "pct": 46.8,
+  "covered": true,
+  "bias": 62.7,
+  "mape": 68.2,
+  "coverage": 10
+ },
+ "rung3_hist": {
+  "forecast": 5.01,
+  "lo": 2.03,
+  "hi": 8,
+  "actual": 5.86,
+  "error": -0.85,
+  "pct": -14.5,
+  "covered": true,
+  "bias": 18.6,
+  "mape": 38.8,
+  "coverage": 17
+ },
+ "rung4_hist_happy": {
+  "forecast": 5.01,
+  "lo": 2.03,
+  "hi": 8,
+  "actual": 5.86,
+  "error": -0.85,
+  "pct": -14.5,
+  "covered": true,
+  "bias": 18.6,
+  "mape": 38.8,
+  "coverage": 17
+ },
+ "happy": {
+  "stage": {
+   "forecast": 11.38,
+   "lo": 7.56,
+   "hi": 15.21,
+   "actual": 5.86,
+   "error": 5.52,
+   "pct": 94.3,
+   "covered": false,
+   "bias": 134,
+   "mape": 134,
+   "coverage": 3
+  },
+  "rep": {
+   "forecast": 10.67,
+   "lo": 10.67,
+   "hi": 27.3,
+   "actual": 5.86,
+   "error": 4.81,
+   "pct": 82.1,
+   "covered": false,
+   "bias": 121.5,
+   "mape": 121.5,
+   "coverage": 0
+  },
+  "overshoot": 2.79,
+  "overshootPct": 47.5
+ },
+ "whale": {
+  "amount": 2.11,
+  "actual": 5.86,
+  "slipped": 3.75,
+  "covered": [
+   {
+    "m": "rep",
+    "covered": false
+   },
+   {
+    "m": "stage",
+    "covered": false
+   },
+   {
+    "m": "hist",
+    "covered": true
+   }
+  ],
+  "coverage": [
+   {
+    "m": "rep",
+    "covered": 2
+   },
+   {
+    "m": "stage",
+    "covered": 3
+   },
+   {
+    "m": "hist",
+    "covered": 13
+   }
+  ]
+ },
+ "reps": [
+  {
+   "name": "Aiko",
+   "commitAt": 5,
+   "ratio": 0.98,
+   "error": 68
+  },
+  {
+   "name": "Ben",
+   "commitAt": 4,
+   "ratio": 4.6,
+   "error": 360.1
+  },
+  {
+   "name": "Chiara",
+   "commitAt": 5,
+   "ratio": 1.45,
+   "error": 69.7
+  },
+  {
+   "name": "Dev",
+   "commitAt": 6,
+   "ratio": 0,
+   "error": 100
+  }
+ ],
+ "hubspot": {
+  "forecast": 63.64,
+  "lo": 55.56,
+  "hi": 71.72,
+  "bias": 1207.1,
+  "mape": 1207.1,
+  "coverage": 0
+ },
+ "conversion": {
+  "cohort2018": 13,
+  "leads2018": 5998,
+  "wins2018": 781,
+  "firstWonDay": -27,
+  "lastWonDay": 317,
+  "months": [
+   [
+    "2017-06",
+    4,
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    "2017-07",
+    239,
+    2,
+    0.8,
+    0,
+    0
+   ],
+   [
+    "2017-08",
+    386,
+    9,
+    2.3,
+    0,
+    0
+   ],
+   [
+    "2017-09",
+    312,
+    7,
+    2.2,
+    0,
+    0
+   ],
+   [
+    "2017-10",
+    416,
+    14,
+    3.4,
+    0,
+    0
+   ],
+   [
+    "2017-11",
+    445,
+    18,
+    4,
+    0,
+    0
+   ],
+   [
+    "2017-12",
+    200,
+    11,
+    5.5,
+    3,
+    1.5
+   ],
+   [
+    "2018-01",
+    1141,
+    152,
+    13.3,
+    73,
+    6.4
+   ],
+   [
+    "2018-02",
+    1028,
+    149,
+    14.5,
+    113,
+    11
+   ],
+   [
+    "2018-03",
+    1174,
+    167,
+    14.2,
+    147,
+    12.5
+   ],
+   [
+    "2018-04",
+    1352,
+    183,
+    13.5,
+    207,
+    15.3
+   ],
+   [
+    "2018-05",
+    1303,
+    130,
+    10,
+    122,
+    9.4
+   ]
+  ],
+  "byOrigin": [
+   [
+    "organic_search",
+    1736,
+    255,
+    14.7
+   ],
+   [
+    "paid_search",
+    1182,
+    175,
+    14.8
+   ],
+   [
+    "social",
+    1051,
+    66,
+    6.3
+   ],
+   [
+    "unknown",
+    813,
+    168,
+    20.7
+   ],
+   [
+    "direct_traffic",
+    380,
+    54,
+    14.2
+   ],
+   [
+    "email",
+    347,
+    14,
+    4
+   ],
+   [
+    "referral",
+    211,
+    24,
+    11.4
+   ],
+   [
+    "other",
+    114,
+    4,
+    3.5
+   ],
+   [
+    "display",
+    75,
+    5,
+    6.7
+   ],
+   [
+    "(blank)",
+    48,
+    13,
+    27.1
+   ],
+   [
+    "other_publicities",
+    41,
+    3,
+    7.3
+   ]
+  ]
+ },
+ "cycle": {
+  "n": 842,
+  "mean": 48.4,
+  "p25": 5,
+  "median": 14,
+  "p75": 54.75,
+  "p90": 161.9,
+  "max": 427,
+  "buckets": [
+   249,
+   163,
+   135,
+   97,
+   47,
+   83,
+   68
+  ]
+ },
+ "survival": {
+  "n": 5998,
+  "naive": 10.5,
+  "truth": 13,
+  "at": [
+   [
+    7,
+    4.7
+   ],
+   [
+    14,
+    7.1
+   ],
+   [
+    30,
+    9.4
+   ],
+   [
+    60,
+    11
+   ],
+   [
+    90,
+    11.8
+   ],
+   [
+    150,
+    12.5
+   ]
+  ]
+ }
+}

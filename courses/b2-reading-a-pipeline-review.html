@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Business session 2 of 4. Reading a pipeline review the way a sceptical finance partner would: what a coverage ratio assumes and where 3x comes from, stale deals measured against the real cycle-time tail, and close dates pulled forward or pushed out. Kettle &amp; Co, a constructed office-tea supplier, reads last Monday's review in five questions.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Reading a pipeline review - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Business session 2 of 4. Coverage by stage, stale deals past the 90th percentile, and the close dates that quietly leave the quarter.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/b2-reading-a-pipeline-review.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reading a pipeline review - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Business session 2 of 4. Coverage by stage, stale deals, and moved close dates.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Business session 2 · Reading a pipeline review - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Business session 2 of 4</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Business session 2 of 4</div>
+    <h1>Reading a <span class="accent">pipeline review</span></h1>
+    <p class="sub">The Monday review opens with one number: "we are at 3x coverage". Everyone relaxes, and nobody asks what the number is made of. Tonight takes that number apart. A coverage ratio is only as good as the stage mix behind it, a deal that has sat open past the slow tail of your own cycle time is mostly not coming back, and a quarter can lose real money without a single deal being lost, just by close dates sliding out of the window. Kettle &amp; Co's office-tea team is constructed; the cycle-time tail comes from real B2B funnel rows.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Business</span>
+      <span class="chip audience">BD and sales leaders who read the pipeline, and the analysts who build it</span>
+      <span class="chip audience">No code</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Coverage, stale deals, moved dates</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: last Monday's review in five questions</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Last session ended with a stage list where every stage is something the buyer did. Tonight that list starts paying rent. A pipeline review is a meeting where three claims get made, usually without anyone checking them: there is enough pipeline to hit the number, the deals in it are alive, and the deals will close when the CRM says they will. Each claim has one question that tests it. Bring last Monday's report; by the end you will have five numbers written next to it that the report did not show. Kettle &amp; Co's office-tea arm, a BD lead and four account reps (Aiko, Ben, Chiara and Dev) selling tea subscriptions to offices in Japan, is constructed and labelled. The cycle times underneath come from real rows of Olist's public B2B funnel, a Brazilian marketplace recruiting sellers.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone works it through</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> Your own review re-read in five questions: coverage on stage 2 and later only, coverage weighted by your own stage rates, a count of deals older than your 90th-percentile cycle, a count of pushed-out deals with how often each moved, and one sentence for the BD lead that says what the pipeline really covers. That sentence is the opening line of the forecast contract in Business session 3.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers coverage ratios and the 3x convention</span>
+      <h2>What a coverage ratio is made of</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Coverage is open pipeline amount divided by the target for the period. "3x" is the number people hope to see, and it circulates as a rule of thumb with no single origin anyone has traced. Its arithmetic is simple: coverage you need equals one over the share of today's pipeline you expect to close inside the period. 3x is right only if about a third of the pipeline closes this quarter. Whether it does depends on where the deals sit, which is exactly what one ratio hides.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn bar of Kettle's 300 open deals worth 168.21 million yen, split by stage: 153 at stage 1 Contacted, 78 at stage 2 Need confirmed, 39 at stage 3 Tasting trial, 19 at stage 4 Proposal and 11 at stage 5 Contract out. A ledger underneath gives each stage's in-quarter win share from the previous quarter: 0.0, 0.6, 6.3, 18.1 and 64.6 percent. Half the deal count sits in the stage that closed nothing in-quarter. Stage 5, eleven deals, is filled in copper.">
+        <defs>
+          <filter id="b2aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="31" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b2aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b2aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b2aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b2aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b2aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b2aB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .b2aV { font: 800 18px Inter, sans-serif; fill: #34443E; }
+          .b2aW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b2aA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b2aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b2aH" x="30" y="28">THE STAGE MIX BEHIND ONE COVERAGE NUMBER</text>
+        <text class="b2aS" x="30" y="46">Kettle's 300 open deals at the start of the quarter, bar width = deal count · constructed stages on real outcomes</text>
+
+        <g filter="url(#b2aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="40" y="62" width="336" height="64" rx="8" transform="rotate(-0.4 208 94)" fill="url(#b2aHc)"/>
+          <rect x="377" y="62" width="171" height="64" rx="8" transform="rotate(0.4 462 94)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="549" y="62" width="85" height="64" rx="8" transform="rotate(-0.5 591 94)" fill="#FFFFFF"/>
+          <rect x="635" y="62" width="41" height="64" rx="6" transform="rotate(0.6 655 94)" fill="#BFCBC5"/>
+          <rect x="677" y="62" width="24" height="64" rx="5" transform="rotate(-0.6 689 94)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M40 168 L650 168" stroke="#C9D2CE"/>
+          <rect x="40" y="174" width="12" height="12" rx="2" fill="url(#b2aHc)"/>
+          <rect x="40" y="196" width="12" height="12" rx="2" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="40" y="218" width="12" height="12" rx="2" fill="#FFFFFF"/>
+          <rect x="40" y="240" width="12" height="12" rx="2" fill="#BFCBC5"/>
+          <rect x="40" y="262" width="12" height="12" rx="2" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="680" y="146" width="170" height="138" rx="10" transform="rotate(0.6 765 215)" fill="#FFFFFF"/>
+          <!-- doodle: a magnifying glass -->
+          <circle cx="822" cy="166" r="9" stroke="#5A6D65"/>
+          <path d="M829 173 L838 182" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="52" y="72" width="196" height="44" rx="6" fill="#FFFFFF"/>
+        <text class="b2aL" x="60" y="90">1 Contacted</text>
+        <text class="b2aS" x="60" y="107">153 deals · 0.0% in-quarter</text>
+        <text class="b2aL" x="388" y="90">2 Need confirmed</text>
+        <text class="b2aS" x="388" y="107">78 deals · 0.6%</text>
+        <text class="b2aL" x="587" y="98">3</text>
+        <text class="b2aL" x="652" y="98">4</text>
+        <text class="b2aW" x="685" y="98">5</text>
+        <text class="b2aV" x="720" y="92">168.21m yen</text>
+        <text class="b2aS" x="720" y="112">300 deals, one number</text>
+
+        <text class="b2aA" x="60" y="160">stage</text>
+        <text class="b2aA" x="230" y="160">deals</text>
+        <text class="b2aA" x="300" y="160">share</text>
+        <text class="b2aA" x="390" y="160">won in-quarter, last quarter</text>
+        <text class="b2aA" x="600" y="160">rate</text>
+
+        <text class="b2aL" x="60" y="184">1 Contacted</text><text class="b2aS" x="230" y="184">153</text><text class="b2aS" x="300" y="184">51%</text><text class="b2aS" x="390" y="184">0 of 1,022</text><text class="b2aL" x="600" y="184">0.0%</text>
+        <text class="b2aL" x="60" y="206">2 Need confirmed</text><text class="b2aS" x="230" y="206">78</text><text class="b2aS" x="300" y="206">26%</text><text class="b2aS" x="390" y="206">3 of 507</text><text class="b2aL" x="600" y="206">0.6%</text>
+        <text class="b2aL" x="60" y="228">3 Tasting trial</text><text class="b2aS" x="230" y="228">39</text><text class="b2aS" x="300" y="228">13%</text><text class="b2aS" x="390" y="228">15 of 240</text><text class="b2aL" x="600" y="228">6.3%</text>
+        <text class="b2aL" x="60" y="250">4 Proposal</text><text class="b2aS" x="230" y="250">19</text><text class="b2aS" x="300" y="250">6.3%</text><text class="b2aS" x="390" y="250">27 of 149</text><text class="b2aL" x="600" y="250">18.1%</text>
+        <text class="b2aL" x="60" y="272">5 Contract out</text><text class="b2aS" x="230" y="272">11</text><text class="b2aS" x="300" y="272">3.7%</text><text class="b2aS" x="390" y="272">51 of 79</text><text class="b2aL" x="600" y="272">64.6%</text>
+
+        <text class="b2aH" x="694" y="170">READ IT AS</text>
+        <text class="b2aL" x="694" y="196">153 deals add bulk</text>
+        <text class="b2aS" x="694" y="212">and 0.0% in-quarter</text>
+        <text class="b2aL" x="694" y="242">11 deals add 64.6%</text>
+        <text class="b2aS" x="694" y="258">the forecast lives here</text>
+
+        <text class="b2aB" x="30" y="306">Pipeline over what closed: 168.21m / 5.86m = about 28.7x, and still only 7 deals won.</text>
+        <text class="b2aN" x="30" y="328">Constructed Kettle amounts and stages on real Olist outcomes; the table is printed by Analyst session 4.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - one coverage number, five very different kinds of deal; half of the count is stage 1, which closed nothing in-quarter</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>Two better coverage numbers<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Coverage on stage 2 and later only.</strong> Stage 1 is a lead, not a deal (Business session 1). Take it out of the numerator before you divide. In Kettle's quarter that removes 153 of the 300 deals; the ratio roughly halves, and nothing about the business changed except honesty.</p>
+        <p><strong>Coverage weighted by your own stage rates.</strong> Multiply each deal's amount by the in-quarter win share of its stage, from your own last quarter, then add up. That turns "how much is open" into "how much we expect to close", and the ratio you need is then about 1x, not 3x. For Kettle's quarter the stage-weighted figure is 8.60m yen against the 168.21m on the pipeline report.</p>
+        <p><strong>Say which rates you used.</strong> The same deals weighted by HubSpot's default stage probabilities (20, 40, 60, 80, 90 percent) give 63.64m yen. Default probabilities are a placeholder for your own history, not a forecast; Analyst session 4 sets them side by side.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Where 3x comes from, and the arithmetic that replaces it<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>No primary source for "3x coverage" turns up; it is a convention passed between sales leaders. Treat it as arithmetic you can check. Coverage needed = 1 / (expected in-period close share of today's pipeline). If a third of the pipeline closes in the quarter, you need 3x. If a quarter closes, you need 4x. If, like Kettle, about 3.5 percent of the amount on the report closes in the quarter (5.86m of 168.21m), the honest requirement is closer to 28x on that same report, which is why "we are at 3x" can be a disaster and "we are at 28x" can be fine.</p>
+        <p>The <a href="https://phoebefu6.github.io/learn-metric-decomposition-with-phoebe/">Metric Decomposition ↗</a> sessions use 3x coverage at a 25 percent win rate as a worked example of win rate as a lever in a metric tree. This page extends it rather than contradicting it: 3x times 25 percent is three quarters of the target, so the plan either relies on deals that are created and closed inside the same quarter, or on a win rate that holds for the deals open today. The extension is to measure that win rate as an in-quarter close share, by stage, from your own history.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>28.7x and still a miss.</strong> Kettle's quarter opened with 168.21m yen of pipeline across 300 deals. What really closed by the end of the quarter: 5.86m yen, 7 deals. Pipeline over what closed is about 28.7x, because 153 of the 300 deals sat at stage 1 and the stage-1 deals of the previous quarter closed nothing inside it. A BD lead reading "plenty of coverage" off that report would have been reading volume, not evidence. Constructed Kettle &amp; Co amounts and stages built on real Olist outcomes.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers stale deals</span>
+      <h2>Stale deals: older than your own tail</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Every pipeline carries deals nobody has the heart to close out. The test for "stale" should not be a rep's feeling, it should be your own cycle-time distribution. On the real Olist rows, half of the 842 won deals closed within 14 days of first contact, three quarters within 54.75 days, nine tenths within 161.9 days. A deal still open past your 90th percentile is in the tail where only a tenth of eventual wins happen.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 286" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn ruler of deal age in days from 0 to 200. Marks at the real Olist median of 14 days, the 75th percentile of 54.75 days and the 90th percentile of 161.9 days. Everything right of 161.9 days is a copper stale zone. Dots above the ruler are constructed Kettle open deals at the end-of-quarter review; three of them sit in the stale zone. Underneath, the real counts of won deals by cycle bucket.">
+        <defs>
+          <filter id="b2bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="37" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b2bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b2bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b2bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b2bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b2bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b2bW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b2bA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b2bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b2bH" x="30" y="28">HOW OLD IS AN OPEN DEAL, AGAINST YOUR OWN CYCLE TIME?</text>
+        <text class="b2bS" x="30" y="46">marks: real Olist won-deal percentiles · dots: constructed Kettle open deals at the 30 August review · copper: past p90</text>
+
+        <g filter="url(#b2bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="60" y="150" width="599" height="30" rx="4" transform="rotate(-0.3 360 165)" fill="#FFFFFF"/>
+          <rect x="659" y="150" width="181" height="30" rx="4" transform="rotate(0.3 750 165)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M112 104 L112 180 M263 104 L263 180 M659 104 L659 180" stroke="#34443E"/>
+          <path d="M60 180 L60 188 M171 180 L171 188 M282 180 L282 188 M393 180 L393 188 M504 180 L504 188 M615 180 L615 188 M726 180 L726 188"/>
+          <circle cx="84" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="150" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="196" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="236" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="330" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="410" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="470" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="545" cy="132" r="5" fill="#FFFFFF"/>
+          <circle cx="690" cy="132" r="5" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <circle cx="738" cy="132" r="5" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <circle cx="790" cy="132" r="5" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <!-- doodle: an hourglass -->
+          <path d="M796 64 L824 64 L810 80 L824 96 L796 96 L810 80 Z" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b2bL" x="104" y="78">median 14 days</text>
+        <text class="b2bS" x="104" y="94">half of wins</text>
+        <text class="b2bL" x="255" y="78">p75 54.75 days</text>
+        <text class="b2bS" x="255" y="94">three quarters</text>
+        <text class="b2bL" x="600" y="78">p90 161.9 days</text>
+        <text class="b2bS" x="600" y="94">nine tenths of wins</text>
+        <text class="b2bW" x="672" y="170">STALE ZONE</text>
+
+        <text class="b2bA" x="56" y="202">0</text>
+        <text class="b2bA" x="164" y="202">30</text>
+        <text class="b2bA" x="275" y="202">60</text>
+        <text class="b2bA" x="386" y="202">90</text>
+        <text class="b2bA" x="494" y="202">120</text>
+        <text class="b2bA" x="605" y="202">150</text>
+        <text class="b2bA" x="716" y="202">180</text>
+        <text class="b2bA" x="60" y="222">days since first contact (deal age at the review)</text>
+
+        <text class="b2bS" x="60" y="246">842 real wins by cycle: 0-7: 249 · 7-14: 163 · 14-30: 135 · 30-60: 97 · 60-90: 47 · 90-180: 83 · 180+: 68</text>
+        <text class="b2bN" x="60" y="270">A tenth of the real wins took longer than 161.9 days. Past that line, a deal needs a reason to stay.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper zone is where your own history says wins have mostly stopped arriving</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why age is evidence the stage does not carry<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Wins arrive early.</strong> On the real rows, the median won deal closed in 14 days and the mean in 48.4: a short typical cycle with a long slow tail. A deal that has been open for months has already lived through the window where most wins happen and did not close in it.</p>
+        <p><strong>The curve flattens.</strong> Following the 2018 leads that were still open on 1 June 2018, the survival curve puts the cumulative win share at 11.8 percent by day 90 and 12.5 percent by day 150; the eventual share, known by November 2018, was 13.0 percent. Rough arithmetic on those printed numbers: about half a point of win share arrived after day 150, spread over the roughly 87 percent of leads still open by then, which is under one in a hundred. Analyst session 3 draws the curve and explains why a still-open deal cannot simply be counted as lost.</p>
+        <p><strong>A stage rate is an average over young deals.</strong> Kettle's stage-4 rate of 18.1 percent comes from all the stage-4 deals in the previous quarter, most of them recent arrivals. A deal that reached Proposal five months ago and is still there is not a typical stage-4 deal; its age is telling you something its stage cannot.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Not forecasted, Omitted: where stale deals should go<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Most CRMs give you a place to park a deal that is still technically open but should not count. HubSpot's forecast tool, read on its knowledge base in October 2026, has a "Not forecasted" category beside Pipeline, Best case and Commit, and lets a team map deal stages to categories automatically. Salesforce is reported by third-party guides to have an "Omitted" category doing a similar job. The vendor pages change, and HubSpot's own page lists its default categories inconsistently, so re-verify before you teach a fixed list.</p>
+        <p>The professional norm: move a deal past your p90 age to the not-forecasted bucket by default, and let the rep move it back with one written sentence about what the buyer did recently. Do not delete it. A deleted stale deal disappears from next quarter's win-rate denominator and makes the team look better than it is (survivorship, which Analyst session 2 shows on the real rows).</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>68 slow wins, and a long wait for each.</strong> Of the 842 sellers Olist really signed, 68 took more than 180 days from first contact, and 83 more took 90 to 180 days. Slow wins exist, and some are large. But they are a tenth of the wins, and for every one of them many more leads of the same age never closed. A review that keeps every old deal "in case" is planning around the exception. Real Olist B2B funnel rows (Brazilian marketplace seller acquisition), read at source; Kettle's stale count in the build-along is constructed.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers pulled forward and pushed out deals</span>
+      <h2>Close dates that leave the quarter</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">A quarter can lose money without losing a single deal. Each week a rep nudges a close date from late August to mid September, and the deal leaves this quarter's number while staying "alive" in the pipeline. The reverse happens too: a deal pulled forward into the quarter to fill a gap. Both are normal. What matters is whether you can see them, and you can only count them if every change to a close date is logged with its date.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn timeline from May to October with Kettle's quarter, 1 June to 30 August, shaded. Five copper arrows start inside the quarter and end after it: deals pushed out, one of them moved three times and another twice. Two dark arrows start after the quarter and end inside it: deals pulled forward. A tally underneath: pushed out 5 deals, 8 moves, 2.31 million yen; pulled forward 2 deals, 0.84 million yen; net minus 1.47 million yen. All deals constructed.">
+        <defs>
+          <filter id="b2cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b2cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b2cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b2cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b2cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b2cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b2cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .b2cA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b2cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b2cH" x="30" y="28">CLOSE DATES MOVING ACROSS THE QUARTER LINE</text>
+        <text class="b2cS" x="30" y="46">start dot = close date at the start of the quarter · arrowhead = close date at the 30 August review · constructed</text>
+
+        <g filter="url(#b2cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="190" y="60" width="390" height="190" rx="8" transform="rotate(-0.3 385 155)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M60 258 L840 258"/>
+          <path d="M60 252 L60 264 M190 252 L190 264 M320 252 L320 264 M450 252 L450 264 M580 252 L580 264 M710 252 L710 264 M840 252 L840 264"/>
+          <circle cx="381" cy="104" r="4" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M385 104 L725 104" stroke="#8C4A1E" marker-end="url(#b2cAr)"/>
+          <path d="M532 98 L532 110 M619 98 L619 110" stroke="#8C4A1E"/>
+          <circle cx="489" cy="126" r="4" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M493 126 L639 126" stroke="#8C4A1E" marker-end="url(#b2cAr)"/>
+          <path d="M567 120 L567 132" stroke="#8C4A1E"/>
+          <circle cx="541" cy="148" r="4" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M545 148 L626 148" stroke="#8C4A1E" marker-end="url(#b2cAr)"/>
+          <circle cx="446" cy="170" r="4" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M450 170 L596 170" stroke="#8C4A1E" marker-end="url(#b2cAr)"/>
+          <circle cx="554" cy="192" r="4" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M558 192 L712 192" stroke="#8C4A1E" marker-end="url(#b2cAr)"/>
+          <circle cx="662" cy="218" r="4" fill="#34443E" stroke="#34443E"/>
+          <path d="M658 218 L556 218" stroke="#34443E" marker-end="url(#b2cAr)"/>
+          <circle cx="710" cy="240" r="4" fill="#34443E" stroke="#34443E"/>
+          <path d="M706 240 L569 240" stroke="#34443E" marker-end="url(#b2cAr)"/>
+          <!-- doodle: a desk calendar page -->
+          <rect x="792" y="64" width="38" height="34" rx="4" transform="rotate(3 811 81)" fill="#FFFFFF"/>
+          <path d="M798 74 L824 74" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b2cH" x="204" y="82">QUARTER · 1 Jun to 30 Aug</text>
+
+        <text class="b2cS" x="36" y="108">Ben · studio · 3x</text>
+        <text class="b2cS" x="36" y="130">Chiara · clinic · 2x</text>
+        <text class="b2cS" x="36" y="152">Aiko · logistics · 1x</text>
+        <text class="b2cS" x="36" y="174">Dev · law firm · 1x</text>
+        <text class="b2cS" x="36" y="196">Ben · coworking · 1x</text>
+        <text class="b2cA" x="36" y="222">Aiko · call centre</text>
+        <text class="b2cA" x="36" y="244">Dev · school</text>
+
+        <text class="b2cA" x="110" y="280">May</text>
+        <text class="b2cA" x="243" y="280">Jun</text>
+        <text class="b2cA" x="376" y="280">Jul</text>
+        <text class="b2cA" x="503" y="280">Aug</text>
+        <text class="b2cA" x="633" y="280">Sep</text>
+        <text class="b2cA" x="764" y="280">Oct</text>
+
+        <text class="b2cB" x="60" y="306">Pushed out: 5 deals, 8 moves, 2.31m yen</text>
+        <text class="b2cA" x="440" y="306">Pulled forward: 2 deals, 0.84m yen</text>
+        <text class="b2cN" x="60" y="328">Net -1.47m yen left the quarter while no deal was lost. Small ticks mark each intermediate move.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - five copper arrows cross the quarter line outward; without a close-date log you would see only where they ended</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Three things to read off moved dates<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>How many left, and how much.</strong> Count deals whose close date was inside the quarter at its start and is outside it now. Add their amounts. That is the slippage the forecast has to absorb, and it is often bigger than the deals lost outright.</p>
+        <p><strong>How often each moved.</strong> A deal pushed once is a timing change. A deal pushed three times is a pattern: the close date is a wish, not a buyer commitment. Count moves per deal, not just deals.</p>
+        <p><strong>What came in.</strong> Pulled-forward deals are not free money. A deal pulled forward to fill a gap is a claim that the buyer will sign sooner than they said. Ask what the buyer did to justify the new date, the same test as a stage in Business session 1.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why you need the close-date history, not the close date<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Most CRMs store one close date per deal, the current one. Each edit overwrites the last. On 30 August, Ben's studio deal shows a close date of 5 October and nothing else: no sign it was meant to close on 15 July, or that it moved three times. Pushed-out counting is impossible from the current state alone. Analyst session 1 shows the event table that keeps every change with its date, and how to rebuild last month's pipeline from it.</p>
+        <p>The rep's side of this conversation, how to prepare for a review and what to say about a slipping deal, lives in <a href="https://phoebefu6.github.io/learn-ai-sales-with-phoebe/courses/b9-pipeline-review.html">AI for selling, the pipeline review from the rep's chair ↗</a>. This page stays on the reader's side of the table.</p>
+        <p>Analyst session 6 runs the hardest version: the biggest deal that really closed in Kettle's quarter, 2.11m yen, slips to next quarter, and what closed drops from 5.86m to 3.75m yen. One pushed-out deal can be a third of a quarter.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Ben's studio, three Mondays running.</strong> At the start of Kettle's quarter, a design studio in Shibuya was set to close on 15 July for 0.62m yen. In late July Ben moved it to 20 August, "procurement is on holiday". In August he moved it to 10 September, then to 5 October. In every review it was "still in the pipeline" and nobody lost it. The CRM on 30 August shows only 5 October. The BD lead found the history by asking, and from then on the team logged every close-date change. Constructed Kettle &amp; Co example.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Read last Monday's review in five questions</h2>
+      <span class="tag demo">★ 22 min · everyone works it through</span>
+    </div>
+    <p class="lede">No code, one sheet. Take the pipeline report you brought, or Kettle's quarter as worked below. Each question replaces one number the report gives you with one the report hides. Do question 1 together, questions 2 to 4 in pairs, then everyone reads their question 5 sentence aloud. Kettle's answers are constructed and labelled; the target of 6.0m yen for the quarter is constructed for the exercise.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 322" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn review worksheet with three columns: the question, Kettle's constructed answer, and a blank for yours. Coverage on stage 2 and later only: 14.6x. Coverage weighted by own stage rates: 1.43x, 8.60 million yen on a 6.0 million yen target. Deals older than the 90th percentile cycle of 161.9 days: 64 of 300. Pushed out this quarter: 5 deals, 8 moves. The last row, the sentence for the BD lead, is filled copper: 1.43x real cover, not 28.0x.">
+        <defs>
+          <filter id="b2dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="43" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="b2dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="b2dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .b2dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .b2dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .b2dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .b2dB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .b2dA { font: 700 11px Inter, sans-serif; fill: #34443E; }
+          .b2dW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .b2dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="b2dH" x="30" y="28">THE REVIEW WORKSHEET</text>
+        <text class="b2dS" x="190" y="28">five questions · Kettle's quarter answered as the example · constructed</text>
+
+        <g filter="url(#b2dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="44" width="720" height="238" rx="10" transform="rotate(-0.3 390 163)" fill="#FFFFFF"/>
+          <rect x="38" y="50" width="704" height="34" rx="6" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M390 54 L390 274 M600 54 L600 274" stroke="#C9D2CE"/>
+          <path d="M40 124 L740 124 M40 162 L740 162 M40 200 L740 200 M40 238 L740 238" stroke="#C9D2CE"/>
+          <rect x="40" y="242" width="700" height="34" rx="6" transform="rotate(0.2 390 259)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <!-- doodle: a paperclip on the sheet -->
+          <path d="M790 60 L790 130 Q790 146 806 146 Q822 146 822 130 L822 74 Q822 64 812 64 Q802 64 802 74 L802 126" stroke="#5A6D65"/>
+        </g>
+
+        <text class="b2dL" x="48" y="72">question</text>
+        <text class="b2dL" x="404" y="72">Kettle, constructed</text>
+        <text class="b2dL" x="614" y="72">yours</text>
+
+        <text class="b2dL" x="48" y="109">1 · Coverage, stage 2 and later only</text>
+        <text class="b2dA" x="404" y="109">14.6x</text>
+        <text class="b2dS" x="614" y="109">________</text>
+        <text class="b2dL" x="48" y="147">2 · Coverage weighted by own stage rates</text>
+        <text class="b2dA" x="404" y="147">1.43x (8.60m on 6.0m)</text>
+        <text class="b2dS" x="614" y="147">________</text>
+        <text class="b2dL" x="48" y="185">3 · Deals older than p90 (161.9 days)</text>
+        <text class="b2dA" x="404" y="185">64 of 300</text>
+        <text class="b2dS" x="614" y="185">________</text>
+        <text class="b2dL" x="48" y="223">4 · Pushed out this quarter, and moves</text>
+        <text class="b2dA" x="404" y="223">5 deals, 8 moves</text>
+        <text class="b2dS" x="614" y="223">________</text>
+        <text class="b2dW" x="48" y="264">5 · One sentence for the BD lead</text>
+        <text class="b2dW" x="404" y="264">1.43x real cover, not 28.0x</text>
+        <text class="b2dW" x="614" y="264">________</text>
+
+        <text class="b2dB" x="30" y="306">Constructed Kettle values on a constructed 6.0m yen target; 8.60m is printed by Analyst session 4.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - four numbers the report hid, and the one sentence they add up to</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Coverage on stage 2 and later only.</strong> Add up the amount of every open deal past your first buyer-act stage, and divide by the target. If your report does not split amounts by stage, estimate it from counts and say so.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · stage 2+ coverage</span>report coverage (all stages):  ______ / target ______ = ____x
+stage 2+ amount:                ______ / target ______ = ____x
+Kettle (constructed target 6.0m yen):
+  all stages   168.21m / 6.0m = 28.0x
+  stage 2+     147 of 300 deals, amounts summed = 87.68m
+               87.68m / 6.0m = 14.6x</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Coverage weighted by your own stage rates.</strong> Multiply each stage's open amount by your own in-quarter win share for that stage, from last quarter, add up, divide by the target. Then do it once more with your CRM's default probabilities, and look at the gap.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · weighted coverage</span>stage 1 ____ x ___%   stage 2 ____ x ___%   stage 3 ____ x ___%
+stage 4 ____ x ___%   stage 5 ____ x ___%   total ______ / target = ____x
+Kettle: own rates 0.0 / 0.6 / 6.3 / 18.1 / 64.6%
+  -&gt; 8.60m / 6.0m = 1.43x   (HubSpot defaults: 63.64m / 6.0m = 10.6x)
+  what really closed: 5.86m, 97.7% of the 6.0m target</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Count deals older than your p90 cycle.</strong> Use your own 90th-percentile cycle time if you have it; if not, start from a won-deal list and find the age that nine in ten wins beat. Count open deals older than that, and list them by rep.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · stale count</span>my p90 cycle time: ____ days  (real Olist rows: 161.9)
+open deals older than that: ____ of ____
+Kettle, at the 30 August review (constructed):
+  64 of 300 were first contacted on or before 22 March, so they are past 161.9 days
+  default for each: Not forecasted, unless the rep writes one sentence on a recent buyer act</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Count pushed-out deals, and how many times each moved.</strong> List deals whose close date was inside the quarter at its start and is outside it now. If your CRM keeps no close-date history, write that down as the finding: you cannot answer this question yet.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · slippage</span>pushed out: ____ deals, ____ moves, ______ amount
+pulled forward: ____ deals, ______ amount
+Kettle (constructed): pushed out 5 deals, 8 moves (3 + 2 + 1 + 1 + 1), 2.31m yen
+  pulled forward 2 deals, 0.84m yen ; net 2.31 - 0.84 = 1.47m yen out</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · One sentence for the BD lead.</strong> Put the four answers into a single sentence a busy person can repeat. Lead with the weighted coverage, then the two risks.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · the sentence</span>"We have ____x weighted cover on our own rates, ____ deals past our p90 age,
+ and ______ pushed out of the quarter in ____ moves."
+Kettle (constructed): "We have 1.43x weighted cover on our own rates, not the 28x on the
+ report; 64 deals are past our p90 age, and 2.31m yen has slipped out in 8 moves."</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Keep the sheet.</strong> The sentence from step 5 is the opening line of the forecast contract in Business session 3, where the BD lead signs the number and the data team signs the method and its error rate.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Business session 3</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Find your own stage rates.</strong> Ask whoever owns the CRM for last quarter's in-quarter win share by stage. If the CRM only has default probabilities, write down that you are forecasting on placeholders.</li>
+      <li><strong>Find your own p90.</strong> From last year's won deals, the number of days from first contact that nine in ten wins beat. Compare it with what reps call "stale".</li>
+      <li><strong>Check for close-date history.</strong> Open one deal and see whether the CRM shows previous close dates with the date each was changed. Yes or no is the answer.</li>
+      <li><strong>Send the sentence.</strong> Send your step 5 sentence to the BD lead before next Monday's review, and note what question comes back.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Business session 2 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="1">
+      <p class="qtext">1 · What does "we need 3x coverage" assume?</p>
+      <button class="qopt" type="button">A · That a published standard requires it</button>
+      <button class="qopt" type="button">B · That about a third of today's pipeline amount will close inside the period</button>
+      <button class="qopt" type="button">C · That the win rate is 3 percent</button>
+      <button class="qopt" type="button">D · Nothing; any pipeline over 3x is safe</button>
+      <p class="qwhy">Coverage needed is one over the expected in-period close share. 3x is a convention with no single origin, and it is only right if a third closes in the period.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">2 · Why is a stage-4 deal that has been open for 200 days weaker evidence than its stage says?</p>
+      <button class="qopt" type="button">A · Stage 4 deals never close</button>
+      <button class="qopt" type="button">B · Old deals are always larger</button>
+      <button class="qopt" type="button">C · The CRM recalculates the stage after 90 days</button>
+      <button class="qopt" type="button">D · The stage-4 rate is an average over mostly young deals, and this one is past the 161.9-day p90, where only a tenth of wins happen</button>
+      <p class="qwhy">Age carries information the stage table does not. A deal that sat through the window where most wins arrive, and did not close, is not a typical stage-4 deal.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">3 · Why do pushed-out deals need a logged close-date history?</p>
+      <button class="qopt" type="button">A · Because auditors require it</button>
+      <button class="qopt" type="button">B · Because pushed-out deals are always lost</button>
+      <button class="qopt" type="button">C · Because the CRM overwrites the close date, so without a log you see only where a deal ended up, not that it left the quarter or how many times it moved</button>
+      <button class="qopt" type="button">D · Because pulled-forward deals do not count</button>
+      <p class="qwhy">The current state hides the movement. Ben's studio shows 5 October on 30 August; only the log shows it was meant for 15 July and moved three times.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Cycle time percentiles: median 14 days, 75th 54.75, 90th 161.9; buckets of the 842 wins; survival curve 11.8% by day 90, 12.5% by day 150, 13.0% eventual</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0; computed by the engine in Analyst session 3, read at source</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">HubSpot forecast categories (Not forecasted, Pipeline, Best case, Commit) and default stage probabilities</span><span class="note">HubSpot Knowledge Base, "Set up and customize pipelines" and "Set up the forecast tool". Read at source, October 2026; re-verify before teaching</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Salesforce's "Omitted" forecast category</span><span class="note">Salesforce Help, opportunity stages and forecast categories. Reported</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">"3x coverage"</span><span class="note">A convention with no single origin found; taught as the arithmetic 1 / expected in-period close share</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co stage mix 153 / 78 / 39 / 19 / 11, stage rates, 168.21m pipeline, 5.86m closed, 8.60m and 63.64m weighted</span><span class="note">Constructed on real outcomes and labelled; printed by the methods widget in Analyst session 4</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle's 6.0m target, 64 stale deals, pushed-out and pulled-forward deals</span><span class="note">Constructed for this page and labelled; arithmetic shown in the build-along</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Business session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>3x is a convention</b><span>Coverage needed = 1 / expected in-period close share. Check it, do not cite it.</span></div>
+      <div class="cheat-item"><b>Drop stage 1</b><span>Coverage on stage 2 and later only. Leads are not deals.</span></div>
+      <div class="cheat-item"><b>Weight by your own rates</b><span>Then about 1x is the bar. CRM defaults are placeholders, not history.</span></div>
+      <div class="cheat-item"><b>Stale = past your p90</b><span>161.9 days on the real rows. Default it to Not forecasted; never delete it.</span></div>
+      <div class="cheat-item"><b>Count the moves</b><span>Pushed-out deals and moves per deal. Three pushes is a pattern, not timing.</span></div>
+      <div class="cheat-item"><b>Log every close date</b><span>The CRM overwrites it. Without the history, slippage is invisible.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can read a review for what it hides: real coverage, stale deals and slipped dates. Business session 3 asks who owns the forecast that comes out of it: the BD lead signs the number and the commit, the data team signs the method, the range and the error rate, and both fit on one page.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Business session 2 of 4 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="b1-what-a-pipeline-proves.html">← Prev: What a pipeline is evidence of</a> &nbsp;·&nbsp; <a href="b3-who-owns-the-forecast.html">Next: Who owns the forecast →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

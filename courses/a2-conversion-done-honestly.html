@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Analyst session 2 of 6. Conversion done honestly: cohort rates versus period rates, the log-start artefact that makes every 2017 cohort look dead, conversion by lead origin, and why a won-only table cannot give you a win rate by segment. Hands-on in the browser on real Olist B2B funnel rows.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="Conversion done honestly - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Analyst session 2 of 6. Read a cohort along its row, not down a column. Check when each table starts before trusting a rate.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/a2-conversion-done-honestly.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Conversion done honestly - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Analyst session 2 of 6. Cohort vs period, the logging lag, and the denominator a won-only table never had.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Analyst session 2 · Conversion done honestly - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Analyst session 2 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Analyst session 2 of 6</div>
+    <h1>Conversion done <span class="accent">honestly</span></h1>
+    <p class="sub">"What is our conversion rate?" sounds like one number. It is at least two, and on the same real rows they can differ by a factor of two in the same month. Tonight: the cohort rate and the period rate and why they disagree, the date a table starts and how it quietly kills a whole year of leads, conversion by origin, and the denominator that a won-only table never had. The rows are real Olist B2B funnel rows (Brazilian marketplace seller acquisition) standing in for Kettle's history; Kettle &amp; Co's examples are constructed and labelled.</p>
+    <div class="chip-row">
+      <span class="chip level">🟢 Analyst</span>
+      <span class="chip audience">Data analysts who build pipeline reporting and forecasts</span>
+      <span class="chip audience">Hands-on in the browser</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:4">3-18 · Cohort vs period, the logging lag, origin and survivorship</span>
+      <span class="a3" style="flex:5">18-40 · Build-along: conversion two ways</span>
+      <span class="a4" style="flex:1">40-45 · Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Last session you learned to rebuild the pipeline as it stood on any date. Tonight that discipline meets the most quoted number in sales: conversion. Every rate is a fraction, and every honest question about it is a question about the denominator. Which leads are in it? Did they all have the same time to convert? Was the table that records the wins even switched on when they arrived? You will answer all three on 8,000 real leads and 842 real won deals, in your browser.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone builds it</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A cohort conversion query you can write from memory, a habit of checking when each table starts before you trust a rate, and one sentence you can say to a sales leader when a won-only report claims a segment "wins more": we have the numerator, not the denominator.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers cohort vs period</span>
+      <h2>Two rates with the same name</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">The cohort rate follows a group of leads: of everyone who entered in month m, what share ever won? The period rate looks at a calendar month: wins dated in m, divided by leads that arrived in m. The period rate is quicker to compute and appears on most dashboards, but its numerator and denominator are different people. The wins dated in January came from leads that arrived in December, October, and January; the January leads mostly win later.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn cohort grid. Rows are the month a lead first made contact: 2017 cohorts together, then January to May 2018. Columns are the month a deal was won: January to May 2018 and June onward. The January 2018 row is shaded copper: read along it to get the cohort rate, 152 won ever out of 1,141 leads, 13.3 percent. The January column is shaded sage: read down it to get the period rate, 73 wins dated January over 1,141 January leads, 6.4 percent. The column includes wins from 2017 cohorts, so the period rate mixes two groups of deals.">
+        <defs>
+          <filter id="a2aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a2aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a2aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a2aH { font: 800 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2aL { font: 600 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2aS { font: 400 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+          .a2aB { font: 800 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #5C2F10; }
+          .a2aA { font: 700 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #34443E; }
+          .a2aN { font: 400 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a2aH" x="30" y="28">ONE GRID, TWO WAYS TO READ IT</text>
+        <text class="a2aS" x="260" y="28">rows: month of first contact · columns: month won · real Olist rows</text>
+
+        <text class="a2aA" x="182" y="64">Jan</text>
+        <text class="a2aA" x="254" y="64">Feb</text>
+        <text class="a2aA" x="326" y="64">Mar</text>
+        <text class="a2aA" x="398" y="64">Apr</text>
+        <text class="a2aA" x="470" y="64">May</text>
+        <text class="a2aA" x="542" y="64">Jun on</text>
+
+        <g filter="url(#a2aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- row 0: 2017 cohorts -->
+          <rect x="170" y="76" width="64" height="28" rx="5" transform="rotate(0.6 202 90)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="242" y="76" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="314" y="76" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="386" y="76" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="458" y="76" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="530" y="76" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <!-- row 1: 2018-01, the cohort row -->
+          <rect x="170" y="112" width="64" height="28" rx="5" transform="rotate(-0.6 202 126)" fill="url(#a2aHc)" stroke="#8C4A1E"/>
+          <rect x="242" y="112" width="64" height="28" rx="5" fill="#FBEFE6" stroke="#8C4A1E"/>
+          <rect x="314" y="112" width="64" height="28" rx="5" fill="#FBEFE6" stroke="#8C4A1E"/>
+          <rect x="386" y="112" width="64" height="28" rx="5" fill="#FBEFE6" stroke="#8C4A1E"/>
+          <rect x="458" y="112" width="64" height="28" rx="5" fill="#FBEFE6" stroke="#8C4A1E"/>
+          <rect x="530" y="112" width="64" height="28" rx="5" fill="#FBEFE6" stroke="#8C4A1E"/>
+          <!-- rows 2-5: 2018-02 to 2018-05; cells before entry are faint -->
+          <rect x="170" y="148" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="242" y="148" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="314" y="148" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="386" y="148" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="458" y="148" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="530" y="148" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="170" y="184" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="242" y="184" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="314" y="184" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="386" y="184" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="458" y="184" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="530" y="184" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="170" y="220" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="242" y="220" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="314" y="220" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="386" y="220" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="458" y="220" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="530" y="220" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="170" y="256" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="242" y="256" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="314" y="256" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="386" y="256" width="64" height="28" rx="5" stroke="#C9D2CE"/>
+          <rect x="458" y="256" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <rect x="530" y="256" width="64" height="28" rx="5" fill="#FFFFFF"/>
+          <!-- arrows: along the row, down the column -->
+          <path d="M624 126 L604 126" marker-end="url(#a2aAr)"/>
+          <path d="M202 304 L202 292" marker-end="url(#a2aAr)"/>
+          <!-- doodle: a reading eye on the row -->
+          <path d="M800 92 Q820 80 840 92 Q820 104 800 92 Z" stroke="#5A6D65"/>
+          <circle cx="820" cy="92" r="4" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a2aL" x="30" y="95">2017 cohorts</text>
+        <text class="a2aL" x="30" y="131">2018-01</text>
+        <text class="a2aL" x="30" y="167">2018-02</text>
+        <text class="a2aL" x="30" y="203">2018-03</text>
+        <text class="a2aL" x="30" y="239">2018-04</text>
+        <text class="a2aL" x="30" y="275">2018-05</text>
+
+        <text class="a2aB" x="634" y="122">COHORT: read along the row</text>
+        <text class="a2aS" x="634" y="140">152 won ever / 1,141 leads = 13.3%</text>
+        <text class="a2aS" x="634" y="176">faint cells: before the lead arrived</text>
+
+        <text class="a2aA" x="170" y="320">PERIOD: read down the column</text>
+        <text class="a2aS" x="380" y="320">73 wins dated Jan / 1,141 Jan leads = 6.4%</text>
+
+        <text class="a2aN" x="30" y="342">The Jan column holds wins from 2017 cohorts too: the period rate divides one group by another.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - a cohort reads along a row, a period reads down a column, and only the row keeps the same people on top and bottom</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The same month, two answers<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>January 2018.</strong> 1,141 leads made first contact. 152 of them eventually won: a cohort rate of 13.3%. But only 73 wins carry a January date, so the period rate is 6.4%. The January leads were not worse; most of them simply won in February, March or later.</p>
+        <p><strong>April 2018.</strong> 1,352 leads, 183 eventually won: 13.5%. Wins dated April: 207, a period rate of 15.3%. Now the period rate is the higher one, because April's wins include the deals that January, February and March leads closed in April.</p>
+        <p><strong>The rule.</strong> When the arrival rate of leads changes month to month, the period rate swings for reasons that have nothing to do with how well anyone sells. Use the cohort rate to judge selling; use wins dated in the month only when the question is cash or capacity in that month, and then do not divide by that month's leads.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>When the period rate is the right tool<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Wins dated in a month are the right count for "how much did we book in April" and "did the team have capacity for April's closes". What breaks is the ratio: April's wins over April's leads. If you need a monthly ratio quickly, report the cohort rate with a fixed window instead, for example "won within 60 days of first contact", so every cohort gets the same amount of time. Analyst session 3 shows why the window matters and how to handle cohorts that have not had it yet.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Constructed Kettle &amp; Co example.</strong> Kettle's BD lead sees conversion "jump" in April and asks Ben what changed. Constructed arithmetic: 100 offices contacted in March, 12 of them ever win (2 sign in March, 10 in April); 100 contacted in April, 12 ever win (5 in April, 7 in May). April's period rate is (10 + 5) / 100 = 15%. Both cohorts converted at 12 / 100 = 12%. Nothing changed but the calendar: March's tasting trials happened to land in April.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the logging lag and censoring</span>
+      <h2>Check when each table starts</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Olist's lead table starts on 14 June 2017. Its closed-deal table starts on 5 December 2017. A lead that arrived in July 2017 and won in, say, October would never appear as won, because the log of wins did not exist yet. So the 2017 cohorts look dead: July 2017 converts at 0.8%, October at 3.4%, December at 5.5%, against 13.0% for the 2018 cohort. That is a logging artefact, not a buyer who said no.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn timeline from June 2017 to November 2018. The lead table runs from 14 June 2017 to 31 May 2018, hatched. The closed-deal table runs from 5 December 2017 to 14 November 2018. A copper band under the gap from June to early December 2017 marks where the 2017 cohorts fall: their early wins were never logged. Cohort rates below the axis: 2017-07 0.8 percent, 2017-10 3.4 percent, 2017-12 5.5 percent, 2018 cohort 13.0 percent, and 2018-05 10.0 percent, the cohort with the least time to convert.">
+        <defs>
+          <filter id="a2bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="47" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a2bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a2bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a2bH { font: 800 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2bL { font: 600 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2bS { font: 400 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+          .a2bB { font: 800 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #5C2F10; }
+          .a2bV { font: 800 16px Inter, -apple-system, "Segoe UI", sans-serif; fill: #34443E; }
+          .a2bW { font: 800 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #FFFFFF; }
+          .a2bA { font: 700 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #34443E; }
+          .a2bN { font: 400 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a2bH" x="30" y="28">TWO TABLES, TWO START DATES</text>
+        <text class="a2bS" x="250" y="28">real Olist rows · one tick per six months</text>
+
+        <text class="a2bL" x="99" y="68">Lead table: first contact 2017-06-14 to 2018-05-31</text>
+        <text class="a2bL" x="346" y="136">Closed-deal table: won 2017-12-05 to 2018-11-14</text>
+
+        <g filter="url(#a2bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="99" y="80" width="485" height="30" rx="6" transform="rotate(-0.4 341 95)" fill="url(#a2bHc)"/>
+          <rect x="338" y="146" width="475" height="30" rx="6" transform="rotate(0.4 575 161)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="99" y="190" width="237" height="28" rx="6" transform="rotate(-0.5 217 204)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M338 118 L338 140" stroke="#5A6D65" stroke-dasharray="4 4"/>
+          <path d="M80 236 L830 236"/>
+          <path d="M80 230 L80 242 M332 230 L332 242 M584 230 L584 242 M794 230 L794 242"/>
+          <!-- doodle: a small clock near the youngest cohort -->
+          <circle cx="640" cy="290" r="10" stroke="#5A6D65"/>
+          <path d="M640 284 L640 290 L645 293" stroke="#5A6D65"/>
+        </g>
+
+        <text class="a2bW" x="110" y="209">2017 cohorts fall here</text>
+
+        <text class="a2bA" x="64" y="256">2017-06</text>
+        <text class="a2bA" x="316" y="256">2017-12</text>
+        <text class="a2bA" x="568" y="256">2018-06</text>
+        <text class="a2bA" x="778" y="256">2018-12</text>
+
+        <text class="a2bS" x="124" y="278">2017-07</text>
+        <text class="a2bV" x="124" y="298">0.8%</text>
+        <text class="a2bS" x="240" y="278">2017-10</text>
+        <text class="a2bV" x="240" y="298">3.4%</text>
+        <text class="a2bS" x="346" y="278">2017-12</text>
+        <text class="a2bV" x="346" y="298">5.5%</text>
+        <text class="a2bS" x="440" y="278">2018 cohort</text>
+        <text class="a2bV" x="440" y="298">13.0%</text>
+        <text class="a2bB" x="540" y="278">2018-05</text>
+        <text class="a2bV" x="540" y="298">10.0%</text>
+        <text class="a2bS" x="660" y="294">least time to convert</text>
+
+        <text class="a2bN" x="30" y="322">The early 2017 wins happened, if at all, before anyone was writing wins down.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper band is a hole in the log, not a hole in demand</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Three dates to write down before any rate<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>When does the denominator table start?</strong> Here, the lead table: 14 June 2017.</p>
+        <p><strong>When does the numerator table start?</strong> The closed-deal table: 5 December 2017. Any cohort that arrived well before this date is undercounted, and the further back, the worse.</p>
+        <p><strong>When was the data cut?</strong> Leads stop on 31 May 2018 and wins on 14 November 2018. The May 2018 cohort (10.0%) had the least time to convert of any 2018 cohort. Some of that gap is slower buyers and some is simply less time: this is right-censoring, and Analyst session 3 handles it properly with a survival curve.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>The closed-lost logging lag<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Wins get logged fast, because someone is paid on them. Losses get logged late or never: the buyer goes quiet, the rep keeps the deal open "just in case", and months later a cleanup marks it lost in bulk. So "open" deals quietly include losses, and any rate computed as won / (won + lost) looks better than it is, because the quiet losses sit in neither column.</p>
+        <p>Olist is the extreme case: it logs no losses at all. Every lead that did not win is simply a lead with no closed-deal row. That is why every rate tonight is won / all leads in the cohort, never won / (won + lost). In your own CRM, count deals with no activity for twice your median cycle and ask whether they are open or lost-but-unlogged. The rep's side of that cleanup is in <a href="https://phoebefu6.github.io/learn-ai-sales-with-phoebe/courses/b8-crm-hygiene.html">AI Sales, CRM hygiene</a>.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>A year of leads that "never converted".</strong> On the real Olist rows, the July 2017 cohort has 239 leads and 2 logged wins; October has 416 leads and 14. Show those months on a conversion trend and it reads as a sales team that learned to sell in December. The honest chart starts the trend at the first cohort the win log could fully see, and says so in a footnote.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers origin and survivorship</span>
+      <h2>Rates by origin, and the missing denominator</h2>
+      <span class="tag concept">5 min live</span>
+    </div>
+    <p class="lede">Split the 2018 cohort by where each lead came from and the rates spread out: paid search 14.8%, organic search 14.7%, referral 11.4%, social 6.3%, email 4.0%. The best-converting group is "unknown" at 20.7%. A channel called unknown is not a channel; it is a tracking question. Then there is a second trap that no amount of splitting fixes: a table that only describes the winners.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hand-drawn horizontal bars of 2018 cohort conversion by origin, each with its denominator printed: unknown 20.7 percent, 168 of 813, drawn in copper; paid_search 14.8 percent, 175 of 1,182; organic_search 14.7 percent, 255 of 1,736; direct_traffic 14.2 percent, 54 of 380; referral 11.4 percent, 24 of 211; social 6.3 percent, 66 of 1,051; email 4.0 percent, 14 of 347. Four groups under 120 leads are not drawn.">
+        <defs>
+          <filter id="a2cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a2cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a2cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a2cH { font: 800 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2cL { font: 600 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2cS { font: 400 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+          .a2cB { font: 800 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #5C2F10; }
+          .a2cA { font: 700 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #34443E; }
+          .a2cN { font: 400 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a2cH" x="30" y="28">2018 COHORT CONVERSION BY ORIGIN, DENOMINATOR PRINTED</text>
+        <text class="a2cS" x="460" y="28">real Olist rows · rate = won / leads in that origin</text>
+
+        <g filter="url(#a2cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="180" y="62" width="414" height="20" rx="4" transform="rotate(-0.4 387 72)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="180" y="96" width="296" height="20" rx="4" transform="rotate(0.4 328 106)" fill="url(#a2cHc)"/>
+          <rect x="180" y="130" width="294" height="20" rx="4" transform="rotate(-0.4 327 140)" fill="url(#a2cHc)"/>
+          <rect x="180" y="164" width="284" height="20" rx="4" transform="rotate(0.4 322 174)" fill="url(#a2cHc)"/>
+          <rect x="180" y="198" width="228" height="20" rx="4" transform="rotate(-0.4 294 208)" fill="url(#a2cHc)"/>
+          <rect x="180" y="232" width="126" height="20" rx="4" transform="rotate(0.4 243 242)" fill="url(#a2cHc)"/>
+          <rect x="180" y="266" width="80" height="20" rx="4" transform="rotate(-0.4 220 276)" fill="url(#a2cHc)"/>
+          <path d="M180 54 L180 296" stroke="#5A6D65"/>
+          <!-- doodle: a question mark beside the tracking question -->
+          <path d="M826 60 Q826 50 836 50 Q846 50 846 60 Q846 68 836 72 L836 78" stroke="#8C4A1E"/>
+          <circle cx="836" cy="86" r="1.5" stroke="#8C4A1E"/>
+        </g>
+
+        <text class="a2cB" x="30" y="77">unknown</text>
+        <text class="a2cL" x="30" y="111">paid_search</text>
+        <text class="a2cL" x="30" y="145">organic_search</text>
+        <text class="a2cL" x="30" y="179">direct_traffic</text>
+        <text class="a2cL" x="30" y="213">referral</text>
+        <text class="a2cL" x="30" y="247">social</text>
+        <text class="a2cL" x="30" y="281">email</text>
+
+        <text class="a2cB" x="604" y="77">20.7% · 168 of 813</text>
+        <text class="a2cA" x="486" y="111">14.8% · 175 of 1,182</text>
+        <text class="a2cA" x="484" y="145">14.7% · 255 of 1,736</text>
+        <text class="a2cA" x="474" y="179">14.2% · 54 of 380</text>
+        <text class="a2cA" x="418" y="213">11.4% · 24 of 211</text>
+        <text class="a2cA" x="316" y="247">6.3% · 66 of 1,051</text>
+        <text class="a2cA" x="270" y="281">4.0% · 14 of 347</text>
+        <text class="a2cS" x="604" y="92">a tracking question</text>
+
+        <text class="a2cN" x="30" y="318">Not drawn: four origins under 120 leads each (blank, other, display, other_publicities).</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper bar wins the chart and loses the argument: nobody knows what "unknown" is</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why "unknown" tops the chart<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>An origin is a field someone or something fills in. Web forms fill it automatically; a lead a rep adds by hand after a phone call or a meeting often gets no origin at all. Those hand-entered leads are frequently the warmest ones, which would explain a high rate. It is a hypothesis, not a finding: the rows cannot tell you who left the field blank.</p>
+        <p>Before ranking channels, find out how origin gets set and what share of leads lack it. Here 813 of 5,998 leads in the 2018 cohort are "unknown", and the even smaller blank group (48 leads) converts at 27.1%. Small groups produce the most extreme rates; always print the denominator next to the rate, as the figure does.</p>
+        <p>Marketing reads this same funnel for budget and cost per acquired seller in <a href="https://phoebefu6.github.io/learn-marketing-with-phoebe/courses/04-the-funnel-bench.html">Marketing, the funnel bench</a>. Here the angle is narrower: is the rate honest enough to rank anything?</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Survivorship in a won-only table<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Olist's closed-deal table carries business segment and lead type, but only for the won deals. The leads table has no segment. So you can count which segments the winners came from, and you cannot compute a win rate by segment, because the losing and still-open leads of each segment were never described.</p>
+        <p>"Most of our won deals are segment X" then says nothing about whether segment X wins more often. It may simply be the segment you pitch most. A segment you rarely pitch can win most of its few chances and still look small among the winners. Without the denominator, the counts describe where you spent effort, not where effort pays.</p>
+        <p>The fix is upstream: capture segment at first contact, on every lead, so the denominator exists. Until then, say "we have the numerator, not the denominator" and refuse to rank.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>Constructed Kettle &amp; Co example.</strong> Kettle's signed-contract sheet records office size for every signed customer, and most are mid-size offices. Chiara proposes focusing on mid-size. The sheet has no row for the offices that took a tasting trial and did not sign, so there is no rate to compare. The first data request is not a new chart; it is an office-size field on the contact form.</p>
+    </div>
+  </section>
+
+  <section class="section" id="demo-1">
+    <div class="section-kicker">
+      <span class="klabel">Build-along</span>
+      <h2>Conversion two ways, on real rows</h2>
+      <span class="tag demo">★ 22 min · everyone builds</span>
+    </div>
+    <p class="lede">The widget holds real Olist B2B funnel rows (Brazilian marketplace seller acquisition) standing in for Kettle's history: every lead's first-contact month and origin, and every won deal's date. It computes both rates in your browser. Work the five steps, copy what the widget prints, and then write the query yourself.</p>
+
+    <div class="spa-widget" data-mode="conversion"></div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn map of the widget. A Show control switches between two views. By month: a table of first-contact months with leads, won ever, cohort rate, wins dated this month and period rate, feeding the verdict line for the 2018 cohort: 5,998 leads, 781 won, 13.0 percent, drawn in copper. By origin: a table of origins with leads, won and rate for the 2018 cohort, feeding a verdict that best and worst differ by more than five-fold.">
+        <defs>
+          <filter id="a2dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a2dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a2dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a2dH { font: 800 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2dL { font: 600 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #1B2622; }
+          .a2dS { font: 400 11px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+          .a2dW { font: 800 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #FFFFFF; }
+          .a2dN { font: 400 12px Inter, -apple-system, "Segoe UI", sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a2dH" x="30" y="28">WHAT THE WIDGET DOES WHEN YOU SWITCH THE VIEW</text>
+
+        <g filter="url(#a2dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="118" width="150" height="56" rx="10" transform="rotate(-1 105 146)" fill="#FFFFFF"/>
+          <path d="M186 136 L230 96" marker-end="url(#a2dAr)"/>
+          <path d="M186 156 L230 200" marker-end="url(#a2dAr)"/>
+          <rect x="240" y="60" width="320" height="72" rx="10" transform="rotate(0.6 400 96)" fill="url(#a2dHc)"/>
+          <rect x="240" y="168" width="320" height="72" rx="10" transform="rotate(-0.6 400 204)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <path d="M566 96 L602 96" marker-end="url(#a2dAr)"/>
+          <path d="M566 204 L602 204" marker-end="url(#a2dAr)"/>
+          <rect x="610" y="60" width="240" height="72" rx="10" transform="rotate(-0.8 730 96)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <rect x="610" y="168" width="240" height="72" rx="10" transform="rotate(0.8 730 204)" fill="#FFFFFF"/>
+          <!-- doodle: a toggle switch -->
+          <path d="M60 196 L120 196" stroke="#5A6D65"/>
+          <circle cx="76" cy="196" r="7" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="252" y="70" width="296" height="52" rx="6" fill="#FFFFFF"/>
+
+        <text class="a2dL" x="46" y="142">Show</text>
+        <text class="a2dS" x="46" y="160">month or origin</text>
+
+        <text class="a2dL" x="262" y="90">By month: cohort vs period</text>
+        <text class="a2dS" x="262" y="110">leads, won ever, cohort rate, period rate</text>
+
+        <text class="a2dL" x="256" y="198">By origin: 2018 cohort</text>
+        <text class="a2dS" x="256" y="218">origin, leads, won, rate</text>
+
+        <text class="a2dW" x="624" y="90">verdict: 2018 cohort</text>
+        <text class="a2dW" x="624" y="110">5,998 leads, 781 won, 13.0%</text>
+
+        <text class="a2dL" x="624" y="198">verdict: best vs worst</text>
+        <text class="a2dS" x="624" y="218">more than five-fold apart</text>
+
+        <text class="a2dN" x="30" y="274">Both views read the same 8,000 real leads; only the grouping and the denominator change.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper line is the one number to quote; the tables are how you check it</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Read the default verdict.</strong> The widget opens on "By month: cohort vs period". Copy the verdict line: it is the cohort rate for every lead that arrived January to May 2018, after the win log was running.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · what the widget prints</span>2018 cohort (January to May): 5,998 leads, 781 won, 13.0%.</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Compare January's two rates.</strong> Find the 2018-01 row. Read the cohort rate and the period rate side by side, then do the same for 2018-04, where the order flips.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · two rows, cohort vs period</span>First contact  Leads  Won ever  Cohort  Dated this month  Period
+2018-01        1141   152       13.3%   73                6.4%
+2018-04        1352   183       13.5%   207               15.3%</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Find the 2017 rows and explain them.</strong> Three of them below. The widget marks cohort rates under 6% in red. Write one sentence on why, using the date the closed-deal log starts.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · the cohorts the win log could not see</span>2017-07   239   2    0.8%   0   0.0%
+2017-10   416   14   3.4%   0   0.0%
+2017-12   200   11   5.5%   3   1.5%
+
+my sentence: ____________________________________________ (log starts 2017-12-05)</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Switch to "By origin".</strong> Copy the new verdict line, then find the top and bottom rows that have more than 300 leads. Check that the "five-fold" claim survives when you ignore the tiny groups.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · the origin verdict</span>Same 2018 cohort, split by where the lead came from. Best and worst differ by more than five-fold.
+
+unknown   813   168   20.7%
+email     347   14    4.0%</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · Write the cohort query.</strong> Group leads by their entry month, count the ones that ever won, divide by all leads in that month. Run it on your own tables; do not trust a number until it matches the widget's logic on yours.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · cohort conversion in SQL</span>SELECT DATE_TRUNC('month', l.first_contact_date) AS entry_month,
+       COUNT(*)                                    AS leads,
+       COUNT(w.lead_id)                            AS won_ever,
+       COUNT(w.lead_id) * 1.0 / COUNT(*)           AS cohort_rate
+FROM leads l
+LEFT JOIN won_deals w ON w.lead_id = l.lead_id     -- one row per won lead
+WHERE l.first_contact_date &gt;= DATE '2017-12-05'  -- only cohorts the win log can see
+GROUP BY 1
+ORDER BY 1;</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>LEFT JOIN, never INNER.</strong> An inner join to the won table drops every lead that did not win, and the "rate" becomes won / won. The left join keeps the denominator; COUNT on the won side counts only matches.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before Analyst session 3</h2>
+      <span class="tag exercise">30 min</span>
+    </div>
+    <ol>
+      <li><strong>Find your conversion dashboard</strong> and decide whether it shows a cohort rate or a period rate. Write down which, and where its numerator and denominator come from.</li>
+      <li><strong>Write down three start dates:</strong> when your lead table starts, when your won (or closed) table starts, and when lost deals began to be logged consistently.</li>
+      <li><strong>Run the cohort query</strong> from Step 5 on your own data for the last twelve months, and mark the cohorts too young to compare fairly.</li>
+      <li><strong>List every field you only have for won deals</strong> (segment, size, industry, deal type). For each, note where it would need to be captured so the denominator exists.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Analyst session 2 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · January 2018's leads have a cohort rate of 13.3% and a period rate of 6.4%. Why do they differ?</p>
+      <button class="qopt" type="button">A · The period rate excludes leads with an unknown origin</button>
+      <button class="qopt" type="button">B · January's leads were lower quality than average</button>
+      <button class="qopt" type="button">C · Most January leads won in later months, and the January-dated wins came partly from earlier cohorts</button>
+      <button class="qopt" type="button">D · One of the two rates has a calculation error</button>
+      <p class="qwhy">The cohort rate follows the same 1,141 leads along their row. The period rate divides January-dated wins, from several cohorts, by January's leads.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · The July 2017 cohort converts at 0.8% against 13.0% for 2018. What is the most likely cause?</p>
+      <button class="qopt" type="button">A · The closed-deal log starts on 5 December 2017, so earlier wins were never recorded</button>
+      <button class="qopt" type="button">B · Sellers recruited in 2017 were not interested in a marketplace</button>
+      <button class="qopt" type="button">C · The 2017 cohorts have not had enough time to convert</button>
+      <button class="qopt" type="button">D · July is a seasonal low month</button>
+      <p class="qwhy">The 2017 cohorts had the most time, not the least. They look dead because the numerator table was not running yet: a logging artefact.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">3 · A table describes segment only for won deals, and most won deals are in one segment. What can you conclude about win rate by segment?</p>
+      <button class="qopt" type="button">A · That segment has the highest win rate</button>
+      <button class="qopt" type="button">B · That segment has the lowest win rate, because it is over-pitched</button>
+      <button class="qopt" type="button">C · Win rates are equal across segments</button>
+      <button class="qopt" type="button">D · Nothing yet: without the segment of the leads that did not win, there is no denominator</button>
+      <p class="qwhy">A won-only table holds the numerator. Most winners in one segment may just mean most effort went there.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Olist's lead and closed-deal tables, their start and end dates, no lost deals</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0, read at source (both files opened)</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Cohort and period rates by month, and conversion by origin for the 2018 cohort</span><span class="note">Computed by the widget on this page from the real rows; the same counts as the source map</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Segment and lead type exist only for won deals, so no win rate by segment</span><span class="note">Mechanism from the table structure; no segment counts are quoted</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co's April jump and signed-contract sheet</span><span class="note">Constructed and labelled; arithmetic shown on the page</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Analyst session 2 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Cohort rate</b><span>Of leads that entered in month m, the share that ever won. Read along the row.</span></div>
+      <div class="cheat-item"><b>Period rate</b><span>Wins dated in m over leads arriving in m. Two groups in one fraction.</span></div>
+      <div class="cheat-item"><b>Check start dates</b><span>Olist leads from 2017-06-14, wins from 2017-12-05: every 2017 cohort looks dead.</span></div>
+      <div class="cheat-item"><b>Young cohorts</b><span>2018-05 at 10.0% had the least time. Right-censoring: Analyst session 3.</span></div>
+      <div class="cheat-item"><b>Print the denominator</b><span>"unknown" 20.7% is 168 of 813, and a tracking question before a channel.</span></div>
+      <div class="cheat-item"><b>Won-only fields</b><span>A numerator without a denominator. Capture the field at first contact.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Next session</span>
+    <p>You can measure conversion by cohort and spot the log that was not running. Analyst session 3 asks how long winning takes: the real cycle-time distribution, why the mean misleads, and how a survival curve gives young cohorts like May 2018 a fair reading.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Analyst session 2 of 6 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a1-the-pipeline-data-model.html">← Prev: The pipeline data model</a> &nbsp;·&nbsp; <a href="a3-velocity-and-cycle-time.html">Next: Velocity and cycle time →</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/spa-sample.js?v=1"></script>
+<script src="../assets/spa-live.js?v=1"></script>
+<script src="../assets/spa-bench.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>

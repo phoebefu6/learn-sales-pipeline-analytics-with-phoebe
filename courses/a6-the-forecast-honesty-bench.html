@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- social:start -->
+<meta name="description" content="Analyst session 6 of 6. The forecast honesty bench: rep commit, stage-weighted and history-based forecasts of one quarter, scored against what really closed on real Olist B2B funnel rows, over 20 replays. Then the happy-ears anti-lever and the whale-slips break button.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Learn with Phoebe">
+<meta property="og:title" content="The forecast honesty bench - learn sales pipeline analytics with phoebe">
+<meta property="og:description" content="Analyst session 6 of 6. Three forecasts, one real quarter, twenty replays. Then the reps inflate their stages, and the biggest deal slips.">
+<meta property="og:url" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/courses/a6-the-forecast-honesty-bench.html">
+<meta property="og:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The forecast honesty bench - learn sales pipeline analytics with phoebe">
+<meta name="twitter:description" content="Analyst session 6 of 6. Three forecasts against one real quarter, with an anti-lever and a break button.">
+<meta name="twitter:image" content="https://phoebefu6.github.io/learn-sales-pipeline-analytics-with-phoebe/assets/og-cover.png">
+<!-- social:end -->
+<title>Analyst session 6 · The forecast honesty bench - learn sales pipeline analytics with phoebe</title>
+<link rel="stylesheet" href="../assets/style.css?v=2">
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="wrap">
+    <span class="crumb"><a href="../index.html">learn-sales-pipeline-analytics-with-phoebe</a> / Analyst session 6 of 6</span>
+    <button class="btn" id="toggle-all" type="button">Expand all</button>
+    <button class="btn primary" id="zoom-toggle" type="button">Projector zoom: off</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Learn B2B Sales Pipeline Analytics with Phoebe · Analyst session 6 of 6</div>
+    <h1>The forecast honesty <span class="accent">bench</span></h1>
+    <p class="sub">Three forecasts of the same quarter, made on 1 June 2018 from the same 300 open deals, scored against what really closed by 30 August. The outcomes are real rows from Olist's public B2B funnel; Kettle &amp; Co's stages, amounts and reps sit on top of them, constructed and labelled. The bench computes everything in your browser, then replays the quarter twenty times with different deals to separate a lucky quarter from a sound method. Then it lets you break it twice: once with happy ears, the reps' habit of moving a deal one stage up on hope, and once by letting the biggest deal slip into next quarter.</p>
+    <div class="chip-row">
+      <span class="chip level">🔴 Bench</span>
+      <span class="chip audience">Data analysts who build the forecast, and the BD leads who sign it</span>
+      <span class="chip audience">Hands-on in the browser</span>
+      <span class="chip time">45 min</span>
+    </div>
+    <div class="agenda">
+      <span class="a1" style="flex:1">0-3 · Welcome</span>
+      <span class="a2" style="flex:2">3-10 · What the bench scores</span>
+      <span class="a3" style="flex:6">10-35 · The ladder, then happy ears and the whale</span>
+      <span class="a4" style="flex:2">35-45 · Ranges, Q&amp;A</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="intro">
+    <div class="section-kicker">
+      <span class="klabel">Part 0</span>
+      <h2>Where we start</h2>
+    </div>
+    <p class="lede">Analyst sessions 1 to 5 built the parts: the snapshot that freezes the pipeline on forecast day, conversion by cohort, the cycle-time curve, three forecast methods and the way to score them. Tonight they meet on one bench. What is real: for every one of the 3,465 leads first contacted in March to May 2018 and still open on 1 June, its origin, its age, and whether it really closed between 1 June and 30 August. What is constructed: Kettle's five stages, the amount of each deal, which of four reps owns it, and which 300 of those leads form "this quarter". Ranges for stage-weighted and history-based are modelled as 80 percent bands.</p>
+
+    <div class="legend">
+      <span class="pill">🎫 Clear all three quiz questions to stamp your passport</span>
+      <span class="pill">Live = presented in the 45 minutes</span>
+      <span class="pill">Self-study = the full depth, after class</span>
+      <span class="pill">★ Build-along = everyone builds it</span>
+    </div>
+
+    <div class="callout win">
+      <p><strong>★ What you walk out with tonight.</strong> A ladder of four forecasts with their error, bias and coverage measured on real outcomes, a demonstration of which method a stage-inflating team breaks and which it cannot touch, and the habit of asking "did the range cover it?" before "was the number right?".</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-1">
+    <div class="section-kicker">
+      <span class="klabel">Part 1 · covers what the bench scores</span>
+      <h2>One quarter is an anecdote; twenty replays are a track record</h2>
+      <span class="tag concept">7 min live</span>
+    </div>
+    <p class="lede">Any method can be right in one quarter by luck. The bench therefore prints two kinds of number. For "this quarter", the forecast, the range, what really closed, and the error. For the method, the same forecast made on twenty different 300-deal draws from the same real open leads: its bias (does it lean high or low?), its error (how far off is a typical quarter, ignoring sign?) and its coverage (in how many of the twenty did the range contain what closed?).</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three hand-drawn forecast methods, each fed by different parts of a deal. Rep commit reads the rep's own commit line: Aiko and Chiara commit at stage 5, Ben at stage 4, Dev only once signed. Stage-weighted reads the deal's stage and multiplies its amount by Kettle's own stage-to-win rate from last quarter: 0, 0.6, 6.3, 18.1 and 64.6 percent. History-based reads the lead's origin and age, and multiplies the real conversion by origin by the share of the real cycle-time curve that falls inside the next 91 days. A note says history-based never looks at the stage.">
+        <defs>
+          <filter id="a6aSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="53" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a6aHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a6aAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a6aH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a6aL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a6aS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a6aB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a6aW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a6aN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a6aH" x="30" y="28">WHAT EACH METHOD READS FROM A DEAL</text>
+        <text class="a6aS" x="300" y="28">one deal card on the left, three methods on the right</text>
+
+        <g filter="url(#a6aSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="30" y="64" width="200" height="200" rx="12" transform="rotate(-1 130 164)" fill="url(#a6aHc)"/>
+          <path d="M236 104 L330 92" marker-end="url(#a6aAr)"/>
+          <path d="M236 154 L330 170" marker-end="url(#a6aAr)"/>
+          <path d="M236 214 L330 252" marker-end="url(#a6aAr)"/>
+          <rect x="336" y="60" width="510" height="64" rx="10" transform="rotate(0.4 591 92)" fill="#FFFFFF"/>
+          <rect x="336" y="138" width="510" height="64" rx="10" transform="rotate(-0.4 591 170)" fill="#EEF2F0" stroke="#5A6D65"/>
+          <rect x="336" y="216" width="510" height="64" rx="10" transform="rotate(0.3 591 248)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <!-- doodle: a teacup on the deal card -->
+          <path d="M176 232 L204 232 L200 252 L180 252 Z" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="44" y="76" width="172" height="146" rx="8" fill="#FFFFFF"/>
+        <text class="a6aH" x="56" y="98">ONE OPEN DEAL</text>
+        <text class="a6aL" x="56" y="122">rep: Ben</text>
+        <text class="a6aL" x="56" y="142">stage 3, Tasting trial</text>
+        <text class="a6aL" x="56" y="162">amount: 360,000 yen</text>
+        <text class="a6aL" x="56" y="182">origin: paid_search</text>
+        <text class="a6aL" x="56" y="202">age: 40 days</text>
+
+        <text class="a6aH" x="352" y="86">REP COMMIT · reads the rep's line</text>
+        <text class="a6aS" x="352" y="106">commit at stage: Aiko 5, Ben 4, Chiara 5, Dev only once signed</text>
+        <text class="a6aH" x="352" y="164">STAGE-WEIGHTED · reads the stage</text>
+        <text class="a6aS" x="352" y="184">x Kettle's last-quarter rate: 0 / 0.6 / 6.3 / 18.1 / 64.6%</text>
+        <text class="a6aW" x="352" y="242">HISTORY-BASED · reads origin and age</text>
+        <text class="a6aW" x="352" y="262">real conversion x share of real cycle curve inside 91 days</text>
+
+        <text class="a6aB" x="30" y="300">History-based never reads the stage. Hold that thought for happy ears.</text>
+        <text class="a6aN" x="30" y="320">The example deal is illustrative; stages, amounts and reps are constructed, origin and age are real.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - three methods, three different parts of the deal; the copper one ignores the part reps can edit</figcaption>
+    </figure>
+
+    <details class="card" open>
+      <summary><span class="mode live">Live</span>The three scores, defined once<span class="mini">4 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Error this quarter.</strong> Forecast minus what really closed, in millions of yen and as a percentage of what closed. Positive means the forecast was too high.</p>
+        <p><strong>Bias over 20 replays.</strong> Add up every replay's forecast minus actual, divide by the total actual. Near zero means the method does not lean either way, even if each single quarter misses.</p>
+        <p><strong>Error over 20 replays.</strong> The average size of the miss, sign ignored, over the average actual. A method can have small bias and large error: it overshoots one quarter and undershoots the next, and the two cancel in the bias. Analyst session 5 met a rep like that.</p>
+        <p><strong>Coverage.</strong> In how many of the 20 replays the method's range contained the actual. An 80 percent band that covers 17 of 20 is roughly honest about its own uncertainty; one that covers 10 is too narrow or aimed at the wrong place.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Why these real rows, and what is constructed on top<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Real Olist B2B funnel rows (Brazilian marketplace seller acquisition) stand in for Kettle's history. For each lead the bench knows its origin, its first-contact date and whether and when it really won. The history-based method learns its rates only from leads first contacted in January and February 2018, as they could be seen on 1 June: 2,169 leads, 268 won by then. The open pool it forecasts is a different set of leads, so the score is out of sample.</p>
+        <p>Olist has no stage history and no lost deals, so stages were constructed from each lead's real outcome with deliberate noise: deals that really closed soon tend to sit at later stages, but not always, and some deals that never closed sit at stage 4 or 5. Amounts are drawn from a skewed distribution with a median of 360,000 yen. The quarter's 300 deals are a seeded draw. Everything constructed is labelled on the widget.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="section" id="bench">
+    <div class="section-kicker">
+      <span class="klabel">Build-along · the bench</span>
+      <h2>The forecast honesty bench</h2>
+      <span class="tag demo">★ 22 min · the main event</span>
+    </div>
+    <p class="lede">Work the four rungs in order and say out loud what changed. Rungs 1 to 3 are the three methods; rung 4 switches on the anti-lever. Then press the break button. The table under the ranges shows all three methods at once, so you can watch which ones move.</p>
+
+    <div class="spa-widget" data-mode="bench"></div>
+
+    <div class="callout tip">
+      <p><strong>Read it in this order.</strong> The range bars first: does the copper line (what closed) sit inside each band? Then the error this quarter. Then the three columns from the 20 replays, which say whether this quarter was typical. A method that wins this quarter but covers 4 of 20 was lucky.</p>
+    </div>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The ladder as the bench prints it, millions of yen, with the actual of 5.86 drawn as a vertical copper line. Rung 1, rep commit: 7.86, range 7.86 to 24.36, misses because the commit floor is above the actual; bias over 20 replays plus 33.9 percent, coverage 4 of 20. Rung 2, stage-weighted: 8.60, range 5.48 to 11.72, covers; bias plus 62.7 percent, coverage 10 of 20. Rung 3, history-based: 5.01, range 2.03 to 8.00, covers; bias plus 18.6 percent, error 38.8 percent, coverage 17 of 20. Rung 4, history-based with happy ears: unchanged at 5.01.">
+        <defs>
+          <filter id="a6bSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="59" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a6bHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a6bAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a6bH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a6bL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a6bS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a6bB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a6bV { font: 800 13px Inter, sans-serif; fill: #34443E; }
+          .a6bN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a6bH" x="30" y="28">THE LADDER, THIS QUARTER AND OVER 20 REPLAYS</text>
+        <text class="a6bS" x="390" y="28">millions of yen · scale 0 to 25 · 1 June to 30 August 2018</text>
+
+        <g filter="url(#a6bSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M200 270 L700 270"/>
+          <path d="M200 264 L200 276 M300 264 L300 276 M400 264 L400 276 M500 264 L500 276 M600 264 L600 276 M700 264 L700 276"/>
+          <rect x="357" y="62" width="330" height="26" rx="13" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="310" y="122" width="125" height="26" rx="13" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="241" y="182" width="119" height="26" rx="13" fill="url(#a6bHc)" stroke="#5A6D65"/>
+          <rect x="241" y="226" width="119" height="26" rx="13" fill="url(#a6bHc)" stroke="#5A6D65"/>
+          <path d="M317 48 L317 262" stroke="#8C4A1E" stroke-width="3"/>
+        </g>
+
+        <path d="M357 58 L357 92 M372 118 L372 152 M300 178 L300 212 M300 222 L300 256" stroke="#34443E" stroke-width="4"/>
+
+        <text class="a6bL" x="186" y="80" text-anchor="end">1 · Rep commit</text>
+        <text class="a6bL" x="186" y="140" text-anchor="end">2 · Stage-weighted</text>
+        <text class="a6bL" x="186" y="200" text-anchor="end">3 · History-based</text>
+        <text class="a6bL" x="186" y="244" text-anchor="end">4 · + happy ears</text>
+
+        <text class="a6bV" x="700" y="80">7.86 · misses</text>
+        <text class="a6bS" x="700" y="96">bias +33.9% · 4 of 20</text>
+        <text class="a6bV" x="450" y="140">8.60 · covers</text>
+        <text class="a6bS" x="450" y="156">bias +62.7% · 10 of 20</text>
+        <text class="a6bV" x="372" y="200">5.01 · covers</text>
+        <text class="a6bS" x="500" y="200">bias +18.6% · error 38.8% · 17 of 20</text>
+        <text class="a6bV" x="372" y="244">5.01 · unchanged</text>
+
+        <text class="a6bB" x="326" y="44">actual 5.86</text>
+        <text class="a6bS" x="196" y="292">0</text>
+        <text class="a6bS" x="294" y="292">5</text>
+        <text class="a6bS" x="392" y="292">10</text>
+        <text class="a6bS" x="492" y="292">15</text>
+        <text class="a6bS" x="592" y="292">20</text>
+        <text class="a6bS" x="692" y="292">25</text>
+
+        <text class="a6bN" x="30" y="326">Dark tick: the forecast. Band: its range. Hatched: history-based, the only method with no stage input.</text>
+        <text class="a6bN" x="30" y="346">The ladder is the bench's output for draw 0; replay columns come from all 20 draws.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - only the hatched method is both close this quarter and covers in 17 of 20 replays</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step">
+        <p><strong>Step 1 · Rung 1, rep commit.</strong> Select it and read the verdict. The range is commit to commit plus best case, so its floor is the commit itself: when what closed is below the commit, no part of the range can cover it.</p>
+        <div class="prompt-box good"><span class="label">★ Step 1 · what the bench prints</span>Rep commit: 7.86m yen against 5.86m that really closed (+34.1%).
+Range 7.86 to 24.36, misses it.
+bias over 20 replays +33.9% · error over 20 replays 48.2% · 4 of 20 inside the range</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 2 · Rung 2, stage-weighted.</strong> It uses Kettle's own stage-to-win rates from last quarter, not a vendor default. It covers this quarter, and leans high over the replays.</p>
+        <div class="prompt-box good"><span class="label">★ Step 2 · stage-weighted</span>Stage-weighted: 8.60m yen against 5.86m that really closed (+46.8%).
+Range 5.48 to 11.72, covers it.
+bias +62.7% · error 68.2% · 10 of 20</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 3 · Rung 3, history-based.</strong> Real conversion by origin times the real cycle-time curve, deal by deal. Closest this quarter and the best coverage over twenty, and it still leans high: the leads first contacted in May 2018 converted at 10.0 percent against 13 to 14 for January to April, and a history-based forecast assumes next quarter behaves like the last.</p>
+        <div class="prompt-box good"><span class="label">★ Step 3 · history-based</span>History-based: 5.01m yen against 5.86m that really closed (-14.5%).
+Range 2.03 to 8.00, covers it.
+bias +18.6% · error 38.8% · 17 of 20</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 4 · Rung 4, happy ears on.</strong> Thirty percent of deals below stage 5 move up one stage. Read the hint line, then the table: stage-weighted and rep commit jump; history-based does not move at all.</p>
+        <div class="prompt-box good"><span class="label">★ Step 4 · the anti-lever</span>Happy ears on: stage-weighted moves from 8.60 to 11.38m, an overshoot of
+2.79m yen (47.5% of what closed). History-based does not read stages,
+so it stays at 5.01.
+table: Rep commit 10.67 (+82.1%) · Stage-weighted 11.38 (+94.3%) · History-based 5.01</div>
+      </div>
+      <div class="step">
+        <p><strong>Step 5 · Break it: the whale slips.</strong> Press the red button. The biggest deal that really closed moves into next quarter; the forecasts were already made. Read which ranges still cover the new actual.</p>
+        <div class="prompt-box good"><span class="label">★ Step 5 · the break button</span>The biggest deal that really closed (2.11m yen) slips to next quarter:
+actual falls from 5.86 to 3.75. Still covered: History-based.
+over 20 replays with the whale slipping: rep 2, stage 3, history 13 of 20 covered</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="part-2">
+    <div class="section-kicker">
+      <span class="klabel">Part 2 · covers the happy-ears anti-lever</span>
+      <h2>Happy ears: the method that reads stages inherits the hope</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">"Happy ears" is the sales habit of hearing a yes in a maybe: the trial went well, so the deal goes to Proposal before anyone asked for a price. One step up on three deals in ten looks harmless. Stage-weighted multiplies each step by a bigger probability, so the forecast climbs 2.79m yen, nearly half of what really closed. History-based reads origin and age, which nobody edits on hope, and does not move.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn staircase of Kettle's five stages with their own win rates: 0, 0.6, 6.3, 18.1 and 64.6 percent. A deal at stage 4 is pushed up one step to stage 5 by a rep, and its weight jumps from 18.1 to 64.6 percent. On the right, two meters. Stage-weighted rises from 8.60 to 11.38 million yen, an overshoot of 2.79 million. History-based stays at 5.01, with a note that it reads origin and age only.">
+        <defs>
+          <filter id="a6cSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="61" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a6cHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a6cAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a6cH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a6cL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a6cS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a6cB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a6cV { font: 800 16px Inter, sans-serif; fill: #34443E; }
+          .a6cW { font: 800 12px Inter, sans-serif; fill: #FFFFFF; }
+          .a6cN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a6cH" x="30" y="28">ONE STEP UP, AND WHAT EACH METHOD DOES WITH IT</text>
+        <text class="a6cS" x="400" y="28">stage rates: Kettle's own, last quarter · constructed stages</text>
+
+        <g filter="url(#a6cSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M40 260 L120 260 L120 230 L200 230 L200 200 L280 200 L280 170 L360 170 L360 110 L440 110 L440 260"/>
+          <rect x="296" y="132" width="30" height="30" rx="6" transform="rotate(-3 311 147)" fill="#FFFFFF"/>
+          <rect x="384" y="72" width="30" height="30" rx="6" transform="rotate(3 399 87)" fill="#8C4A1E" stroke="#8C4A1E"/>
+          <path d="M330 136 Q356 96 378 88" marker-end="url(#a6cAr)" stroke="#8C4A1E"/>
+          <rect x="500" y="70" width="340" height="80" rx="12" transform="rotate(-0.5 670 110)" fill="#FFFFFF"/>
+          <rect x="500" y="170" width="340" height="80" rx="12" transform="rotate(0.5 670 210)" fill="url(#a6cHc)"/>
+          <!-- doodle: an ear by the arrow -->
+          <path d="M258 96 Q274 76 290 96 Q292 112 278 118 Q272 124 276 130" stroke="#5A6D65"/>
+        </g>
+
+        <rect x="514" y="182" width="312" height="56" rx="8" fill="#FFFFFF"/>
+
+        <text class="a6cS" x="50" y="282">1 · 0%</text>
+        <text class="a6cS" x="130" y="252">2 · 0.6%</text>
+        <text class="a6cS" x="210" y="222">3 · 6.3%</text>
+        <text class="a6cS" x="290" y="192">4 · 18.1%</text>
+        <text class="a6cS" x="370" y="132">5 · 64.6%</text>
+        <text class="a6cB" x="160" y="72">rep moves it up on hope</text>
+
+        <text class="a6cH" x="516" y="94">STAGE-WEIGHTED</text>
+        <text class="a6cV" x="516" y="120">8.60 to 11.38</text>
+        <text class="a6cB" x="516" y="140">overshoot 2.79m, 47.5% of actual</text>
+        <text class="a6cH" x="526" y="202">HISTORY-BASED</text>
+        <text class="a6cV" x="526" y="226">5.01, unchanged</text>
+        <text class="a6cS" x="680" y="226">reads origin, age</text>
+
+        <text class="a6cN" x="30" y="308">The weight rises fastest at the top step, so a little hope on late deals costs the most.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - the copper square is one deal moved one step; the jump in its weight is the whole anti-lever</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>Why history-based is immune, and why that is not a free win<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p><strong>Immune.</strong> History-based never reads a field a rep can edit. On rung 4 it prints the same 5.01 as on rung 3, with the same bias and coverage, by construction.</p>
+        <p><strong>Not free.</strong> The same blindness means it ignores real signal. A buyer who really did ask for a contract last week is, to history-based, just a 40-day-old paid-search lead. In Kettle's constructed stages, the deals at stage 5 closed far more often than the deals at stage 1: the stage carries information. A team with honest stages and an event log can do better than either method alone, for example by fitting history-based rates within each stage. That needs the stage history from Analyst session 1.</p>
+        <p><strong>Honest nuance.</strong> On these rows, history-based also leans high over the replays (bias +18.6 percent), because recent leads converted less than the training months. Immune to happy ears is not the same as unbiased.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>What happy ears does to rep commit<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>Commit is drawn at a stage line, so inflating stages pushes deals across it. On rung 4 the rep-commit total rises from 7.86 to 10.67m yen, +82.1 percent against what closed, and its coverage over twenty replays falls to 0 of 20. The rep who commits only signed deals, Dev, is untouched, because nothing below signature counts for him; he under-calls every quarter instead.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The Friday before quarter-end.</strong> Every sales team knows the week when Proposal deals become Contract out because "they said they would sign". The stage-weighted forecast that weekend is the most optimistic of the quarter, and it is wrong in a predictable direction. Kettle's data team now prints stage-weighted and history-based side by side in the Monday review: when they drift apart, somebody asks which stages moved and on what evidence. Constructed Kettle &amp; Co example.</p>
+    </div>
+  </section>
+
+  <section class="section" id="part-3">
+    <div class="section-kicker">
+      <span class="klabel">Part 3 · covers ranges and the whale</span>
+      <h2>The whale slips: which range was honest?</h2>
+      <span class="tag concept">6 min live</span>
+    </div>
+    <p class="lede">In a quarter where seven deals close, one deal can be a third of the money. In this quarter the largest deal that really closed is 2.11m yen of the 5.86m total. Press the break button and it slips into next quarter. The forecasts do not change, because they were made on 1 June; only reality moved. The question is which method had admitted, in its range, that this could happen.</p>
+
+    <figure class="zoomable">
+      <svg viewBox="0 0 880 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three hand-drawn range bars on a scale from 0 to 25 million yen. The actual drops from 5.86 to 3.75 when the 2.11 million yen whale slips. Rep commit's range starts at 7.86 and covers neither. Stage-weighted's range, 5.48 to 11.72, covered 5.86 but not 3.75. History-based's range, 2.03 to 8.00, covers both. Over 20 replays with the whale slipping, coverage is rep 2, stage-weighted 3, history-based 13 of 20.">
+        <defs>
+          <filter id="a6dSk" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="67" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <pattern id="a6dHc" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(-38)"><line x1="0" y1="0" x2="0" y2="7" stroke="#5A6D65" stroke-width="1" opacity=".5"/></pattern>
+          <marker id="a6dAr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#1B2622" stroke-width="1.6" stroke-linecap="round"/></marker>
+        </defs>
+        <style>
+          .a6dH { font: 800 12px Inter, sans-serif; fill: #1B2622; }
+          .a6dL { font: 600 12px Inter, sans-serif; fill: #1B2622; }
+          .a6dS { font: 400 11px Inter, sans-serif; fill: #535E59; }
+          .a6dB { font: 800 11px Inter, sans-serif; fill: #5C2F10; }
+          .a6dR { font: 700 11px Inter, sans-serif; fill: #991B1B; }
+          .a6dN { font: 400 12px Inter, sans-serif; fill: #535E59; }
+        </style>
+
+        <text class="a6dH" x="30" y="28">THE SAME RANGES, BEFORE AND AFTER THE WHALE SLIPS</text>
+        <text class="a6dS" x="420" y="28">millions of yen · copper: on time · red dashes: slipped</text>
+
+        <g filter="url(#a6dSk)" fill="none" stroke="#1B2622" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M200 220 L700 220"/>
+          <path d="M200 214 L200 226 M300 214 L300 226 M400 214 L400 226 M500 214 L500 226 M600 214 L600 226 M700 214 L700 226"/>
+          <rect x="357" y="62" width="330" height="26" rx="13" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="310" y="112" width="125" height="26" rx="13" fill="#BFCBC5" stroke="#5A6D65"/>
+          <rect x="241" y="162" width="119" height="26" rx="13" fill="url(#a6dHc)" stroke="#5A6D65"/>
+          <path d="M317 50 L317 202" stroke="#8C4A1E" stroke-width="3"/>
+          <!-- doodle: a whale tail -->
+          <path d="M760 120 Q780 100 800 120 M780 112 L780 150" stroke="#5A6D65"/>
+        </g>
+        <path d="M275 50 L275 202" stroke="#991B1B" stroke-width="2" stroke-dasharray="5 4"/>
+
+        <text class="a6dL" x="186" y="80" text-anchor="end">Rep commit</text>
+        <text class="a6dL" x="186" y="130" text-anchor="end">Stage-weighted</text>
+        <text class="a6dL" x="186" y="180" text-anchor="end">History-based</text>
+
+        <text class="a6dS" x="700" y="80">covers neither</text>
+        <text class="a6dS" x="450" y="130">covered 5.86, misses 3.75</text>
+        <text class="a6dB" x="372" y="180">covers both</text>
+
+        <text class="a6dB" x="326" y="46">5.86</text>
+        <text class="a6dR" x="236" y="46">3.75</text>
+        <text class="a6dS" x="736" y="170">2.11m whale</text>
+        <text class="a6dS" x="196" y="242">0</text>
+        <text class="a6dS" x="294" y="242">5</text>
+        <text class="a6dS" x="392" y="242">10</text>
+        <text class="a6dS" x="492" y="242">15</text>
+
+        <text class="a6dN" x="30" y="272">Over 20 replays with each quarter's biggest winner slipping: rep 2, stage 3, history 13 of 20 covered.</text>
+      </svg>
+      <figcaption>🔍 Click to zoom - only the hatched range was wide enough to admit the slip before it happened</figcaption>
+    </figure>
+
+    <details class="card">
+      <summary><span class="mode live">Live</span>What a range is for<span class="mini">3 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>A point forecast says what is most likely. A range says how wrong the forecaster expects to be. The BD lead commits to a number; the data team publishes the range around it and, from Analyst session 5, how often past ranges covered what happened. That is the ownership split from Business session 3.</p>
+        <p>The 80 percent bands here come from a normal approximation of the sum of many yes-or-no deals, each with its own probability and amount. With seven wins in a quarter, the real distribution is lumpy and the normal shape is only rough, which is one reason coverage under the whale falls to 13 of 20 even for history-based. Say "80 percent band, modelled" whenever you show one.</p>
+      </div>
+    </details>
+
+    <details class="card">
+      <summary><span class="mode self">Self-study</span>Report the whale separately<span class="mini">2 min</span><span class="caret">▶</span></summary>
+      <div class="body">
+        <p>When one deal is a third of the quarter, it deserves its own line: the forecast with it, the forecast without it, and the date its buyer last did something. Leaders can then decide whether to commit to the whale, which is their call, while the data team keeps the method honest for the rest. Kettle's whale is constructed; the shape, one deal carrying a quarter, is very common in small B2B teams.</p>
+      </div>
+    </details>
+
+    <div class="callout example">
+      <span class="ex-pill">Real world</span>
+      <p><strong>The vendor default that tripled the forecast.</strong> Before Kettle measured its own stage rates, its CRM applied the HubSpot default deal probabilities (20, 40, 60, 80 and 90 percent, read on HubSpot's knowledge base in October 2026). On this same quarter that stage-weighted forecast is 63.64m yen against 5.86m that closed, and covers 0 of 20 replays. Defaults are placeholders for your own history, not a forecast. The comparison is on the methods widget in Analyst session 4.</p>
+    </div>
+  </section>
+
+  <section class="section" id="exercise">
+    <div class="section-kicker">
+      <span class="klabel">Homework</span>
+      <h2>Before you sign the next forecast</h2>
+      <span class="tag exercise">45 min</span>
+    </div>
+    <ol>
+      <li><strong>Run the ladder on your own last quarter.</strong> Freeze the pipeline as of its first day (Analyst session 1), compute rep commit and stage-weighted from that snapshot, and score both against what closed.</li>
+      <li><strong>Measure your own stage rates</strong> from the quarter before, and compare them with the probabilities your CRM applies today.</li>
+      <li><strong>Find your whale.</strong> Name the largest deal in this quarter's forecast and compute each method with and without it.</li>
+      <li><strong>Write the range</strong> next to your next forecast, labelled as modelled, and diary the date to check whether it covered.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="section-kicker">
+      <span class="klabel">Check yourself</span>
+      <h2>Three questions</h2>
+    </div>
+    <p>Clear all three and Analyst session 6 gets stamped in your passport.</p>
+
+    <div class="quiz-q" data-answer="2">
+      <p class="qtext">1 · With happy ears on, stage-weighted rises from 8.60 to 11.38m yen and history-based stays at 5.01. Why?</p>
+      <button class="qopt" type="button">A · History-based has a bug</button>
+      <button class="qopt" type="button">B · Happy ears only affect deals that already closed</button>
+      <button class="qopt" type="button">C · History-based reads origin and age, which reps do not edit; stage-weighted multiplies each inflated stage by a higher probability</button>
+      <button class="qopt" type="button">D · Stage-weighted uses vendor default probabilities</button>
+      <p class="qwhy">Immune by construction, because it never reads stage. The same blindness means it also ignores honest late-stage signal.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="0">
+      <p class="qtext">2 · Rep commit's range is 7.86 to 24.36 and 5.86m really closed. What does that tell you?</p>
+      <button class="qopt" type="button">A · The commit itself was above what closed, so no part of a range built upward from it could cover the actual</button>
+      <button class="qopt" type="button">B · The range was too narrow at the top</button>
+      <button class="qopt" type="button">C · Rep commit is always right on average</button>
+      <button class="qopt" type="button">D · The actual was wrongly recorded</button>
+      <p class="qwhy">Commit is treated as the floor, best case as the ceiling. When the floor is too high, the method has no way to admit a miss below it.</p>
+    </div>
+
+    <div class="quiz-q" data-answer="3">
+      <p class="qtext">3 · History-based is closest this quarter and covers 17 of 20 replays, yet its bias is +18.6 percent. What is the most likely reason on these rows?</p>
+      <button class="qopt" type="button">A · The 80 percent band is too wide</button>
+      <button class="qopt" type="button">B · Happy ears</button>
+      <button class="qopt" type="button">C · The whale slipped in every replay</button>
+      <button class="qopt" type="button">D · It learned from January and February leads, and the leads it forecasts converted less: May's cohort won 10.0 percent against 13 to 14</button>
+      <p class="qwhy">A history-based forecast assumes the next quarter behaves like the history. When the world shifts, it leans, and only scoring it over many quarters shows the lean.</p>
+    </div>
+
+    <p class="quiz-score"></p>
+  </section>
+
+  <section class="section" id="official">
+    <div class="section-kicker">
+      <span class="klabel">Sources covered</span>
+      <h2>What this session teaches, and where it came from</h2>
+    </div>
+    <div class="covered">
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">3,465 open leads, 2,169 training leads, real outcomes 1 June to 30 August 2018</span><span class="note">Olist, "Marketing Funnel by Olist", Kaggle dataset, CC BY-NC-SA 4.0, read at source; computed by the bench engine</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">Ladder 7.86 / 8.60 / 5.01 against 5.86; happy-ears overshoot 2.79m; whale 2.11m</span><span class="note">Printed by the bench; a Python reference script agrees with the browser engine to the printed precision</span></div>
+      <div class="covered-row"><span class="status pill solid">✓</span><span class="name">HubSpot default deal probabilities 20, 40, 60, 80, 90 percent</span><span class="note">HubSpot Knowledge Base, "Set up and customize pipelines", read at source October 2026</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">Kettle &amp; Co stages, amounts, reps and the 300-deal draws</span><span class="note">Constructed, seeded and labelled on the widget</span></div>
+      <div class="covered-row"><span class="status pill light">◐</span><span class="name">80 percent bands under a normal approximation</span><span class="note">Modelled; labelled on the widget</span></div>
+    </div>
+    <p class="mono" style="margin-top:14px">Every fact on this page, and its verification tier, is recorded in the course's source map.</p>
+  </section>
+
+  <section class="cheat" id="cheatsheet">
+    <h3>Analyst session 6 cheat sheet <span>· pin this</span></h3>
+    <div class="grid-2">
+      <div class="cheat-item"><b>Three scores</b><span>Error this quarter; bias and error over many; coverage of the range.</span></div>
+      <div class="cheat-item"><b>The ladder</b><span>Rep 7.86, stage 8.60, history 5.01 against 5.86 closed.</span></div>
+      <div class="cheat-item"><b>Happy ears</b><span>Stage-weighted +2.79m (47.5% of actual). History-based unmoved.</span></div>
+      <div class="cheat-item"><b>The whale</b><span>2.11m slips: only history-based's range still covers.</span></div>
+      <div class="cheat-item"><b>Defaults lie</b><span>Vendor stage probabilities gave 63.64 against 5.86. Measure your own.</span></div>
+      <div class="cheat-item"><b>Immune is not unbiased</b><span>History-based leans +18.6% when recent leads convert less.</span></div>
+    </div>
+  </section>
+
+  <div class="callout next">
+    <span class="nx-pill">Course home</span>
+    <p>That is the Analyst track. If you came here first, Business session 3 turns tonight's numbers into a forecast contract: the BD lead owns the number and the commit, the data team owns the method, the range and its track record.</p>
+  </div>
+
+  <footer class="pagefoot">
+    <span>Analyst session 6 of 6 · learn-sales-pipeline-analytics-with-phoebe · by Phoebe Fu &nbsp;·&nbsp; 📚 <a href="https://phoebefu6.github.io/learn-with-phoebe/">Learn with Phoebe ↗</a></span>
+    <span><a href="a5-measuring-forecast-error.html">← Prev: Bias, error and the track record</a> &nbsp;·&nbsp; <a href="../index.html">Course home</a></span>
+  </footer>
+
+</main>
+
+<script src="../assets/spa-sample.js?v=1"></script>
+<script src="../assets/spa-live.js?v=1"></script>
+<script src="../assets/spa-bench.js?v=1"></script>
+<script src="../assets/app.js?v=1"></script>
+</body>
+</html>
